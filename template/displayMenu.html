@@ -1,0 +1,276 @@
+<style>
+    .card {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        border-radius: 5px;
+        margin-left: 32px;
+        margin-top: 15px;
+        /* 5px rounded corners */
+    }
+
+    /* Add rounded corners to the top left and the top right corner of the image */
+    img {
+        border-radius: 5px 5px 0 0;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+
+    }
+
+    .div-scroll {
+        overflow: auto;
+        height: 800px;
+    }
+
+    @keyframes ticker {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+
+        100% {
+            transform: translate3d(-100%, 0, 0);
+        }
+    }
+
+    .tcontainer {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .ticker-wrap {
+        width: 100%;
+        padding-left: 100%;
+        /* background-color: #eee; */
+    }
+
+    .ticker-move {
+        display: inline-block;
+        white-space: nowrap;
+        padding-right: 100%;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+        animation-name: ticker;
+        animation-duration: 20s;
+    }
+
+    .ticker-move:hover {
+        animation-play-state: paused;
+    }
+
+    .ticker-item {
+        display: inline-block;
+        padding: 0 2rem;
+        padding-top: 5px;
+    }
+
+    .runningText {
+        color: #FFFFFF;
+        font: normal 18px arial, sans-serif;
+        background-color: #005eef;
+        border: #000000 0px solid;
+        height: 42px;
+        /* width: 70%; */
+        margin: 0 auto;
+        padding: 4px 5px 3px 5px;
+        -moz-border-radius: 17px;
+        -webkit-border-radius: 17px;
+        border-radius: 17px;
+        -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+    }
+</style>
+<section class="content">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box"><br>
+                <div class="runningText">
+                    <div class="ticker-wrap">
+                        <div class="ticker-move">
+                            <div class="ticker-item">Selamat Datang dan Selamat Menikmat Hidangan Kami</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Menu Hari Ini</h3>
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <div class="card col-md-3">
+                                        <img src="./../images/menu-makanan/menu1.jpg" alt="Avatar">
+                                        <div class="container">
+                                            <h4><b>John Doe</b></h4>
+                                            <p>Architect & Engineer</p>
+                                        </div>
+                                    </div>
+                                    <div class="card col-md-3">
+                                        <img src="./../images/menu-makanan/menu1.jpg" alt="Avatar">
+                                        <div class="container">
+                                            <h4><b>John Doe</b></h4>
+                                            <p>Architect & Engineer</p>
+                                        </div>
+                                    </div>
+                                    <div class="card col-md-3">
+                                        <img src="./../images/menu-makanan/menu1.jpg" alt="Avatar">
+                                        <div class="container">
+                                            <h4><b>John Doe</b></h4>
+                                            <p>Architect & Engineer</p>
+                                        </div>
+                                    </div>
+                                    <div class="card col-md-3">
+                                        <img src="./../images/menu-makanan/menu1.jpg" alt="Avatar">
+                                        <div class="container">
+                                            <h4><b>John Doe</b></h4>
+                                            <p>Architect & Engineer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Informasi Seputar Kantin</h3>
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <img src="./../images/makanan-sehat.jpg" style="width:100%;display: block;">
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Counting Canteen</h3>
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <div class="progress-group">
+                                        <span class="progress-text">Employee</span>
+                                        <span class="progress-number"><b>160</b></span>
+
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-green" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                    <!-- /.progress-group -->
+                                    <div class="progress-group">
+                                        <span class="progress-text">Third Party</span>
+                                        <span class="progress-number"><b>310</b></span>
+
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-blue" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                    <!-- /.progress-group -->
+                                    <div class="progress-group">
+                                        <span class="progress-text">Visitor</span>
+                                        <span class="progress-number"><b>480</b></span>
+
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">&nbsp;</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <table class="table no-margin">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Menu</th>
+                                                <th>Jenis Menu</th>
+                                                <th>Info Kalori</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Ayam Penyet</td>
+                                                <td><span class="label label-success">Menu Makanan</span></td>
+                                                <td>
+                                                    Info Kalori
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Melon</td>
+                                                <td><span class="label label-success">Buah</span></td>
+                                                <td>
+                                                    Info Kalori
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Tahu</td>
+                                                <td><span class="label label-success">Menu Tambahan</span></td>
+                                                <td>
+                                                    Info Kalori
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>Sayur Bayam</td>
+                                                <td><span class="label label-success">Sayur</span></td>
+                                                <td>
+                                                    Info Kalori
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    $('#tglSurat').datepicker({
+        autoclose: true
+    });
+    $('#tglPemberianData').datepicker({
+        autoclose: true
+    });
+</script>
+<!-- Info boxes -->
+
+<!-- <div class="col-md-12">
+        
+      </div> -->

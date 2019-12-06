@@ -1,0 +1,147 @@
+<section class="content-header">
+    <h1>
+        Master Menu
+        <!-- <small>advanced tables</small> -->
+    </h1>
+</section>
+<section class="content">
+    <div class="box box-info">
+
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Menu</th>
+                            <th>Jenis Menu</th>
+                            <th>Info Kalori</th>
+                            <th>Info Alergi</th>
+                            <th>File</th>
+                            <th>Nama Vendor</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Ayam Penyet</td>
+                            <td><span class="label label-success">Menu Makanan</span></td>
+                            <td>
+                                Info Kalori
+                            </td>
+                            <td>
+                                Info Alergi
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
+                                    <span class='fa fa-list'></span>
+                                </button>
+                            </td>
+                            <td>
+                                Vendor A
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-pencil'></span>
+                                </button>
+                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-trash'></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Melon</td>
+                            <td><span class="label label-success">Buah</span></td>
+                            <td>
+                                Info Kalori
+                            </td>
+                            <td>
+                                Info Alergi
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
+                                    <span class='fa fa-list'></span>
+                                </button>
+                            </td>
+                            <td>
+                                Vendor A
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-pencil'></span>
+                                </button>
+                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-trash'></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Tahu</td>
+                            <td><span class="label label-success">Menu Tambahan</span></td>
+                            <td>
+                                Info Kalori
+                            </td>
+                            <td>
+                                Info Alergi
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
+                                    <span class='fa fa-list'></span>
+                                </button>
+                            </td>
+                            <td>
+                                Vendor A
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-pencil'></span>
+                                </button>
+                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-trash'></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Sayur Bayam</td>
+                            <td><span class="label label-success">Sayur</span></td>
+                            <td>
+                                Info Kalori
+                            </td>
+                            <td>
+                                Info Alergi
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
+                                    <span class='fa fa-list'></span>
+                                </button>
+                            </td>
+                            <td>
+                                Vendor A
+                            </td>
+                            <td>
+                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-pencil'></span>
+                                </button>
+                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                    <span class='fa fa-trash'></span>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Tambah Menu</a>
+        </div>
+        <!-- /.box-footer -->
+    </div>
+</section>

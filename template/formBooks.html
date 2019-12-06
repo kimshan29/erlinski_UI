@@ -1,0 +1,99 @@
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+  
+</style>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Data Books
+        <!-- <small>advanced tables</small> -->
+      </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Hover Data Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="container">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>No</th>
+                              <th>Title</th>
+                              <th>Author</th>
+                              <th>Sinopsis</th>
+                              <th>Action</th>
+                            </tr>                            
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="row in dataBooks.books">
+                              <td>{{$index+1}}</td>
+                              <td>{{row.title}}</td>
+                              <td>{{row.author}}</td>
+                              <td>{{row.sinopsis}}</td>
+                              <td>
+                                <button class="btn btn-primary"><span class="glypichon glypichon-edit"></span>Edit</button>
+                                <button class="btn btn-danger"><span class="glypichon glypichon-trash"></span>Hapus</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<script>
+$(document).ready(function () {
+    //Initialize tooltips
+    // $('.nav-tabs > li a[title]').tooltip();
+    
+    //Wizard
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+
+        var $target = $(e.target);
+    
+        if ($target.parent().hasClass('disabled')) {
+            return false;
+        }
+    });
+
+    $(".next-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        $active.next().removeClass('disabled');
+        nextTab($active);
+
+    });
+    $(".prev-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        prevTab($active);
+
+    });
+});
+
+function nextTab(elem) {
+    $(elem).next().find('a[data-toggle="tab"]').click();
+}
+function prevTab(elem) {
+    $(elem).prev().find('a[data-toggle="tab"]').click();
+}
+</script>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Counting-Cantin Aplication</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="plugins/mdi/css/materialdesignicons.min.css" />
+  <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="plugins/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="plugins/Ionicons/css/ionicons.min.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
+
+
+  <!-- Summer Note -->
+  <!-- <link rel="stylesheet" href="plugins/summernote/dist/summernote-bs4.css" /> -->
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+  <!-- <link href="plugins/bootstrap/css/bootstrap-semi-compact.min.css" rel="stylesheet"> -->
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+  <link rel="stylesheet" type="text/css" href="css/customStyle.css">
+  <!-- DataTables CSS -->
+  <!--   <link href="plugins/angular-datatables/css/angular-datatables.min.css" rel="stylesheet">
+  <link href="plugins/angular-datatables/plugins/bootstrap/datatables.bootstrap.min.css" rel="stylesheet">
+ -->
+  <!-- DataTables Responsive CSS -->
+  <!-- <link href="plugins/angular-datatables/css/responsive.dataTables.min.css" rel="stylesheet"> -->
+
+  <!-- <link href="css/default-theme.css" rel="stylesheet"> -->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <!-- Angular Loading Bar -->
+  <script src="plugins/loader/nprogress.js"></script>
+  <link href="plugins/loader/nprogress.css" rel='stylesheet' />
+  <style type="text/css">
+    .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
+      color: #ffffff !important;
+    }
+
+    .skin-blue .main-header li.user-header {
+      background-color: #0081BC !important;
+    }
+
+    .navbar-nav>.user-menu>.dropdown-menu>.user-footer {
+      background-color: #054e98 !important;
+    }
+
+    .btn-default-custom {
+      background-color: #0081bc !important;
+      color: #444 !important;
+      border-color: #ddd;
+    }
+
+    .navbar-nav>.user-menu>.dropdown-menu>.user-footer .btn-default-custom {
+      color: #ffffff !important;
+    }
+
+
+
+
+    #myDiv {
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse" ng-app="mainApp">
+
+  <div class="wrapper">
+
+    <header class="main-header">
+
+      <!-- Logo -->
+      <a href="index2.html" class="logo" style="background: #fff !Important;position: fixed;">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini">
+          <!-- <img src="images/icons/favicon.ico" style="width: 30px"> -->
+          <b>App</b>
+        </span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg">
+          <b>Kantin Apps</b>
+        </span>
+      </a>
+
+      <!-- Header Navbar: style can be found in header.less -->
+      <nav class="navbar navbar-static-top" style="position: fixed;width: 95.5%">
+        <!-- Sidebar toggle button-->
+        <a href="" class="sidebar-toggle" data-toggle="push-menu" role="button">
+          <span class="sr-only">Toggle navigation</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu" ng-controller="logoutCtrl">
+          <ul class="nav navbar-nav">
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="images/profile_icon.png" class="user-image" alt="User Image">
+                <span class="hidden-xs">&nbsp;</span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                  <img src="images/profile_icon.png" class="img-circle" alt="User Image">
+
+                  <p ng-bind="currentUser.name">
+                    <!-- Admin - Web Developer -->
+                    <small>
+                      <p ng-bind="currentUser.jobTitle"></p>
+                    </small>
+                  </p>
+                </li>
+
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <!-- <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div> -->
+                  <div class="pull-right">
+                    <!-- <a href=""  class="btn btn-default">Sign out</a> -->
+                    <input type="button" ng-click="logout()" class="btn btn-default-custom btn-flat" name="Sign Out" value="Sign Out">
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <!-- Control Sidebar Toggle Button -->
+            <!-- <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li> -->
+          </ul>
+        </div>
+
+      </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <!-- <div class="user-panel">
+        <div class="pull-left image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>Alexander Pierce</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div> -->
+        <!-- search form -->
+        <!-- <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form> -->
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+          <!-- <li class="treeview">
+            <span>Home</span>
+            <a href="/index.html#/home">
+              <i class="fa fa-home"></i>
+            </a>
+          </li> -->
+          <li class="treeview">
+            <a href="">
+              <i class="fa fa-home"></i>
+              <span>Home</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li>
+                <a href="/index.html#/home">
+                  <i class="fa fa-circle-o"></i> Dashboard</a>
+              </li>
+              <li>
+                <a href="/index.html#/displayMenu">
+                  <i class="fa fa-circle-o"></i> Display Menu</a>
+              </li>
+              <li>
+                <a href="/index.html#/displayMenu">
+                  <i class="fa fa-circle-o"></i> Tenant</a>
+              </li>
+              <li>
+                <a href="/index.html#/inputSchedule">
+                  <i class="fa fa-circle-o"></i> Input Schedule Admin</a>
+              </li>
+              <li>
+                <a href="/index.html#/inputSchedule">
+                  <i class="fa fa-circle-o"></i> Input Schedule Vendor</a>
+              </li>
+
+
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-square-o"></i>
+              <span>Master Form</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li>
+                <a href="/index.html#/vendor">
+                  <i class="fa fa-circle-o"></i> Vendor</a>
+              </li>
+              <li>
+                <a href="/index.html#/counting">
+                  <i class="fa fa-circle-o"></i> Counting</a>
+              </li>
+              <li>
+                <a href="/index.html#/masterMenu">
+                  <i class="fa fa-circle-o"></i> Menu Makanan</a>
+              </li>
+              <li>
+                <a href="/index.html#/masterMenu">
+                  <i class="fa fa-circle-o"></i> Master Site</a>
+              </li>
+              <li>
+                <a href="/index.html#/masterMenu">
+                  <i class="fa fa-circle-o"></i> Master Counting</a>
+              </li>
+              <li>
+                <a href="/index.html#/masterMenu">
+                  <i class="fa fa-circle-o"></i> Master Running Text</a>
+              </li>
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-bar-chart"></i>
+              <span>Report</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li>
+                <a href="/index.html#/m-menu">
+                  <i class="fa fa-circle-o"></i> All Counting Canteen</a>
+              </li>
+              <li>
+                <a href="/index.html#/m-peran">
+                  <i class="fa fa-circle-o"></i> Total Counting</a>
+              </li>
+              <li>
+                <a href="/index.html#/m-user">
+                  <i class="fa fa-circle-o"></i> Counting By Vendor</a>
+              </li>
+              <li>
+                <a href="/index.html#/m-user">
+                  <i class="fa fa-circle-o"></i> Counting By Name</a>
+              </li>
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-th"></i>
+              <span>Master Aplication</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li>
+                <a href="/index.html#/m-menu">
+                  <i class="fa fa-circle-o"></i> Master Menu</a>
+              </li>
+              <li>
+                <a href="/index.html#/m-peran">
+                  <i class="fa fa-circle-o"></i> Master Role</a>
+              </li>
+              <li>
+                <a href="/index.html#/m-user">
+                  <i class="fa fa-circle-o"></i> Master User</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+
+      <!-- Main content ===== Ini adalah tempat untuk membuat ng-viefw angularjs-->
+      <section class="content" style="padding-top: 4%">
+        <!-- Tempat Content ng-view angularjs -->
+        <div ng-view></div>
+        <!-- <div header-page></div> -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+
+      </div>
+      <!-- <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+    reserved. -->
+    </footer>
+
+
+    <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery 3 -->
+  <script src="plugins/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- FastClick -->
+  <script src="plugins/fastclick/lib/fastclick.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/adminlte.min.js"></script>
+  <!-- Sparkline -->
+  <script src="plugins/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+  <!-- jvectormap  -->
+  <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+  <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- SlimScroll -->
+  <script src="plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- ChartJS -->
+  <script src="plugins/Chart.js/Chart.js"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="dist/js/pages/dashboard2.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="dist/js/demo.js"></script>
+
+  <!-- bootstrap datepicker -->
+  <script src="plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+  <!-- DataTables JavaScript -->
+  <script src="plugins/datatables/js/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+  <script src="plugins/datatables/js/dataTables.columnFilter.js"></script>
+
+  <!-- SummerNote -->
+  <!-- <script src="plugins/summernote/dist/summernote-bs4.min.js"></script> -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+
+
+  <!-- Editor Demo -->
+  <!-- <script src="js/editorDemo.js"></script> -->
+  <!-- AngularJS -->
+
+  <script src="plugins/angular-js/angular.min.js"></script>
+  <script src="plugins/angular-js/angular-route.min.js"></script>
+  <script src="plugins/angular-js/angular-animate.min.js"></script>
+  <script src="plugins/angular-js/angular-sanitize.min.js"></script>
+  <script src="plugins/angular-js/angular-cookies.min.js"></script>
+  <script src="plugins/angular-js/angular-locale_custom.js"></script>
+
+
+  <script src="https://cdn.rawgit.com/summernote/angular-summernote/0.8.1/dist/angular-summernote.min.js"></script>
+  <!-- Angular Ng-Upload -->
+  <script src="plugins/angular-upload/ng-file-upload-shim.min.js"></script>
+  <script src="plugins/angular-upload/ng-file-upload.min.js"></script>
+
+
+  <!-- Angular Validation-->
+  <script src="plugins/angular-validation/angular-validation.min.js"></script>
+  <script src="plugins/angular-validation/angular-validation-rule.js?"></script>
+
+  <!-- Angular DataTables-->
+  <script src="plugins/angular-datatables/angular-datatables.min.js"></script>
+  <script src="plugins/angular-datatables/dataTables.responsive.min.js"></script>
+  <script src="plugins/angular-datatables/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+
+  <!-- Angular UI -->
+  <script src="plugins/angular-ui/ui-bootstrap-tpls-2.1.3.min.js"></script>
+
+  <!-- Angular SWITCH -->
+  <script src="plugins/angular-switch/angular-ui-switch.js"></script>
+
+  <!-- Angular Base64 -->
+  <script src="plugins/angular-base64/src/angular-base64-upload.js"></script>
+
+  <!-- CKEditor WYSIWYG -->
+  <script src="plugins/ckeditor/ckeditor.js"></script>
+
+  <!-- Angular CKEditor -->
+  <script src="plugins/angular-ckeditor/ng-ckeditor.min.js"></script>
+
+
+  <!-- ANGULAR TREE -->
+  <link href="plugins/jquery-tree/css/jquery.treegrid.css" rel="stylesheet">
+  <script src="plugins/jquery-tree/js/jquery.treegrid.js"></script>
+  <script src="plugins/jquery-tree/js/jquery.treegrid.min.js"></script>
+
+  <!-- Pagination -->
+  <script type="text/javascript" src="plugins/pagination/dirPagination.js"></script>
+
+  <!-- Angular JS Config -->
+  <script src="script/route-config.js"></script>
+  <script src="script/directives.js"></script>
+  <script src="script/http-request.js"></script>
+
+  <!-- Angular Factories -->
+  <script src="script/factories.js"></script>
+
+  <!-- Angular Function -->
+  <script src="script/functions.js"></script>
+  <!-- Angular Controller -->
+  <script src="script/controller/logoutCtrl.js"></script>
+  <script src="script/controller/formProjectCtrl.js"></script>
+  <script src="script/controller/laporanGratifikasiCtrl.js"></script>
+  <script src="script/controller/komitmenKepatuhanCtrl.js"></script>
+  <script src="script/controller/dashboardCtrl.js"></script>
+  <script src="script/controller/materiSosialisasiCtrl.js"></script>
+  <script src="script/controller/displayMenuCtrl.js"></script>
+  <script src="script/controller/kebijakanCtrl.js"></script>
+  <script src="script/controller/pelayananKipCtrl.js"></script>
+  <script src="script/controller/whistleBlowingSystemCtrl.js"></script>
+
+
+  <script src="script/controller/mMenuCtrl.js"></script>
+  <script src="script/controller/mPeranCtrl.js"></script>
+  <script src="script/controller/mUserCtrl.js"></script>
+  <script src="script/controller/form3Ctrl.js"></script>
+  <script src="script/controller/form1Ctrl.js"></script>
+  <script src="script/controller/formBooksCtrl.js"></script>
+
+
+  <script src="https://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+  <script src="dist/js/saveHtmlToPdf.js"></script>
+  <!-- <script src="dist/js/jspdf.min.js"></script> -->
+  <script>
+    // var myVar;
+
+    // function myFunction() {
+    //   myVar = setTimeout(showPage, 300);
+    // }
+
+    // function showPage() {
+    //   document.getElementById("loader").style.display = "none";
+    //   document.getElementById("myDiv").style.display = "block";
+    // }
+    $("#komitmenKepatuhan_").addClass("disabledbutton");
+    $("#komitmenBenturanKepentingan_").addClass("disabledbutton");
+    $("#daftarKhusus_").addClass("disabledbutton");
+    $("#lhkpn_").addClass("disabledbutton");
+    $("#faqs_").addClass("disabledbutton");
+  </script>
+</body>
+
+</html>

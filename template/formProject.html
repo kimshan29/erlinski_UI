@@ -1,0 +1,1224 @@
+<style>
+.nav-green > li.active > a, .nav-green > li.active > a:focus, .nav-green > li.active > a:hover {
+    color: #fff !important;
+    background-color: #04B404 !important;
+} 
+
+.nav-green > li > a, .nav-green > li > a:focus, .nav-green > li > a:hover {
+    color: #fff;
+    background-color: #2EFE2E;
+}
+
+.div-scroll {
+    overflow-y: scroll;
+    height: 700px;
+}
+
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: orange;
+    width: 0;
+}
+
+</style>
+<!-- View Master SO -->
+<div class="row" >
+   <!--  <div class="col-lg-12">
+        <div class="col-lg-6">
+            <a class="" href="#/home" style="color:#FFF;"><img src="/icon/logo_ip.jpeg" class="img-responsive"></a>
+        </div>
+        <div class="col-lg-6 text-right">
+            <h1 class="page-header">
+                Project
+            </h1>
+        </div>        
+    </div> -->
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row" ng-show="!project.isEditMode">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="panel">
+            <div class="panel-body bg-white border-gray div-scroll">
+                <table class="table table-bordered table-hover table-striped" datatable="ng" dt-options="dtOptions">
+                  <thead>
+                    <tr class="bg-primary">
+                        <th>No.</th>  
+                        <th>Project Name</th>  
+                        <th>Total Capacity</th>  
+                        <th>Project Progress %</th>  
+                        <th>Project Division</th>  
+                        <th>Current Phase</th>  
+                        <th>Current Milestone</th>
+                        <!--<th>Last Modified</th>  -->
+                        <th style="width: 18%;">Action</th>  
+                    </tr>    
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in project.data">
+                        <td class="text-center">{{ $index+1 }}.</td>
+                        <td>{{item.projectName}}</td>
+                        <td>{{item.totalUnitCapacity}}</td>
+                        <td>{{item.projectProgress}}</td>
+                        <td>{{item.projectDivision}}</td>
+                        <td>{{item.currentPhase}}</td>
+                        <td>{{item.currentMilestone.name}}</td>
+                        <!-- <td>{{item.modifiedDate | date :"dd-MM-yyyy"}}</td> -->
+                        <td class="text-center">
+                            <button type='button'  class='btn btn-success btn-sm' ng-click="getProjectHistory(item.id)">
+                                <span class='glyphicon glyphicon-th-list'></span> History
+                            </button>
+                            <button type='button' class='btn btn-info btn-sm' ng-click="eventClickEdit(item.id)" ng-show='!project.isEditMode'>
+                                    <span class='fa fa-pencil'></span> Edit
+                            </button>
+                            <button type='button' class='btn btn-danger btn-sm' ng-click="eventClickHapus(item.id, item.projectName)" ng-show='!project.isEditMode'>
+                                <span class='fa fa-times-circle'></span> Delete
+                            </button>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button type="button" class="btn btn-success" ng-click="eventClickAdd() " ng-disabled="!project.isCreator">
+                  Add <span class="glyphicon glyphicon-plus">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Project -->
+<div class="row" ng-show="project.isEditMode">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="panel">
+            <div class="panel-body bg-white border-gray color-blue">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h3 class="color-blue">
+                        ADD PROJECT
+                        <div class="text-right">
+                            <button type="button" class="btn btn-danger" ng-click="eventClickCancel()">Close</button>
+                           
+                            <button type="button" class="btn btn-primary"                                      
+                                    ng-hide="saveInfo" ng-click="eventClickSaveInfoUnits()">
+                                Save
+                            </button>
+                        </div>
+                    </h3>                    
+                    <hr />
+                </div>
+                <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form class="form-horizontal" name="myForm" novalidate>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Project Name</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="" ng-model="formProject.id" disabled ng-hide="true">
+                                <input type="text" class="form-control" name="projectName" ng-model="formProject.projectName" required ng-disabled=" !formProject.isProjectHeader">
+                                <span style="color:red" ng-show="myForm.projectName.$dirty && myForm.projectName.$invalid">
+                                    <span ng-show="myForm.projectName.$error.required">Project Name is required.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Description</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" rows="3" placeholder="" name="description" ng-model="formProject.description" required ng-disabled="!formProject.isProjectHeader"></textarea>
+                                <span style="color:red" ng-show="myForm.description.$dirty && myForm.description.$invalid">
+                                    <span ng-show="myForm.description.$error.required">Description is required.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Start Project</label>
+                            <div class="col-md-3">
+                                <select class="form-control"
+                                    ng-model="formProject.periodeAwal"
+                                    ng-options="item as item for item in project.filter.periodeAwal" ng-disabled="!formProject.isProjectHeader">
+                                </select>
+                                <!-- <span style="color:red" ng-show="myForm.description.$dirty && myForm.description.$invalid">
+                                    <span ng-show="myForm.description.$error.required">Current Milestone is required.</span>
+                                </span> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">End Project</label>
+                            <div class="col-md-3">
+                                <select class="form-control"
+                                    ng-model="formProject.periodeAkhir"
+                                    ng-options="item as item for item in project.filter.periodeAkhir" ng-disabled="!formProject.isProjectHeader">
+                                </select>
+                                <!-- <span style="color:red" ng-show="myForm.description.$dirty && myForm.description.$invalid">
+                                    <span ng-show="myForm.description.$error.required">Current Milestone is required.</span>
+                                </span> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Status Project</label>
+                            <div class="col-md-3">
+                                <div class="radio">
+                                    <label><input type="radio" name="statusProject" uib-tooltip="Active" ng-model="formProject.statusProject" value="Active" ng-disabled=" !formProject.isProjectHeader">Active</label>
+                                    <label><input type="radio" name="statusProject" uib-tooltip="Suspend" ng-model="formProject.statusProject" value="Suspend" ng-disabled=" !formProject.isProjectHeader">Suspend</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--Tab Main  -->
+                    <ul  class="nav nav-tabs nav-green">
+                        <li role="project" class="active">
+                            <a href="#tab1" data-toggle="tab" ng-click="eventClickInfo(formProject.id)">Info</a>
+                        </li>
+                        <li role="project">
+                            <a href="#tab2" data-toggle="tab" ng-click="eventClickMilestone(formProject.id)" ng-show="project.tabMilestone">Milestone</a>
+                        </li>
+                        <li role="project">
+                            <a href="#tab3" data-toggle="tab" ng-click="eventClickDisbursements(formProject.id )" ng-show="project.tabDisbursement">Disbursements</a>
+                        </li>
+                        <li role="project">
+                            <a href="#tab4" data-toggle="tab" ng-click="eventClickUploadFile(formProject.id, formProject.projectName, formProject.description, formProject.periodeAwal, formProject.periodeAkhir)" ng-show="project.tabUploadFile">Monthly Reports</a>
+                        </li>
+                        <!-- <div class="col-lg-12 col-md-12 text-right">
+                            
+                        </div> -->
+                    </ul>
+                    
+                    <!--Tab Content  -->
+                    <div class="tab-content"> 
+                        <div class="tab-pane active" id="tab1" ng-show="!project.tabInfo"><br><br>
+                            <form class="form-horizontal" name="myForm" >
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Project Initiator</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="radio">
+                                            <label><input type="radio" name="projectDivision" uib-tooltip="PMP 1" ng-model="formProject.info.projectDivision" value="PMP 1"  d="!formProject.isProjectHeader">PMP 1</label>
+                                            <label><input type="radio" name="projectDivision" uib-tooltip="PMP 2" ng-model="formProject.info.projectDivision" value="PMP 2" ng-disabled="!formProject.isProjectHeader">PMP 2</label>
+                                            <label><input type="radio" name="projectDivision" uib-tooltip="PMP 3" ng-model="formProject.info.projectDivision" value="PMP 3" ng-disabled="!formProject.isProjectHeader">PMP 3</label>
+                                        </div>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Project Owner</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        <input type="text" class="form-control" ng-model="formProject.info.projectOwner" ng-disabled="!formProject.isProjectHeader" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Total Capacity</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <input type="text" class="form-control" ng-model="formProject.info.unitCapacity" disabled />
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Project Type</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        <div class="radio">
+                                            <label><input type="radio" name="projectType" ng-disabled="!formProject.isProjectHeader" uib-tooltip="JVC" ng-model="formProject.info.projectType" value="IPP" ng-click="eventClickGetMilestoneIPP(); eventClickSaveSwitch()" >JVC</label>
+                                            <label><input type="radio" name="projectType"  ng-disabled="!formProject.isProjectHeader" uib-tooltip="NON JVC" ng-model="formProject.info.projectType" value="NON IPP" ng-click="eventClickGetMilestoneNonIPP(); eventClickSaveSwitch()">NON JVC</label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">PIC PMK</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <input type="text" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.picPMK"
+                                        ng-model="formProject.info.picPMK"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Supporting PIC PMK</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        
+                                        <input type="text" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.supPI"
+                                        ng-model="formProject.info.supPicPMK"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">PIC PMP</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <input type="text" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.picPMP"
+                                        ng-model="formProject.info.picPMP"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Supporting PIC PMP</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        <input type="text" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.supPicPMP"
+                                        ng-model="formProject.info.supPicPMP"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="picUnitProyek">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" >PIC Unit Proyek</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <input type="text" ng-hide="" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.picUPR"
+                                        ng-model="formProject.info.picUPR"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" ng-hide="">Supporting PIC Unit Proyek</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        <!-- <input type="text" class="form-control" ng-model="formProject.info.siteManager" /> -->
+                                        <input type="text" ng-hide="" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.supPicUPR"
+                                        ng-model="formProject.info.supPicUPR"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManager($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="picJvc">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" >PIC JVC</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <input type="text" ng-hide="" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.picJVC"
+                                        ng-model="formProject.info.picJVC"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManagerJVC($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" ng-hide="">Supporting PIC JVC</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important">
+                                        <!-- <input type="text" class="form-control" ng-model="formProject.info.siteManager" /> -->
+                                        <input type="text" ng-hide="" ng-disabled="!formProject.isProjectHeader"
+                                        required
+                                        name="formProject.info.supPicJVC"
+                                        ng-model="formProject.info.supPicJVC"
+                                        placeholder=""
+                                        uib-typeahead="item as item.name + ' - <i>' + item.jabatan + '</i>' for item in renderProjectManagerJVC($viewValue)" 
+                                        typeahead-loading="loadingECPIC"
+                                        typeahead-no-results="noResultsPic"
+                                        class="form-control"
+                                        typeahead-min-length="3" typeahead-editable="true"
+                                        typeahead-show-hint="true" typeahead-wait-ms="0"
+                                        typeahead-input-formatter="$model.name"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Current Milestone</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <select class="form-control"
+                                            ng-model="formProject.info.currentMilestone.id"
+                                            ng-options="item.id as item.name for item in project.master.currentMilestone">
+                                        </select>
+                                    </div>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" ng-hide="developmentScheme">Development Scheme</label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 input-group padding-left-15-important padding-right-15-important" ng-hide="developmentScheme">
+                                        <div class="radio">
+                                            <label><input type="radio" name="developmentScheme" uib-tooltip="IPP" ng-model="formProject.info.developmentScheme" value="IPP" >IPP</label>
+                                            <label><input type="radio" name="developmentScheme" uib-tooltip="NON IPP" ng-model="formProject.info.developmentScheme" value="NON IPP">NON IPP</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            <!--Tab Level 2 Unit & Location  -->
+                            <div class="col-lg-12">
+                                <ul  class="nav nav-tabs nav-blue">
+                                    <li role="infoUnit" class="active">
+                                        <a href="#tabUnit" data-toggle="tab" ng-click="clickGetDataUnit(formProject.id)">Units</a>
+                                    </li>
+                                    <li role="infoUnit">
+                                        <a href="#tabLocation" data-toggle="tab">Location</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--Tab Content Level 2  -->
+                            <div class="col-md-12 bg-isi bg-isi-bordered">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tabUnit"><br><br>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr class="bg-primary">
+                                                    <td>No</td>
+                                                    <td>Name</td>
+                                                    <td>Power Plan Type</td>
+                                                    <td>Capacity (MW)</td>
+                                                    <td>COD Plan</td>
+                                                    <td>COD Actual</td>
+                                                    <td>Status COD</td>
+                                                    <td>Action</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in formProject.data">
+                                                    <td>{{ $index+1 }}.</td>
+                                                    <td>{{item.name}}</td>
+                                                    
+                                                    <!-- <td ng-if="formProject.id != null">{{item.powerPlantType.powerPlantType}} test</td> -->
+                                                    <td>{{item.powerPlantType.powerPlantType}}</td>
+                                                    <td>{{item.capacity}}</td>
+                                                    <td>{{item.codPlan | date:"dd-MM-y"}}</td>
+                                                    <td>{{item.codActual | date:"dd-MM-y"}}</td>
+                                                    <td>{{item.statusUnit}}</td>
+                                                    <!-- <td>{{item.modifiedDate}}</td> -->
+                                                    <td class="text-center">
+                                                        <a class='btn btn-danger' href='' ng-disabled="!formProject.isTabUnit" ng-click='eventClickHapusInfoUnits(formProject.id, item.id, item.name)'><span class="glyphicon glyphicon-trash">
+                                                        </a>
+                                                        <button type='button' class='btn btn-info btn-sm' ng-disabled="!formProject.isTabUnit" ng-click="eventClickEditModalInfoUnits(formProject.id, item.id, item.name, item.powerPlantType, item.capacity, item.codPlan, item.codActual, item.statusUnit)" ng-show='!SO.isEditMode'>
+                                                                <span class='fa fa-pencil'></span> Edit
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="form-group">
+                                            <div class="col-lg-12 col-md-12 text-right">
+                                                <button type="button" class="btn btn-success pull-right" ng-click="eventClickModalInfoUnits(formProject.id, formProject.info.powerPlantType.id)" 
+                                                ng-disabled="!formProject.isTabUnit" >Add <span class="glyphicon glyphicon-plus"></button>
+                                                    <!-- <button type="button" class="btn btn-success pull-right" ng-click="eventClickModalInfoUnits(formProject.id, formProject.info.powerPlantType.id)" 
+                                                     >Add <span class="glyphicon glyphicon-plus"></button> -->
+                                            </div>
+                                        </div><br>&nbsp;&nbsp;
+                                    </div>
+                                    <div class="tab-pane" id="tabLocation"><br><br>
+                                        <form class="form-horizontal" name="myForm">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Area (Ha)</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="projectName" ng-model="formProject.info.locations.area" ng-disabled="!formProject.isTabLocation" required>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Address</label>
+                                                <div class="col-md-8">
+                                                    <textarea class="form-control" rows="3" placeholder="" name="description" ng-model="formProject.info.locations.description" ng-disabled="!formProject.isTabLocation" required></textarea>
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">City</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="noSO" ng-model="formProject.info.locations.city" ng-disabled="!formProject.isTabLocation" required>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Province</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="noSO" ng-model="formProject.info.locations.province" ng-disabled="!formProject.isTabLocation" required>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Latitude (Decimal Degrees)</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="noSO" ng-model="formProject.info.locations.latitude" ng-disabled="!formProject.isTabLocation" required>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Longitude (Decimal Degrees)</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="noSO" ng-model="formProject.info.locations.longitude" ng-disabled="!formProject.isTabLocation" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label"><a href="https://www.latlong.net/degrees-minutes-seconds-to-decimal-degrees" target="_blank">Link Convert DMS to Decimal Degrees</a></label>
+                                                <div class="col-md-8">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>&nbsp;&nbsp;
+                            
+                        </div>
+                        <div class="tab-pane" id="tab2" ng-show="project.tabMilestone"><br>&nbsp;
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <td>No</td>
+                                        <td>Phase</td>
+                                        <td>Milestone</td>
+                                        <td>Plan Start</td>
+                                        <td>Plan Finish</td>
+                                        <td>Actual Start</td>
+                                        <td>Actual Finish</td>
+                                        <!-- <td>Modified Date</td> -->
+                                        <td>Status</td>
+                                        <!-- <td>File Upload</td> -->
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in formProject.data.milestone">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{row.phase}}</td>
+                                        <td>{{row.milestone}}</td>
+                                        <td class="text-center">{{row.planStart | date:"dd-MM-yyyy"}}</td>
+                                        <td class="text-center">{{row.planFinish | date:"dd-MM-yyyy"}}</td>
+                                        <td class="text-center">{{row.actualStart | date:"dd-MM-yyyy"}}</td>
+                                        <td class="text-center">{{row.actualFinish | date:"dd-MM-yyyy"}}</td>
+                                        <!-- <td class="text-center">{{row.modifiedDate | date:"dd-MM-yyyy"}}</td> -->
+                                        <td class="text-center">{{row.statusMilestone | date:"dd-MM-yyyy"}}</td>
+                                        <!-- <td class="text-center"><span class="glyphicon glyphicon-open-file" ng-click="eventClickGetFileUploadMilestone(formProject.id, row.id)" style="cursor: pointer;"></span></td> -->
+                                        <td class="text-center">
+                                            <button type='button'  class='btn btn-info btn-sm' ng-click="eventClickEditModalMilestone(formProject.id, row.id, row.phase, row.milestone, row.planStart, row.planFinish, row.actualStart, row.actualFinish, row.statusMilestone, row.isPlan, row.isActual)">
+                                                    <span class='fa fa-pencil'></span> Edit
+                                            </button>
+                                            <button type='button'  class='btn btn-success btn-sm' ng-click="eventClickGetHistoryMilestone(formProject.id, row.id)">
+                                                <span class='glyphicon glyphicon-th-list'></span> History
+                                            </button>
+                                            <!-- <button type='button'  class='btn btn-warning btn-sm' ng-click="">
+                                                <span class='glyphicon glyphicon-upload'></span> Upload File
+                                            </button> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-lg-12 col-md-12 text-right">
+                                <button type="button" class="btn btn-danger" ng-click="eventClickCancel()">Close</button>
+                                <!-- <button type="button" class="btn btn-primary" ng-click="eventClickSaveMilestone()">
+                                    Save
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab3" ng-show="project.tabDisbursement"><br>&nbsp;
+                        
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <td>No.</td>
+                                        <td>No. Project Costing</td>
+                                        <td>Description</td>
+                                        <td>Value</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item_ in formProject.data.projectCosting">
+                                        <td class="text-center">{{$index+1}}.</td>
+                                        <td class="text-center">{{item_.procostNo}}</td>
+                                        <td class="text-left">{{item_.description}}</td>
+                                        <td class="text-right">{{item_.nilai | number:0}}</td>
+                                        <td class="text-center">
+                                            <button type='button' class='btn btn-info btn-sm' ng-disabled="" ng-click="eventClickEditModalDisbursement(formProject.id, item_.id, item_.procostNo, item_.description, item_.nilai)" >
+                                                    <span class='fa fa-pencil'></span> Edit
+                                            </button>
+                                            <button type='button' class='btn btn-danger btn-sm' ng-click="eventClickHapusModalDisbursement(formProject.id, item_.id, item_.procostNo)">
+                                                <span class='fa fa-times-circle'></span> Hapus
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12">
+                                    <button type="button" class="btn btn-success pull-left" ng-click="eventClickModalDisbursement(formProject.id)" >Add <span class="glyphicon glyphicon-plus"></button>
+                                    <button type="button" class="btn btn-danger pull-right" ng-click="eventClickCancel()">Close</button>
+                                </div>
+                            </div><br>&nbsp;&nbsp;
+                            <!-- <div class="col-lg-12 col-md-12 text-right">
+                                <button type="button" class="btn btn-danger" ng-click="eventClickCancel()">Close</button>
+                            </div> -->
+                        </div>
+                        <div class="tab-pane" id="tab4" ng-show="project.tabUploadFile"><br>&nbsp;
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <td>No</td>
+                                        <td>Date Upload</td>
+                                        <td>Year</td>
+                                        <td>Month</td>
+                                        <td>Title</td>
+                                        <td>Description</td>
+                                        <td>File</td>
+                                        <!-- <td>Action</td> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="rows in formProject.fileUpload">
+                                        <td class="text-center">{{$index+1}}.</td>
+                                        <td class="text-center">{{rows.uploadFile.dateUpload | date:"dd-MM-yyyy"}}</td>
+                                        <td class="text-center">{{rows.uploadFile.year}}</td>
+                                        <td class="text-center">{{rows.uploadFile.month}}</td>    
+                                        <td class="text-center">{{rows.uploadFile.title}}</td>
+                                        <td class="text-center">{{rows.uploadFile.description}}</td>
+                                        <td class="text-center">
+                                            <span class="glyphicon glyphicon-open-file" uib-tooltip="Download File" ng-click="eventClickGetFileUpload(rows.uploadFile.id)" style="cursor: pointer;"></span>
+                                            <!-- <button type='button' class='btn btn-danger btn-sm' ng-click="eventClickDeleteFileUpload(rows.uploadFile.id, formProject.id)"> -->
+                                            <span class='glyphicon glyphicon-trash' uib-tooltip="Hapus File Upload" ng-click="eventClickDeleteFileUpload(rows.uploadFile.id, formProject.id)" style="cursor: pointer;"></span>
+                                            <!-- </button> -->
+                                        </td>
+                                        <!-- <td class="text-center">
+                                            <button type='button' class='btn btn-info btn-sm' ng-disabled="!item_.isDisburse" ng-click="eventClickEditModalDisburement(formProject.id, item_.id, item_.year, item_.month, item_.planDisburse, item_.realization, item_.statusBayar, item_.keterangan)" >
+                                                    <span class='fa fa-trash'></span> Delete
+                                            </button>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 text-left">
+                                    <button type="button" class="btn btn-success pull-right" ng-click="eventClickModalUploadFileBulanan(formProject.id)" ng-disabled="" >Add Upload File &nbsp;<span class="glyphicon glyphicon-plus"></button>
+                                </div>
+                            </div><br>&nbsp;&nbsp;
+                            <div class="col-lg-12 col-md-12 text-right">
+                                <button type="button" class="btn btn-danger" ng-click="eventClickCancel()">Close</button>
+                            </div>
+                        </div>                         
+                    </div> 
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<!-- Pop UP Form Info Units -->
+<div class="modal fade" id="modalInfoUnits" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">Form Input Units</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Name</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="formProject.info.units.idProject" ng-hide="true">
+                            <!-- <input type="text" class="form-control" ng-model="formProject.info.units.name"> -->
+                            <select class="form-control" ng-model="formProject.info.units.name">
+                                <option value="Unit 1">Unit 1</option>
+                                <option value="Unit 2">Unit 2</option>
+                                <option value="Unit 3">Unit 3</option>
+                                <option value="Unit 4">Unit 4</option>
+                                <option value="Unit 5">Unit 5</option>
+                                <option value="Unit 6">Unit 6</option>
+                                <option value="Unit 7">Unit 7</option>
+                                <option value="Unit 8">Unit 8</option>
+                                <option value="Unit 9">Unit 9</option>
+                                <option value="Unit 10">Unit 10</option>
+                                <option value="Unit 11">Unit 11</option>
+                                <option value="Unit 12">Unit 12</option>
+                                <option value="Unit 13">Unit 13</option>
+                                <option value="Unit 14">Unit 14</option>
+                                <option value="Unit 15">Unit 15</option>
+                                <option value="Unit 16">Unit 16</option>
+                                <option value="Unit 17">Unit 17</option>
+                                <option value="Unit 18">Unit 18</option>
+                                <option value="Unit 19">Unit 19</option>
+                                <option value="Unit 20">Unit 20</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Power Plan Type</label>
+                        <div class="col-md-8">
+                            <!-- <input type="text" class="form-control" ng-model="formProject.info.units.powerPlantType.i" ng-disabled="true"> -->
+                            <!-- <input type="text" class="form-control" ng-model="formProject.info.units.powerPlantType" ng-disabled="true"> -->
+                            <select class="form-control"
+                                ng-model="formProject.info.units.powerPlantType.id"
+                                ng-options="item.id as item.powerPlantType for item in data.powerPlantType">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Capacity (MW)</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="formProject.info.units.capacity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">COD Plan</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control"
+                            datepicker-localdate
+                            uib-datepicker-popup="dd/MM/yyyy"
+                            required="required"
+                            ng-required="true"
+                            ng-model="formProject.info.units.codPlan"
+                            ng-init="formProject.info.units.codPlan = formProject.info.units.codPlan.toDate()"
+                            is-open="formProject.info.units.$$codPlanOpened"
+                            close-text="Close"
+                            alt-input-formats="['dd/MM//yyyy']" size="30" name="codPlan" required/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.info.units.$$codPlanOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">COD Actual</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control"
+                            datepicker-localdate
+                            uib-datepicker-popup="dd/MM/yyyy"
+                            required="required"
+                            ng-required="true"
+                            ng-model="formProject.info.units.codActual"
+                            ng-init="formProject.info.units.codActual = formProject.info.units.codActual.toDate()"
+                            is-open="formProject.info.units.$$codActualOpened"
+                            close-text="Close"
+                            alt-input-formats="['dd/MM//yyyy']" size="30" name="codActual" required/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.info.units.$$codActualOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Status COD</label>
+                        <div class="col-md-8">
+                            <!-- <select class="form-control"
+                                ng-model="formProject.info.units.status"
+                                ng-options="item as item.status for item in data.statusMilestone track by item.id">
+                            </select> -->
+                            <div class="radio">
+                                <label><input type="radio" name="formProject.info.units.statusUnit" uib-tooltip="Not Yet" ng-model="formProject.info.units.statusUnit" value="Not Yet" >Not Yet</label>
+                                <label><input type="radio" name="formProject.info.units.statusUnit" uib-tooltip="In Progress" ng-model="formProject.info.units.statusUnit" value="In Progress">In Progress</label>
+                                <label><input type="radio" name="formProject.info.units.statusUnit" uib-tooltip="Completed" ng-model="formProject.info.units.statusUnit" value="Completed">Completed</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-danger" ng-click="eventClickCloseModalInfoUnits()">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="eventClickAddInfoUnits()">
+                                Save
+                            </button>                                
+                        </div>
+                    </div>                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Pop Up Milestone -->
+<div class="modal fade" id="modalMilestone" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">Form Input Milestone</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Phase</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="formProject.milestone.idProject" ng-disabled="true" ng-hide="true">
+                            <input type="text" class="form-control" ng-model="formProject.milestone.phase" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Milestone</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="formProject.milestone.milestone" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Plan Start</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" ng-disabled="!formProject.milestone.isPlan"
+                                datepicker-localdate
+                                uib-datepicker-popup="dd/MM/yyyy"
+                                required="required"
+                                ng-required="true"
+                                ng-model="formProject.milestone.planStart"
+                                ng-init="formProject.milestone.planStart = formProject.milestone.planStart.toDate()"
+                                is-open="formProject.milestone.$$planStartDateOpened"
+                                close-text="Close"
+                                alt-input-formats="['dd/MM//yyyy']" size="30"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.milestone.$$planStartDateOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Plan Finish</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" ng-disabled="!formProject.milestone.isPlan"
+                                datepicker-localdate
+                                uib-datepicker-popup="dd/MM/yyyy"
+                                required="required"
+                                ng-required="true"
+                                ng-model="formProject.milestone.planFinish"
+                                ng-init="formProject.milestone.planFinish = formProject.milestone.planFinish.toDate()"
+                                is-open="formProject.milestone.$$planFinishDateOpened"
+                                close-text="Close"
+                                alt-input-formats="['dd/MM//yyyy']" size="30"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.milestone.$$planFinishDateOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Actual Start</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" ng-disabled="!formProject.milestone.isActual"
+                                datepicker-localdate
+                                uib-datepicker-popup="dd/MM/yyyy"
+                                required="required"
+                                ng-required="true"
+                                ng-model="formProject.milestone.actualStart"
+                                ng-init="formProject.milestone.actualStart = formProject.milestone.actualStart.toDate()"
+                                is-open="formProject.milestone.$$actualStartDateOpened"
+                                close-text="Close"
+                                alt-input-formats="['dd/MM//yyyy']" size="30"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.milestone.$$actualStartDateOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Actual Finish</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" ng-disabled="!formProject.milestone.isActual"
+                                datepicker-localdate
+                                uib-datepicker-popup="dd/MM/yyyy"
+                                required="required"
+                                ng-required="true"
+                                ng-model="formProject.milestone.actualFinish"
+                                ng-init="formProject.milestone.actualFinish = formProject.milestone.actualFinish.toDate()"
+                                is-open="formProject.milestone.$$actualFinishDateOpened"
+                                close-text="Close"
+                                alt-input-formats="['dd/MM//yyyy']" size="30"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="formProject.milestone.$$actualFinishDateOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Weight</label>
+                        <div class="col-md-2">
+                            <div class="alert alert-danger alert-bobot" ng-show="bobotIsValid">
+                                <strong>Attention!!!</strong> Nilai <b>Overall weight value must be equal to 100</b>
+                            </div>
+                            <input type="number" class="form-control" id="bobot" ng-model="formProject.milestone.bobot" ng-blur="getNilaiProjectProgress()" name="bobot" required>
+                            <span style="color:red" ng-show="myForm.noSI.$dirty && myForm.noSI.$invalid">
+                                <span ng-show="myForm.noSI.$error.required">Weight is required.</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Percentage Progress</label>
+                        <div class="col-md-2">
+                            <input type="number" ng-disabled="!formProject.milestone.isPlan" class="form-control" ng-blur="getNilaiProjectProgress()" ng-model="formProject.milestone.prosentaseProgress">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Milestone Progress</label>
+                        <div class="col-md-2">
+                            <input type="number" ng-disabled="true" class="form-control" ng-model="formProject.milestone.projectProgress" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">PIC</label>
+                        <div class="col-md-8">
+                            <select class="form-control" ng-disabled="!formProject.milestone.isPlan"
+                            ng-model="formProject.milestone.pic.id"
+                            ng-options="item.id as item.name for item in project.master.groupAkses"
+                            ></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Status</label>
+                        <div class="col-md-8">                           
+                            <div class="radio">
+                                <label><input type="radio" name="formProject.milestone.statusMilestone" uib-tooltip="Not Yet" ng-model="formProject.milestone.statusMilestone" value="Not Yet" >Not Yet</label>
+                                <label><input type="radio" name="formProject.milestone.statusMilestone" uib-tooltip="In Progress" ng-model="formProject.milestone.statusMilestone" value="In Progress">In Progress</label>
+                                <label><input type="radio" name="formProject.milestone.statusMilestone" uib-tooltip="Completed" ng-model="formProject.milestone.statusMilestone" value="Completed">Completed</label>
+                                <label><input type="radio" name="formProject.milestone.statusMilestone" uib-tooltip="Completed" ng-model="formProject.milestone.statusMilestone" value="N/A">N/A</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Description</label>
+                        <div class="col-md-8">
+                            <textarea ng-model="formProject.milestone.keterangan" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-md-4 control-label">Strategic Issues</label>
+                        <div class="col-md-8">
+                            <textarea ng-model="formProject.milestone.strategicIssues" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-danger" ng-click="eventClickCloseModalMilestone()">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="eventClickSaveMilestone()" ng-disabled="!formProject.milestone.isPlan">
+                                Save
+                            </button>                                
+                        </div>
+                    </div>                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pop Up Disbursement -->
+<div class="modal fade" id="modalDisbursement" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">Form Input Procost</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">                   
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">No. Project Costing</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="formProject.projectCosting.idProject" ng-hide="true">
+                            <input type="text" class="form-control" ng-model="formProject.projectCosting.id" ng-hide="true">
+                            
+                            <input type="text" ng-hide=""
+                            required
+                            name="formProject.projectCosting.projectCosting"
+                            ng-model="formProject.projectCosting.projectCosting"
+                            placeholder=""
+                            uib-typeahead="item as item.procostNo + ' - <i>' + item.description + '</i>' for item in renderProcost($viewValue)" 
+                            typeahead-on-select = "getAtributeProcost(formProject.projectCosting.projectCosting)"
+                            typeahead-loading="loadingECPIC"
+                            typeahead-no-results="noResultsPic"
+                            class="form-control"
+                            typeahead-min-length="5" typeahead-editable="true"
+                            typeahead-show-hint="true" typeahead-wait-ms="0"
+                            typeahead-input-formatter="$model.procostNo"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Title <!--(Rp. in M)--></label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" id="" ng-disabled="true" ng-model="formProject.projectCosting.description">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Value</label>
+                        <div class="col-md-8 input-group padding-left-15-important padding-right-15-important">
+                            <input type="text" class="form-control" ng-disabled="true" ng-model="formProject.projectCosting.nilai">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-danger" ng-click="eventClickCloseModalDisbursement()">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="eventClickSaveProjectCosting()">
+                                Save
+                            </button>                                
+                        </div>
+                    </div>                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop Up List History Milestone -->
+<div class="modal fade" id="modalHistoryMilestone" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document" style="width:90%;">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">History Milestone</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" datatable="ng" dt-options="dtOptions">
+                    <thead>
+                        <tr style="background-color:#049dff; color:white;">
+                            <th style="width:10%">No.</th>
+                            <th style="width:10%">Last Update</th>
+                            <!--<th>Milestone</th>
+                            <th>Plan Start</th>
+                            <th>Plan Finish</th>
+                            <th>Actual Start</th>
+                            <th>Actual Finish</th> -->
+                            <th style="width:10%">Weight</th>
+                            <th style="width:10%">Percentage Progress %</th>
+                            <!-- <th>Isu Strategis & Cara Penanganannya</th> -->
+                            <th>Description</th>     
+                            <th>Update By</th>   
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in formProject.data.milestoneHistory">
+                            <td>{{$index+1}}</td>
+                            <td>{{item.updatedDate | date : 'dd-MM-yyyy'}}</td>
+                            <!-- <td>{{item.milestone}}</td>
+                            <td>{{item.planStart}}</td>
+                            <td>{{item.planFinish}}</td>
+                            <td>{{item.actualStart}}</td>
+                            <td>{{item.actualFinish}}</td> -->
+                            <td>{{item.bobot}}</td>
+                            <td>{{item.prosentaseProgress}}</td>
+                            <!-- <td>{{item.isuStrategis}}</td> -->
+                            <td>{{item.keterangan}}</td>
+                            <td>{{item.username}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger" ng-click="eventClickCloseHistoryMilestone()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop Up List File Upload Milestone -->
+<div class="modal fade" id="modalFileUploadMilestone" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document" style="width:90%;">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">List File Upload Milestone</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color:#049dff; color:white;">
+                            <th>No.</th>
+                            <!-- <th>Phase</th>
+                            <th>Milestone</th>
+                            <th>Plan Start</th>
+                            <th>Plan Finish</th>
+                            <th>Actual Start</th>
+                            <th>Actual Finish</th> -->
+                            <th>Weight</th>
+                            <th>Progress Prosentase</th>
+                            <th>Description</th>        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in formProject.data.milestone">
+                            <td>{{$index+1}}</td>
+                            <!-- <td>{{item.phase}}</td>
+                            <td>{{item.milestone}}</td>
+                            <td>{{item.planStart}}</td>
+                            <td>{{item.planFinish}}</td>
+                            <td>{{item.actualStart}}</td>
+                            <td>{{item.actualFinish}}</td> -->
+                            <td>{{item.bobot}}</td>
+                            <td>{{item.progressProsentase}}</td>
+                            <td>{{item.keterangan}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger" ng-click="eventClickCloseFileUploadMilestone()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- popUp Upload File Bulanan -->
+<div class="modal fade" id="modalFileUploadBulanan" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">Monthly Reports</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="myForm">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Year</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="id" ng-disabled="true" ng-hide="true">
+                            <select class="form-control"
+                                ng-model="year"
+                                ng-options="item as item for item in project.filter.year">
+                            </select>
+                        </div>                      
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Month</label>
+                        <div class="col-md-8">
+                            <select class="form-control"
+                                ng-model="month"
+                                ng-options="item.noBulan as item.bulan for item in project.master.bulan">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Title</label>
+                        <div class="col-md-8">
+                            <input type="text" ng-model="title" class="form-control">
+                        </div>                     
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Status</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" ng-model="description" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">File Upload</label>
+                        <div class="col-md-8">
+                                <input type="file" ngf-select ng-model="picFile" name="file"    
+                                accept="" ngf-max-size="50MB" required
+                                ngf-model-invalid="errorFile">
+                                <i ng-show="myForm.file.$error.required">*required</i><br>
+                                <i ng-show="myForm.file.$error.maxSize">File too large 
+                                    {{errorFile.size / 1000000|number:1}}MB: max 50M</i>
+                                <span class="progress" ng-show="picFile.progress >= 0">
+                                        <div style="width:{{picFile.progress}}%" 
+                                            ng-bind="picFile.progress + '%'"></div>
+                                        </span>
+                                        <span ng-show="picFile.result">Upload Successful</span>
+                                        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                                <!-- <input type="file" ng-model="file" name="file"> -->
+                                <!-- <input type="file" ng-model="formProject.uploadFile.file" name="files" accept="file_extension|audio/*|video/*|image/*|media_type" base-sixty-four-input> -->
+                                <!-- <span ng-show="myForm.files.$error.maxsize">Files must not exceed 10000 KB</span> -->
+                                <!-- <div class="percent">{{progress}}%</div>
+                                <div class="progress-bar">
+                                    <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+                                </div> -->
+                            <!-- <input class="form-control" accept="file_extension|audio/*|video/*|image/*|media_type" ng-model="formProject.uploadFile.file" type="file" maxsize="20000" base-sixty-four-input /> -->
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-info" ng-disabled="!myForm.$valid" 
+                        ng-click="uploadPic(picFile,id)">Submit</button>
+                        <button type="button" class="btn btn-danger" ng-click="eventClickCloseModalUploadFileBulanan()">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop Up List History Project -->
+<div class="modal fade" id="modalProjectHistory" tabindex="-1" role="dialog" aria-labelledby="modalApprovalLabel">
+    <div class="modal-dialog" role="document" style="width:90%;">
+        <div class="modal-content ">
+            <div class="modal-header bg-default">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalApprovalLabel">History Milestone</h4>
+            </div>
+            <div class="modal-body div-scrollHistory" id="tableToExport">
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr style="background-color:#049dff; color:white;">
+                            <th>No.</th>
+                            <th>Phase</th>
+                            <th>Milestone</th>
+                            <th>Last Update</th>  
+                            <!-- <th>Bobot</th> -->
+                            <th>Progress %</th>
+                            <!-- <th>Isu Strategis & Cara Penanganannya</th> -->
+                            <th>Description</th>     
+                                
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in projectHistory">
+                            <td>{{$index+1}}</td>
+                            <td>{{item.phase}}</td>
+                            <td>{{item.milestone}}</td>
+                            <td class="text-center">{{item.updatedDate | date: "dd-MM-yyyy" }}</td>
+                            <!-- <td>{{item.bobot}}</td> -->
+                            <td class="text-center">{{item.prosentaseProgress}}</td>
+                            <!-- <td>{{item.isuStrategis}}</td> -->
+                            <td>{{item.keterangan}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger" ng-click="eventClickCloseProjectHistory()">Close</button>
+                    <!-- <button type="button" class="btn btn-success" ng-click="exportToExcel('#tableToExport')">
+                        <span class="fa fa-file-excel-o" style="color: green"></span>
+                        Export to Excel
+                    </button> -->
+                    <img src="/icon/excel.png" style="cursor: pointer;" height="30" width="30" ng-click="exportToExcel('#tableToExport')">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  
+  //  $( function() {
+  //   $( "#datepicker" ).datepicker();
+  // } );
+
+    $('.nav-tabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $('.nav-pills a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+
+    $("#planDisburse").on('keyup', function(){
+        var n = parseInt($(this).val().replace(/\D/g,''),10);
+        $(this).val(n.toLocaleString());
+    });
+
+    $("#realization").on('keyup', function(){
+        var n = parseInt($(this).val().replace(/\D/g,''),10);
+        $(this).val(n.toLocaleString());
+    });
+    
+</script>

@@ -1,0 +1,310 @@
+<style>
+    .progress {
+        display: inline-block;
+        width: 100px;
+        border: 3px groove #CCC;
+    }
+
+    .progress div {
+        font-size: smaller;
+        background: rgb(18, 189, 18);
+        width: 0;
+    }
+
+    .div-scroll {
+        overflow: auto;
+        /* max-height: 100; */
+        height: 600px;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Daftar WBS
+        <!-- <small>advanced tables</small> -->
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i> Home</li>
+        <!-- <li><a href="#"></a></li> -->
+        <li class="active">Daftar WBS</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <!-- <h3 class="box-title">Table</h3> -->
+                    <form class="form-inline pull-right">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-gcg">
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th class="text-center">Nomor Laporan</th>
+                                <th class="text-center">Tanggal Pelaporan</th>
+                                <th class="text-center">Identitas Pelapor</th>
+                                <th class="text-center">Nama Pelapor</th>
+                                <th class="text-center">Media Pelaporan</th>
+                                <th class="text-center">Dugaan Pelanggaran</th>
+                                <th class="text-center">Deskripsi Pengaduan</th>
+                                <th class="text-center">Investigasi</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center" style="width: 147px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in listWbs.data |filter:search|itemsPerPage:10">
+                                <td class="text-center">{{$index+1}}</td>
+                                <td class="text-center">{{item.noLaporan}}</td>
+                                <td class="text-center">{{item.tglLaporan}}</td>
+                                <td class="text-center">{{item.identitasPelapor}}</td>
+                                <td class="text-center">{{item.namaPelapor}}</td>
+                                <td class="text-center">{{item.mediaLaporan}}</td>
+                                <td class="text-center">{{item.dugaanPelanggaran}}</td>
+                                <td class="text-center">{{item.deskripsiPelanggaran}}</td>
+                                <td class="text-center">{{item.investigasi===true ? "Ya" : "Tidak"}}</td>
+                                <td class="text-center">{{item.statusInvestigasi}}</td>
+                                <td class="text-center">
+                                    <button type='button' class='btn btn-edit btn-sm' ng-click="eventClickEdit(item.id)">
+                                        <span class='fa fa-pencil'></span>
+                                    </button>
+                                    <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapus(item.id, item.username + ' ( ' + item.email + ' )')">
+                                        <span class='fa fa-trash'></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                    <div class="col-md-12 text-left">
+                        <button data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" type="button" class="btn btn-default btn-circle btn-lg" style="color : white;background: #2d4283; border-color: #2d4283;  box-shadow: 0px 0px 31px 6px rgba(0, 0, 0, 0.17);">
+                            <i class="fa fa-plus faa-pulse animated"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="width: 80%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        <b>Form Laporan WBS</b>
+                    </h4>
+                </div>
+                <div class="modal-body div-scroll">
+                    <form class="form-horizontal" name="myForm">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Nomor Laporan</label>
+                            <div class="col-md-8">
+                                <input type="text" ng-hide="true" class="form-control" ng-model="form.id">
+                                <input type="text" class="form-control" ng-model="form.noLaporan" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Unit</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" ng-model="form.unit" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Identitas Pelapor</label>
+                            <div class="col-md-8">
+                                <select class="form-control" ng-model="form.identitasPelapor">
+                                    <option>Pegawai IP</option>
+                                    <option>TKWT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Nama Pelapor</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" ng-model="form.namaPelapor">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Tanggal Laporan</label>
+                            <div class="col-md-8">
+                                <div class="input-group date">
+                                    <div class="input-group-addon" ng-click="form.tglLaporan.$$tglLaporanOpened = true" style="cursor: pointer;">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglLaporan" ng-init="form.tglLaporan = form.tglLaporan.toDate()" is-open="form.tglLaporan.$$tglLaporanOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" size="30" name="tglLaporan" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Media Pelaporan</label>
+                            <div class="col-md-8">
+                                <input name="mediaLaporan" type="radio" value="Surat" ng-model="form.mediaLaporan" id="">Surat
+                                <br>
+                                <input name="mediaLaporan" type="radio" id="" value="Email" ng-model="form.mediaLaporan">Email
+                                <br>
+                                <input name="mediaLaporan" type="radio" id="" value="HP" ng-model="form.mediaLaporan">HP
+                                <br>
+                                <input name="mediaLaporan" type="radio" id="" value="Drop Box" ng-model="form.mediaLaporan">Drop Box
+                                <br>
+                                <input name="mediaLaporan" type="radio" id="" value="Datang Langsung" ng-model="form.mediaLaporan">Datang Langsung
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Dugaan Pelanggaran</label>
+                            <div class="col-md-8">
+                                <input name="dugaanPelanggaran" type="radio" value="Pelanggaran Kode Etika Pegawai" ng-click="eventClickDugaanPelanggaran()" ng-model="form.dugaanPelanggaran" id="">Pelanggaran Kode Etika Pegawai
+                                <br>
+                                <input name="dugaanPelanggaran" type="radio" id="" value="Pelanggaran Kode Etik TKWT" ng-click="eventClickDugaanPelanggaran()" ng-model="form.dugaanPelanggaran">Pelanggaran Kode Etik TKWT
+                                <br>
+                                <input name="dugaanPelanggaran" type="radio" id="" value="Penyalahgunaan Hak Ases IT" ng-click="eventClickDugaanPelanggaran()" ng-model="form.dugaanPelanggaran">Penyalahgunaan Hak Ases IT
+                                <br>
+                                <input name="dugaanPelanggaran" type="radio" id="" value="Pelanggaran Aturan Eksternal" ng-click="eventClickDugaanPelanggaran()" ng-model="form.dugaanPelanggaran">Pelanggaran Aturan Eksternal
+                                <br>
+                                <input name="dugaanPelanggaran" type="radio" id="" value="Lainnya, Ketik disini" ng-click="eventClickDugaanPelanggaranLainnya()" ng-model="form.dugaanPelanggaranLainnya">Lainnya, Ketik disini
+                                <input type="text" ng-model="form.dugaanPelanggaran" class="form-control" ng-show="dugaanPelanggaranLainnya_">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Deskripsi Pelanggaran</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" ng-model="form.deskripsiPelanggaran"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Tindak Lanjut</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" ng-model="form.tindakLanjut"></textarea>
+                                <label class="col-md-4">Status Tindak Lanjut</label>
+                                <div class="col-md-8">
+                                    <input name="statusTindakLanjut" type="radio" id="" value="Proses" ng-model="form.statusTindakLanjut">Proses
+                                    <input name="statusTindakLanjut" type="radio" id="" value="Selesai" ng-model="form.statusTindakLanjut">Selesai
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Perlu Investigasi?</label>
+                            <div class="col-md-8">
+                                <input name="perluInvestigasi" type="radio" id="" value="Tidak" ng-click="eventClickTidakPerluInvestigasi()" ng-model="form.perluInvestigasi">Tidak
+                                <input name="perluInvestigasi" type="radio" id="" value="Ya" ng-click="eventClickPerluInvestigasi()" ng-model="form.perluInvestigasi">Ya
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Nomor Berita Acara</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" ng-model="form.nomorBeritaAcara">
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="investigasi">
+                            <label class="col-md-4 control-label">Tanggal Investigasi</label>
+                            <div class="col-md-8 form-inline">
+                                <div class="input-group date col-md-4">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon" ng-click="form.tglInvestigasiAwal.$$tglInvestigasiAwalOpened = true" style="cursor: pointer;">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglInvestigasiAwal" ng-init="form.tglInvestigasiAwal = form.tglInvestigasiAwal.toDate()" is-open="form.tglInvestigasiAwal.$$tglInvestigasiAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" size="30" name="tglInvestigasiAwal" required/>
+                                    </div>
+                                </div>s/d
+                                <div class="input-group date col-md-4">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon" ng-click="form.tglInvestigasiAkhir.$$tglInvestigasiAkhirOpened = true" style="cursor: pointer;">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglInvestigasiAkhir" ng-init="form.tglInvestigasiAkhir = form.tglInvestigasiAkhir.toDate()" is-open="form.tglInvestigasiAkhir.$$tglInvestigasiAkhirOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" size="30" name="tglInvestigasiAkhir" required/>
+                                    </div>
+                                    <!-- <input type="text" class="form-control" id="tglInvestigasiAkhir" ng-model="tglInvestigasiAkhir"> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="investigasi">
+                            <label class="col-md-4 control-label">Tindak Lanjut Investigasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" ng-model="form.tindakLanjutInvestigasi"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="investigasi">
+                            <label class="col-md-4 control-label">Status Investigasi</label>
+                            <div class="col-md-8">
+                                <input name="statusInvestigasi" type="radio" id="" value="Proses" ng-model="form.statusInvestigasi">Proses
+                                <input name="statusInvestigasi" type="radio" id="" value="Selesai" ng-model="form.statusInvestigasi">Selesai
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="investigasi">
+                            <label class="col-md-4 control-label">Sanksi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" ng-model="form.sanksi"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="investigasi">
+                            <label class="col-md-4 control-label">Lampiran</label>
+                            <div class="col-md-8">
+                                <div ng-show="modeAdd">
+                                    <input type="file" ngf-select multiple ng-model="form.file" name="file" accept="" ngf-max-size="50MB" required ngf-model-invalid="errorFile">
+                                    <!-- <ul>
+                                    <li ng-repeat="f in files" style="font:smaller">
+                                        {{f.name}}
+                                    </li>
+                                </ul>
+                                <span class="progress" ng-show="progress >= 0">
+                                    <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                                </span>
+                                {{errorMsg}} -->
+                                </div>
+                                <div ng-show="modeEdit">
+                                    <input type="file" ngf-select multiple ng-model="form.file" name="file" accept="" ngf-max-size="50MB" required ngf-model-invalid="errorFile" ng-show="editFile">
+                                    <table class="table">
+                                        <tr ng-repeat="n in listFile">
+                                            <td>
+                                                <label id="fileEdit_">{{n.judulDokumen}}</label>
+                                            </td>
+                                            <td>
+                                                <button type='button' class='btn btn-edit btn-sm' ng-click="showEditFile()">
+                                                    <span class='fa fa-pencil'></span>
+                                                </button>
+                                                <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapusFile(form.id, n.id)">
+                                                    <span class='fa fa-times-circle'></span>
+                                                </button>
+                                                <button type='button' class='btn btn-success btn-sm' ng-click="eventClickGetFileUpload(form.id)">
+                                                    <span class='fa fa-download'></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-show="modeAddButton" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModalAdd(form.id)">Close</button>
+                    <button type="button" ng-show="modeEditButton" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModalEdit()">Close</button>
+                    <button type="button" class="btn btn-save" ng-click="eventClickSave(form.file)">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $('#tglLaporan').datepicker({
+        autoclose: true
+    })
+
+    $('#tglInvestigasiAwal').datepicker({
+        autoclose: true
+    })
+
+    $('#tglInvestigasiAkhir').datepicker({
+        autoclose: true
+    })
+</script>

@@ -1,0 +1,970 @@
+<style>
+    .nav-green>li.active>a,
+    .nav-green>li.active>a:focus,
+    .nav-green>li.active>a:hover {
+        color: #fff !important;
+        background-color: #264b8b !important;
+        /*border-top : 2px solid #0984e3;*/
+    }
+
+    .nav-green>li>a,
+    .nav-green>li>a:focus,
+    .nav-green>li>a:hover {
+        color: #ffffffc4;
+        background-color: #264b8ba6;
+    }
+
+    .bg-header {
+        background: #e4e7ea;
+    }
+
+    .bg-headerPreview {
+        background: #fde3d6;
+    }
+
+    .div-scroll {
+        overflow: auto;
+        /* max-height: 100; */
+        height: 600px;
+    }
+
+    .img-logo {
+        width: 150px;
+    }
+
+    .img-logo-sm {
+        width: 100px;
+    }
+
+    .bg-headerGratifikasi {
+        width: 45%;
+        background: #ee1b22;
+        color: white;
+        font-size: 20px;
+    }
+
+    .table-preview {
+        width: 95%;
+        position: relative;
+        left: 22px;
+        top: 22px;
+    }
+
+    .td-border {
+        border: 1px solid#c3c3c3;
+    }
+
+    .text-padding {
+        padding-left: 5px;
+    }
+
+    page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+    }
+
+    page[size="A4"] {
+        width: 21cm;
+        /* height: 29.7cm;  */
+        height: 33cm;
+    }
+
+    @media print {
+        body,
+        page {
+            margin: 0;
+            box-shadow: 0;
+        }
+        ;
+
+        #page1 * {
+            display: block
+        }
+        ;
+        #page2 * {
+            display: block
+        }
+        ;
+    }
+
+    div {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    .text-size {
+        font-size: 12px;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Laporan Gratifikasi
+        <!-- <small>advanced tables</small> -->
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <i class="fa fa-dashboard"></i> Master Form</li>
+        <!-- <li><a href="#"></a></li> -->
+        <li class="active">Laporan Gratifikasi</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row" ng-show="!lapGratifikasi.isEditMode">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <!-- <h3 class="box-title">Table</h3> -->
+                    <form class="form-inline pull-right">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th class="text-center">Tanggal Laporan</th>
+                                <th class="text-center">Nama Pemberi Gratifikasi</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">KPK</th>
+                                <th class="text-center">Rekomendasi</th>
+                                <th class="text-center judul-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in lapGratifikasi.data |filter:search|itemsPerPage:10">
+                                <td class="text-center">{{ $index+1. }}</td>
+                                <td class="text-center">{{item.tglLaporan }}</td>
+                                <td>{{item.namaPemberiGratifikasi}}</td>
+                                <td class="text-center">{{item.status}}</td>
+                                <td class="text-center">{{item.statusKpk}}</td>
+                                <td class="text-center">{{item.statusRekomendasi}}</td>
+                                <td class="text-center">
+                                    <button type='button' class='btn btn-success btn-sm' ng-click="previewPrint()">
+                                        <span class='fa fa-search'></span> Preview
+                                    </button>
+                                    <button type='button' class='btn btn-info btn-sm' ng-click="eventClickEdit(item.id)">
+                                        <span class='fa fa-pencil'></span> Edit
+                                    </button>
+                                    <button type='button' class='btn btn-danger btn-sm' ng-click="eventClickHapus(item.id, item.username + ' ( ' + item.email + ' )')">
+                                        <span class='fa fa-times-circle'></span> Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="eventClickAdd()">
+                            <i class="fa fa-plus-square"></i> Tambah Laporan Gratifikasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="lapGratifikasi.isEditMode">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Form Laporan Gratifikasi</h3>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger" ng-click="eventClickCancel()">Cancel</button>
+                        <button type="button" class="btn btn-primary" ng-click="eventClickSave()">Save</button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="box box-primary">
+                        <section style="margin-top: 10px;">
+                            <ul class="nav nav-tabs nav-green">
+                                <li role="project" class="active">
+                                    <a href="#tab1" data-toggle="tab" ng-click="">A. Identitas Pelapor</a>
+                                </li>
+                                <li role="project">
+                                    <a href="#tab2" data-toggle="tab" ng-click="" ng-show="!lapGratifikasi.tab2">B. Data Penerimaan Gratifikasi</a>
+                                </li>
+                                <li role="project">
+                                    <a href="#tab3" data-toggle="tab" ng-click="" ng-show="!lapGratifikasi.tab3">C. Data Pemberi Gratifikasi</a>
+                                </li>
+                                <li role="project">
+                                    <a href="#tab4" data-toggle="tab" ng-click="" ng-show="!lapGratifikasi.tab4">D. Alasan Dan Kronologi</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active div-scroll" id="tab1" ng-show="!lapGratifikasi.tab1">
+                                    <div class="box-body">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" class="bg-header">
+                                                        <b>A. IDENTITAS PELAPOR</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Nama Lengkap</td>
+                                                    <td colspan="6">
+                                                        <input type="text" ng-model="formLapGratifikasi.identitasPelapor.namaPelapor" class="form-control" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2.</td>
+                                                    <td>Tempat & Tanggal Lahir</td>
+                                                    <td colspan="3">
+                                                        <input type="text" ng-model="formLapGratifikasi.identitasPelapor.tempatLahir" class="form-control" name="">
+                                                        <br>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input type="text" class="form-control" id="tglLahir" ng-model="formLapGratifikasi.identitasPelapor.tglLahir">
+                                                        </div>
+                                                    </td>
+                                                    <td>No.KTP (NIK)</td>
+                                                    <td colspan="2">
+                                                        <input type="text" ng-model="formLapGratifikasi.identitasPelapor.noKtp" class="form-control" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3.</td>
+                                                    <td>Jabatan/Pangkat/Golongan</td>
+                                                    <td colspan="6">
+                                                        <input type="text" ng-model="formLapGratifikasi.identitasPelapor.jabatan" class="form-control" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4.</td>
+                                                    <td>Uraian Instansi (Kementrian/lembaga/BUMN/ BUMD/Pemerintah Daerah/dll</td>
+                                                    <td colspan="6" class="form-inline"> a. Nama Instansi :
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.namaInstansi" name="">
+                                                        <br>
+                                                        <br> b. Unit eselon I/II/III/IV/Unit Kerja :
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.unitEselon" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td rowspan="2">5.</td>
+                                                    <td rowspan="2">Alamat Kantor</td>
+                                                    <td colspan="6">
+                                                        <textarea ng-model="formLapGratifikasi.identitasPelapor.alamatKantor" class="form-control"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="">
+                                                        Provinsi
+                                                        <!-- <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.provinsi" name=""> -->
+                                                        <select class="form-control" ng-model="formLapGratifikasi.identitasPelapor.provinsi" ng-options="item as item.name for item in lapGratifikasi.master.provinsi " ng-change="getKodePost(formLapGratifikasi.identitasPelapor.provinsi);">
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        Kab/Kota
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kota" name="">
+                                                    </td>
+                                                    <td>
+                                                        Kecamatan
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kecamatan" name="">
+                                                    </td>
+                                                    <td colspan="2">
+                                                        Kel/Desa
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.desa" name="">
+                                                    </td>
+                                                    <td>
+                                                        Kode Pos
+                                                        <!-- <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kodePos" name=""> -->
+                                                        <select class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kodePos" ng-options="item as item.name for item in lapGratifikasi.master.kodePos ">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td rowspan="2">6.</td>
+                                                    <td rowspan="2">Alamat Rumah</td>
+                                                    <td colspan="6">
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.alamatRumah" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="">Kel/Desa
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.desaRumah" name="">
+                                                    </td>
+                                                    <td>
+                                                        Kecamatan
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kecamatanRumah" name="">
+                                                    </td>
+                                                    <td>
+                                                        Kab/Kota
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kotaRumah" name="">
+                                                    </td>
+                                                    <td colspan="2">
+                                                        Provinsi
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.provinsiRumah" name="">
+                                                    </td>
+                                                    <td>
+                                                        Kode Pos
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.kodePosRumah" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>7.</td>
+                                                    <td>Alamat Pengiriman Surat *)</td>
+                                                    <td colspan="6" class="form-inline">
+                                                        <input type="radio" name="alamatSurat" ng-model="formLapGratifikasi.identitasPelapor.alamatSurat" value="Rumah">Rumah &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <input type="radio" name="alamatSurat" ng-model="formLapGratifikasi.identitasPelapor.alamatSurat" value="Kantor">Kantor
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>8.</td>
+                                                    <td>Alamat Email</td>
+                                                    <td colspan="3">
+                                                        <input type="text" ng-model="formLapGratifikasi.identitasPelapor.email" class="form-control">
+                                                    </td>
+                                                    <td colspan="3" class="form-inline">
+                                                        Pin BB / WA
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.wa">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>9.</td>
+                                                    <td>Nomor Telepon</td>
+                                                    <td colspan="2" class="form-inline">
+                                                        Rumah
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.teleponRumah">
+                                                    </td>
+                                                    <td colspan="2" class="form-inline">
+                                                        Kantor
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.teleponKantor">
+                                                    </td>
+                                                    <td colspan="2" class="form-inline" style="width: 20%">
+                                                        Seluler
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.identitasPelapor.teleponSeluler">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <div class="tab-pane" id="tab2" ng-show="!lapGratifikasi.tab2">
+                                    <div class="box-body">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" class="bg-header">
+                                                        <b>B. DATA PENERIMAAN GRATIFIKASI</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="">Jenis Penerimaan</td>
+                                                    <td colspan="7"> Kode
+                                                        <select class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.kodePenerimaan">
+                                                            <option>a. Uang</option>
+                                                            <option>b. Barang</option>
+                                                            <option>c. Rabat (Diskon)</option>
+                                                            <option>d. Komisi</option>
+                                                            <option>e. Pinjaman Tanpa Bunga</option>
+                                                            <option>f. Tiket Perjalanan</option>
+                                                            <option>g. Fasilitas Penginapan</option>
+                                                            <option>h. Perjalanan Wisata</option>
+                                                            <option>i. Pengobatan Cuma-cuma</option>
+                                                            <option>j. Fasilitas Lainnya</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>&nbsp;</td>
+                                                    <td colspan="7"> Uraian
+                                                        <textarea ng-model="formLapGratifikasi.penerimaGratifikasi.uraianPenerimaan" class="form-control" rows="2"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Harga/Nilai Nominal/Takaran</td>
+                                                    <td colspan="7" class="form-inline">
+                                                        <select class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.mataUang">
+                                                            <option>IDR</option>
+                                                            <option>USD</option>
+                                                            <option>JPY</option>
+                                                        </select>
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.nilai">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kode Peristiwa Penerimaan</td>
+                                                    <td colspan="7">
+                                                        <select class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.kodePeristiwa">
+                                                            <option>a. Terkait pernikahan/keagamaan/acara adat</option>
+                                                            <option>b. Terkait mutasi/promosi/pisah rambut</option>
+                                                            <option>c. Terkait tugas pelayanan</option>
+                                                        </select>
+                                                        <br> Lainnya:
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.lainnya">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tempat</td>
+                                                    <td colspan="7">
+                                                        <input type="text" name="" class="form-control" ng-model="formLapGratifikasi.penerimaGratifikasi.tempat">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal Penerimaan</td>
+                                                    <td>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input type="text" class="form-control" id="tglPenerimaan" ng-model="formLapGratifikasi.penerimaGratifikasi.tanggal">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab3" ng-show="!lapGratifikasi.tab3">
+                                    <div class="box-body">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" class="bg-header">
+                                                        <b>C. DATA PEMBERI GRATIFIKASI</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 25%">Nama</td>
+                                                    <td colspan="7">
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.nama">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pekerjaan & Jabatan</td>
+                                                    <td colspan="7">
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.pekerjaan">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <td rowspan="2">5.</td> -->
+                                                    <td rowspan="2">Alamat</td>
+                                                    <td colspan="6">
+                                                        <input type="text" ng-model="formLapGratifikasi.pemberiGratifikasi.alamat" class="form-control" name="">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="">Telepon
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.telepon" name="">
+                                                    </td>
+                                                    <td>
+                                                        Faks
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.faks" name="">
+                                                    </td>
+                                                    <td>
+                                                        E-Mail
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.email" name="">
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Hubungan dengan Pemberi</td>
+                                                    <td colspan="7">
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.pemberiGratifikasi.hubunganPemberi">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane div-scroll" id="tab4" ng-show="!lapGratifikasi.tab4">
+                                    <div class="box-body">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" class="bg-header">
+                                                        <b>D. ALASAN DAN KRONOLOGI</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 25%">Alasan Pemberian</td>
+                                                    <td colspan="7">
+                                                        <input type="text" class="form-control" ng-model="formLapGratifikasi.alasanKronologi.alasan">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kronologi Penerimaan</td>
+                                                    <td colspan="7">
+                                                        <summernote height="200" ng-model="formLapGratifikasi.alasanKronologi.kronologiPenerimaan"></summernote>
+                                                        <br>
+                                                        <textarea type="text" ng-model="formLapGratifikasi.alasanKronologi.kronologiPenerimaan" style="width:100%;"></textarea>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Dokumen yang dilampirkan</td>
+                                                    <td colspan="7">
+                                                        <input type="radio" name="dokumenLampiran" ng-model="formLapGratifikasi.alasanKronologi.dokumenLampiran" value="Tidak Ada"> Tidak Ada
+                                                        <input type="radio" name="dokumenLampiran" ng-model="formLapGratifikasi.alasanKronologi.dokumenLampiran" value="Ada"> Ada
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>&nbsp;</td>
+                                                    <td colspan="7" class="form-inline">File :
+                                                        <input type="file" ngf-select class="form-control" ng-model="formLapGratifikasi.alasanKronologi.file" ngf-max-size="10MB" required ngf-model-invalid="errorFile">
+                                                        <br>
+                                                        <br> Keterangan :
+                                                        <textarea class="form-control" ng-model="formLapGratifikasi.alasanKronologi.keterangan" rows="3" style="width:50%;"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Catatan Tambahan (bila perlu)</td>
+                                                    <td colspan="7">
+                                                        <textarea class="form-control" ng-model="formLapGratifikasi.alasanKronologi.catatan"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview/Print form gratifikasi -->
+    <div class="modal fade" id="previewPrint" tabindex="-1" role="dialog" aria-labelledby="previewPrint">
+        <div class="modal-dialog" role="document" style="width:90%;">
+            <div class="modal-content ">
+                <div class="modal-header bg-default">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="previewPrint">Preview</h4>
+                </div>
+                <div class="modal-body div-scroll" style="background: #828282" id="printSectionId">
+                    <page size="A4" id="page1">
+                        <button class="btn tbn-default pull-right" ng-click="print('printSectionId')">
+                            <i class="fa fa-print"></i>
+                        </button>
+                        <table class="table-preview">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <img src="../images/logo-kpk.png" class="img-logo"> </td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="bg-headerGratifikasi" style="padding-left:30px">LAPORAN GRATIFIKASI</td>
+                                    <td>&nbsp;</td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                    <td colspan="4" rowspan="6" class="text-size">
+                                        <b>Kepada Yth,</b>
+                                        <br>
+                                        <b>KOMISI PEMBERANTASAN KORUPSI</b>
+                                        <br>
+                                        <b>REPUBLIK INDONESIA</b>
+                                        <br> JL. H.R RASUNA SAID KAV. C-1
+                                        <br> JAKARTA SELATAN 12920
+                                        <br> KOTAK POS 575
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-size">
+                                        <b>PENGIRIM</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="" class="text-size">Nama</td>
+                                    <td class="text-size">:</td>
+                                    <td colspan="2" class="text-size">Shandy Tias</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="" class="text-size">Alamat</td>
+                                    <td class="text-size">:</td>
+                                    <td colspan="2" class="text-size">Jl. Gatot Subroto No. 23 Kav. IV Jakarta Selatan</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td colspan="">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td colspan="">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <br>
+                        <table class="table-preview">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="text-size">
+                                        <b>Dokumen ini adalah rahasia negara. Dilarang membuka tanpa izin KPK.</b>
+                                        <br> Formulir berdasarkan SK Pimpinan KPK No. KEP-726/01-13/05/2014
+                                    </td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        <img src="../images/tata_cara.png">
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table-preview" style="border:1px solid #c3c3c3">
+                            <tbody>
+                                <tr>
+                                    <td colspan="8" class="bg-headerPreview td-border text-padding">
+                                        <b>A. IDENTITAS PELAPOR</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size" style="width:3%;">1.</td>
+                                    <td class="td-border text-padding text-size" style="width:25%">Nama Lengkap</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td class="td-border text-size" colspan="5">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size">2.</td>
+                                    <td class="td-border text-padding text-size">Tempat & Tanggal Lahir</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td colspan="2" class="td-border text-size">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size" colspan="3">No.KTP (NIK) :</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size">3.</td>
+                                    <td class="td-border text-padding text-size">Jabatan/Pangkat/Golongan</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td colspan="5" class="td-border text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size" rowspan="2">4.</td>
+                                    <td class="td-border text-padding text-size" rowspan="2" style="text-align:left;">Uraian Instansi (Kementrian/lembaga/BUMN/ BUMD/Pemerintah Daerah/dll</td>
+                                    <td class="td-border text-padding text-size" rowspan="2">:</td>
+                                    <td colspan="5" class="form-inline td-border text-padding text-size"> a. Nama Instansi :
+
+                                    </td>
+                                </tr>
+                                <tr style="height:50px">
+                                    <td colspan="5" class="text-padding td-border text-size">b. Unit eselon I/II/III/IV/Unit Kerja :</td>
+                                </tr>
+                                <tr style="height:30px">
+                                    <td rowspan="2" class="td-border text-center text-size">5.</td>
+                                    <td rowspan="2" class="td-border text-padding text-size">Alamat Kantor</td>
+                                    <td class="td-border text-center text-size" rowspan="2">:</td>
+                                    <td colspan="5" class="td-border">
+                                        <p class="pull-right text-padding text-size" style="padding-top:25px">Kode POS : </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">Kel/Desa &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">Kecamatan &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">Kab/Kota &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size" colspan="3">Provinsi &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                </tr>
+                                <tr style="height:30px">
+                                    <td rowspan="2" class="td-border text-center text-size">6.</td>
+                                    <td rowspan="2" class="td-border text-padding text-size">Alamat Rumah</td>
+                                    <td class="td-border text-center text-size" rowspan="2">:</td>
+                                    <td colspan="5" class="td-border text-size">
+                                        <p class="pull-right text-padding text-size" style="padding-top:25px">Kode POS : </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">Kel/Desa &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">Kecamatan &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">Kab/Kota &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size" colspan="3">Provinsi &nbsp;
+                                        <br>
+                                        <br>&nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size">7.</td>
+                                    <td class="td-border text-padding text-size">Alamat Pengiriman Surat *)</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td colspan="2" class="form-inline td-border text-padding text-size">
+                                        <input type="checkbox">Rumah
+                                    </td>
+                                    <td colspan="3" class="td-border text-padding text-size">
+                                        <input type="checkbox"> Kantor
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size">8.</td>
+                                    <td class="td-border text-padding text-size">Alamat Email</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td colspan="2" class="td-border text-size">
+                                        &nbsp;
+                                    </td>
+                                    <td colspan="3" class="td-border form-inline text-padding text-size">
+                                        Pin BB / WA : &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-center text-size">9.</td>
+                                    <td class="td-border text-padding text-size">Nomor Telepon</td>
+                                    <td class="td-border text-center text-size">:</td>
+                                    <td colspan="2" class="form-inline td-border text-padding text-size">
+                                        Rumah : &nbsp;
+                                    </td>
+                                    <td colspan="2" class="form-inline td-border text-padding text-size">
+                                        Kantor : &nbsp;
+                                    </td>
+                                    <td colspan="1" class="form-inline td-border text-padding text-size" style="width: 20%">
+                                        Seluler : &nbsp;
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width:95%;position: relative;margin-top: 3%;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="8" style="padding-left: 21px; font-size: 11px;">
+                                        <p>
+                                            <i>(
+                                                <b>Catatan Penting.</b>Mohon memberikan nomor kontak yang dapat dihubungi guna mempermudah proses penanganan laporan)</i>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </page>
+                    <page size="A4" id="page2">
+                        <table class="table-preview" style="border: 1px solide black;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="">
+                                        <img src="../images/logo-kpk.png" class="img-logo-sm"> </td>
+                                    <td colspan="6" class="">
+                                        <b>
+                                            <p style="font-size:24px;padding-left:30px">URAIAN LAPORAN GRATIFIKASI</p>
+                                        </b>
+                                        <br>
+                                        <p style="margin-top:-35px;padding-left:90px;font-size:9px">
+                                            <i>*) Lembar ini dapat diperbanyak sesuai kebutuhan</i>
+                                        </p>
+                                    </td>
+                                    <td colspan="" class="img-logo-sm">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" class="td-border bg-headerPreview text-padding ">
+                                        <b>B. DATA PENERIMAAN GRATIFIKASI</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" class="td-border text-center text-size">Jenis Penerimaan</td>
+                                    <td rowspan="2" style="width: 23%" class="td-border text-center text-size">Harga/Nilai Nominal/Takaran</td>
+                                    <td rowspan="2" class="td-border text-center text-size text-size">Kode Peristiwa</td>
+                                    <td rowspan="2" class="td-border text-center text-size text-size">Tempat dan Tanggal Penerimaan</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 15%" class="td-border text-center text-size">Kode</td>
+                                    <td colspan="4" style="width: 30%" class="td-border text-center text-size">Uraian</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                    <td colspan="4" class="td-border text-padding text-size"> &nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" class="bg-header bg-headerPreview td-border text-padding">
+                                        <b>C. DATA PEMBERI GRATIFIKASI</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 25%" class="td-border text-padding text-size">Nama</td>
+                                    <td colspan="7" class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">Pekerjaan & Jabatan</td>
+                                    <td colspan="7" class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">Alamat/Telepon/Faks/E-mail</td>
+                                    <td colspan="7" class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-border text-padding text-size">Hubungan dengan Pemberi</td>
+                                    <td colspan="7" class="td-border text-padding text-size">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table-preview">
+                            <tr>
+                                <td colspan="8" class="bg-headerPreview td-border text-padding">
+                                    <b>D. ALASAN DAN KRONOLOGI</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 25%" class="td-border text-padding text-size">Alasan Pemberian</td>
+                                <td colspan="7" class="td-border text-padding text-size">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-border text-padding text-size">Kronologi Penerimaan</td>
+                                <td colspan="7" class="td-border text-padding text-size">
+                                    &nbsp;
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-border text-padding text-size">Dokumen yang dilampirkan</td>
+                                <td colspan="7" class="td-border text-padding text-size">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <input type="checkbox">Tidak Ada
+                                    <input type="checkbox">Ada
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-border text-padding text-size">Catatan Tambahan (bila perlu)</td>
+                                <td colspan="7" class="td-border text-padding text-size">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table-preview">
+                            <tr>
+                                <td colspan="8" class="text-padding ">
+                                    <p style="font-size:12px;text-align: justify;text-justify: inter-word; word-spacing: 3.1px;">Laporan Gratifikasi ini saya sampaikan dengan sebenar-benarnya. Apabila ada yang sengaja tidak saya laporkan atau saya laporkan kepada
+                                        <br> Komisi Pemberantasan Korupsi secara tidak benar, maka saya bersedia mempertanggungjawabkannya secara hukum sesuai dengan peraturan
+                                        <br> perundang-undangan yang berlaku dan saya bersedia memberikan keterangan selanjutnya.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7">&nbsp;</td>
+                                <td style="padding-left:600px;">
+                                    <p class="text-center text-size">Jakarta, 29 Maret 2018</p>
+                                    <p class="text-center text-size" style="margin-top:-10px;">Pelapor</p>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <p class="text-center text-size">(Shandy Tias)</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <img src="../images/panduan.png">
+                                </td>
+                            </tr>
+                        </table>
+                    </page>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $('.nav-tabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $('.nav-pills a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+
+    //Date picker
+    $('#tglPenerimaan').datepicker({
+        autoclose: true
+    })
+
+    $('#tglLahir').datepicker({
+        autoclose: true
+    })
+
+    // Summernote Text Editor
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 180
+        });
+    });
+</script>

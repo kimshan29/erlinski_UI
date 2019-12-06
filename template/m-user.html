@@ -1,0 +1,182 @@
+﻿<section class="content-header">
+    <h1>
+        Master User
+        <!-- <small>advanced tables</small> -->
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <i class="fa fa-dashboard"></i> Master Application</li>
+        <!-- <li><a href="#"></a></li> -->
+        <li class="active">Master User</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row" ng-show="!user.isEditMode">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <!-- <h3 class="box-title">Table</h3> -->
+                    <form class="form-inline pull-right">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-gcg">
+                            <tr>
+                                <!-- <th class="text-center">USERNAME</th> -->
+                                <th class="text-center">FULLNAME</th>
+                                <th class="text-center">EMAIL</th>
+                                <th class="text-center">COMPANY</th>
+                                <th class="text-center">PERAN</th>
+                                <th class="text-center">GROUP AKSES</th>
+                                <th class="text-center judul-action">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in user.data|filter:search|itemsPerPage:10">
+                                <!-- <td>{{ item.userName }}</td> -->
+                                <td>{{item.fullName }}</td>
+                                <td>{{item.email.email }}</td>
+                                <td>{{item.company }}</td>
+                                <td>{{item.peran}}</td>
+                                <td>{{item.groupAkses }}</td>
+                                <!-- <td>{{ item.tglAwalAktif.defaultDateFormat() }}</td>
+                    <td>{{ item.tglAkhirAktif.defaultDateFormat() }}</td> -->
+                                <td class="text-center">
+                                    <button type='button' class='btn btn-edit btn-sm' ng-click="eventClickEdit(item.id)" ng-show='!user.isEditMode'>
+                                        <span class='fa fa-pencil'></span> Edit
+                                    </button>
+                                    <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapus(item.id, item.username + ' ( ' + item.email + ' )')" ng-show='!user.isEditMode'>
+                                        <span class='fa fa-times-circle'></span> Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-add btn-sm" ng-click="eventClickAdd()">
+                            <i class="fa fa-plus-square"></i> Tambah User
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="user.isEditMode">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">FORM MASTER USER</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <!-- <div class="form-group" ng-hide="true">
+                    <label class="control-label col-lg-2 col-md-3 col-sm-3">Username</label>
+                    <div class="col-lg-6 col-md-9 col-sm-9">
+                        <input type="text"
+                               required
+                               class="form-control"
+                               ng-model="user.input.userName"
+                               ng-model-options="{ debounce:1000 }"
+                               ng-change="eventCekUserExist(user.input.userName)" />
+                        <span ng-show="userexist" style="color:red;"><b>Username sudah ada!</b></span>
+                    </div>
+                </div> -->
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Type</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="radio" ng-model="user.input.typeUser" name="typeUser" value="INDONESIA POWER" ng-click="hideJVC()"> Indonesia Power
+                                    <input type="radio" ng-model="user.input.typeUser" name="typeUser" value="NON INDONESIA POWER" ng-click="showJVC()"> Non Indonesia Power
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Email</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <!-- <input type="text" ng-model-options="{ debounce:1000 }"
+                                ng-change="eventCekUserExistEmail(user.input.email)" class="form-control" ng-model="user.input.email" />
+                        <span ng-show="emailexist" style="color:red;"><b>Email sudah ada!</b></span> -->
+                                    <input type="text" class="form-control" ng-model="user.input.emailJvc" ng-hide="emailJvc" placeholder="Email JVC" />
+
+                                    <input type="text" ng-hide="email" placeholder="Email Indonesia Power" required name="user.input.email" ng-model="user.input.email" placeholder="" uib-typeahead="item as item.email for item in renderEmail($viewValue)" typeahead-on-select="getAtributeUser(user.input.email)" typeahead-loading="loadingEmail" typeahead-no-results="noResultsEmail" class="form-control" typeahead-min-length="3" typeahead-editable="true" typeahead-show-hint="true" typeahead-wait-ms="0" typeahead-input-formatter="$model.email" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Fullname</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" class="form-control" ng-model="user.input.fullName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3" ng-hide="company">Company Name</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" ng-model="user.input.company" class="form-control" ng-hide="company">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Peran</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="user.input.peran.id" ng-options="item.id as item.namaPeran for item in user.master.peran" ng-change="eventChangePeran()"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Group Akses</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="user.input.groupAkses.id" ng-options="item.id as item.name for item in user.master.groupAkses"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3" ng-hide="jobTitle">Job Title</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" ng-model="user.input.jobTitle" class="form-control" ng-hide="jobTitle">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Tanggal Awal Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9 input-group padding-left-15-important padding-right-15-important">
+                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="user.input.tglAwalAktif" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Tanggal Akhir Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9 input-group padding-left-15-important padding-right-15-important">
+                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="user.input.tglAkhirAktif" is-open="user.input.tglAkhirAktif.$$periodeAkhirOpened" ng-init="user.input.tglAkhirAktif = user.input.tglAkhirAktif.toDate()" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="user.input.tglAkhirAktif.$$periodeAkhirOpened = true">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-6 col-md-9 col-sm-9">
+                                    <button type="button" class="btn btn-save" ng-disabled="user.input.email == null || user.input.tglAwalAktif == null" ng-click="eventClickSave()">
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-delete" ng-click="eventClickCancel()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,325 @@
+﻿<section class="content-header">
+    <h1>
+        Master Menu
+        <!-- <small>advanced tables</small> -->
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <i class="fa fa-dashboard"></i> Master Application</a>
+        </li>
+        <!-- <li><a href="#"></a></li> -->
+        <li class="active">Master Menu</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row" ng-show="!menu.isEditMode && !menu.isView">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <form class="form-inline pull-right">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-gcg">
+                            <tr>
+                                <th class="text-center">NAMA MENU</th>
+                                <th class="text-center">MENU PARENT</th>
+                                <th class="text-center">NO URUT</th>
+                                <th class="text-center">LEVEL MENU</th>
+                                <th class="text-center">TIPE MENU</th>
+                                <th class="text-center">FLAG BERLAKU</th>
+                                <th class="text-center judul-action" style="width:30% !important;">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in menu.data | filter:search | itemsPerPage:5">
+                                <td class="padding-3">{{ item.namaMenu }}</td>
+                                <!--<td class="padding-3">{{ item.url }}</td>-->
+                                <td class="padding-3">{{ item.menuParent.name }}</td>
+                                <td class="padding-3">{{ item.noUrut }}</td>
+                                <!--<td class="padding-3">{{ item.icon }}</td>-->
+                                <td class="padding-3">{{ item.level }}</td>
+                                <td class="padding-3">{{ item.tipe }}</td>
+                                <!--<td class="padding-3">{{ item.target }}</td>-->
+                                <td class="padding-3">{{ item.flagBerlaku }}</td>
+                                <!--<td class="padding-3">{{ item.flagTampil }}</td>-->
+                                <!--<td class="padding-3">{{ item.tglAwalAktif }}</td>-->
+                                <!--<td class="padding-3">{{ item.tglAkhirAktif }}</td>-->
+                                <td class="text-center padding-3" style="width:21% !important;">
+                                    <button type='button' class='btn btn-info btn-sm' ng-click="eventClickView(item.id)" ng-show='!menu.isEditMode'>
+                                        <span class='fa fa-exclamation-circle'></span> View
+                                    </button>
+                                    <button type='button' class='btn btn-edit btn-sm' ng-click="eventClickEdit(item.id)" ng-show='!menu.isEditMode'>
+                                        <span class='fa fa-pencil'></span> Edit
+                                    </button>
+                                    <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapus(item.id, item.namaMenu)" ng-show='!menu.isEditMode'>
+                                        <span class='fa fa-times-circle'></span> Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-add btn-sm" ng-click="eventClickAdd()">
+                            <i class="fa fa-plus-square"></i> Tambah Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="menu.isEditMode">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">FORM MASTER MENU</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Nama Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" class="form-control" ng-model="menu.input.namaMenu" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Url</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" class="form-control" ng-model="menu.input.url" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Menu Parent</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="menu.input.menuParent.id" ng-options="item.id as item.namaMenu for item in menu.master.menuParent" ng-change="eventChangeParent()">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">No Urut</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="number" class="form-control" ng-model="menu.input.noUrut" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Icon</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="menu.input.icon" ng-options="item.icon as item.icon for item in menu.master.icon">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Event Handler</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="text" class="form-control" ng-model="menu.input.onClickHandler" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Level Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="menu.input.level" ng-options="item as item for item in menu.master.level">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Tipe Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="menu.input.tipe">
+                                        <option value="">-</option>
+                                        <option value="Header">Header</option>
+                                        <option value="Item">Item</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Target</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <select class="form-control" ng-model="menu.input.target">
+                                        <option value="">-</option>
+                                        <option value="_self">_self</option>
+                                        <option value="_blank">_blank</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Flag Berlaku</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="checkbox" ng-model="menu.input.flagBerlaku" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Flag Tampil</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="checkbox" ng-model="menu.input.flagTampil" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Is Notifikasi Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <input type="checkbox" ng-model="menu.input.isNotif" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Tanggal Awal Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9 input-group padding-left-15-important padding-right-15-important">
+                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="menu.input.tglAwalAktif" ng-init="menu.input.tglAwalAktif = menu.input.tglAwalAktif.toDate()" is-open="menu.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="menu.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 col-md-3 col-sm-3">Tanggal Akhir Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9 input-group padding-left-15-important padding-right-15-important">
+                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="menu.input.tglAkhirAktif" is-open="menu.input.tglAkhirAktif.$$periodeAkhirOpened" ng-init="menu.input.tglAkhirAktif = menu.input.tglAkhirAktif.toDate()" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="menu.input.tglAkhirAktif.$$periodeAkhirOpened = true">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-6 col-md-9 col-sm-9">
+                                    <button type="button" class="btn btn-save" ng-click="eventClickSave()">
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-delete" ng-click="eventClickCancel()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="menu.isView">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">FORM MASTER MENU</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Nama Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.namaMenu}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Url</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.url}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Menu Parent</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.menuParent.name}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">No Urut</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.noUrut}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Icon</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    <span class="{{menu.input.icon}}"></span> {{menu.input.icon}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Event Handler</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.onClickHandler}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Level Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.level}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Tipe Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.tipe}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Target</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.target}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Flag Berlaku</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.flagBerlaku}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Flag Tampil</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.flagTampil}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Is Notifikasi Menu</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.isNotif}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Tanggal Awal Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.tglAwalAktif.defaultDateFormat()}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">Tanggal Akhir Aktif</label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    {{menu.input.tglAkhirAktif.defaultDateFormat()}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-md-3 col-sm-3">
+                                    <button type="button" class="btn btn-primary" ng-click="eventClickBack()">
+                                        Back
+                                    </button>
+                                </label>
+                                <div class="col-lg-6 col-md-9 col-sm-9">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
