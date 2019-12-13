@@ -10,18 +10,38 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.menu.isEditMode = false;
     $scope.menu.isView = false;
 
-    $scope.menu.master.icon = [{ icon: "fa fa-angle-double-right" },
-                               { icon: "fa fa-bell" },
-                               { icon: "fa fa-desktop" },
-                               { icon: "fa fa-file-o" },
-                               { icon: "fa fa-file-text-o" },
-                               { icon: "fa fa-glass" },
-                               { icon: "fa fa-home" },
-                               { icon: "fa fa-plus-square" },
-                               { icon: "fa fa-send" },
-                               { icon: "fa fa-th" }
-                              ];
-    $scope.menu.master.level = [1,2,3];
+    $scope.menu.master.icon = [{
+            icon: "fa fa-angle-double-right"
+        },
+        {
+            icon: "fa fa-bell"
+        },
+        {
+            icon: "fa fa-desktop"
+        },
+        {
+            icon: "fa fa-file-o"
+        },
+        {
+            icon: "fa fa-file-text-o"
+        },
+        {
+            icon: "fa fa-glass"
+        },
+        {
+            icon: "fa fa-home"
+        },
+        {
+            icon: "fa fa-plus-square"
+        },
+        {
+            icon: "fa fa-send"
+        },
+        {
+            icon: "fa fa-th"
+        }
+    ];
+    $scope.menu.master.level = [1, 2, 3];
 
     $scope.isAdd = false;
 
@@ -30,8 +50,7 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.formLoad = function () {
         try {
             $scope.currentUser = JSON.parse($cookies.get('currentUser'));
-        }
-        catch (err) {
+        } catch (err) {
             $scope.currentUser = {};
         }
 
@@ -41,19 +60,19 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     }
 
     $scope.renderMenu = function () {
-        NProgress.start();
-        var apiUrl = "/api/MasterMenu";
-        HttpRequest.get(apiUrl).success(function (response) {
+        // NProgress.start();
+        // var apiUrl = "/api/MasterMenu";
+        // HttpRequest.get(apiUrl).success(function (response) {
 
-            var apiUrl2 = "/api/MasterMenu";
-            HttpRequest.get(apiUrl2).success(function (response) {
-                $scope.menu.master.menuParent = response;
-                $scope.menu.master.menuParent.unshift({id:"",namaMenu:""});
-            });
+        //     var apiUrl2 = "/api/MasterMenu";
+        //     HttpRequest.get(apiUrl2).success(function (response) {
+        //         $scope.menu.master.menuParent = response;
+        //         $scope.menu.master.menuParent.unshift({id:"",namaMenu:""});
+        //     });
 
-            $scope.menu.data = response;
-            NProgress.done();
-        });
+        //     $scope.menu.data = response;
+        //     NProgress.done();
+        // });
     }
 
     //Event Handlers ===================================================================================================================
@@ -110,21 +129,21 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         }
 
         HttpRequest.post(apiUrl, $scope.menu.input).success(function (response) {
-            $scope.renderMenu();
-            $scope.menu.isEditMode = false;
-        })
-        .error(function (response, code) {
-            NProgress.done();
-            var data = {
-                title: "MENU",
-                exception: response,
-                exceptionCode: code,
-                operation: "POST",
-                apiUrl: apiUrl
-            };
+                $scope.renderMenu();
+                $scope.menu.isEditMode = false;
+            })
+            .error(function (response, code) {
+                NProgress.done();
+                var data = {
+                    title: "MENU",
+                    exception: response,
+                    exceptionCode: code,
+                    operation: "POST",
+                    apiUrl: apiUrl
+                };
 
-            Helper.notifErrorHttp(data);
-        });
+                Helper.notifErrorHttp(data);
+            });
     }
 
     $scope.eventClickEdit = function (id) {
@@ -133,25 +152,25 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         var apiUrl = "/api/MasterMenu/" + id;
 
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.menu.input = response;
-            $scope.menu.input.tglAwalAktif = $scope.menu.input.tglAwalAktif != null ? $scope.menu.input.tglAwalAktif.toDate() : null;
-            $scope.menu.input.tglAkhirAktif = $scope.menu.input.tglAkhirAktif != null ? $scope.menu.input.tglAkhirAktif.toDate() : null;
-            $scope.menu.isEditMode = true;
-            NProgress.done();
-        })
-        .error(function (response, code) {
-            NProgress.done();
+                $scope.menu.input = response;
+                $scope.menu.input.tglAwalAktif = $scope.menu.input.tglAwalAktif != null ? $scope.menu.input.tglAwalAktif.toDate() : null;
+                $scope.menu.input.tglAkhirAktif = $scope.menu.input.tglAkhirAktif != null ? $scope.menu.input.tglAkhirAktif.toDate() : null;
+                $scope.menu.isEditMode = true;
+                NProgress.done();
+            })
+            .error(function (response, code) {
+                NProgress.done();
 
-            var data = {
-                title: "MENU",
-                exception: response,
-                exceptionCode: code,
-                operation: "GET",
-                apiUrl: apiUrl
-            };
+                var data = {
+                    title: "MENU",
+                    exception: response,
+                    exceptionCode: code,
+                    operation: "GET",
+                    apiUrl: apiUrl
+                };
 
-            Helper.notifErrorHttp(data);
-        });
+                Helper.notifErrorHttp(data);
+            });
     }
 
     $scope.eventClickHapus = function (id, name) {
@@ -163,26 +182,26 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
             NProgress.start();
 
             HttpRequest.del(apiUrl).success(function (response) {
-                $scope.renderMenu();
-                $scope.menu.isEditMode = false;
-                NProgress.done();
-            })
-            .error(function (response, code) {
-                NProgress.done();
+                    $scope.renderMenu();
+                    $scope.menu.isEditMode = false;
+                    NProgress.done();
+                })
+                .error(function (response, code) {
+                    NProgress.done();
 
-                var data = {
-                    title: "MENU",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "DELETE",
-                    apiUrl: apiUrl
-                };
+                    var data = {
+                        title: "MENU",
+                        exception: response,
+                        exceptionCode: code,
+                        operation: "DELETE",
+                        apiUrl: apiUrl
+                    };
 
-                Helper.notifErrorHttp(data);
-            });
+                    Helper.notifErrorHttp(data);
+                });
         }
     }
-    
+
     $scope.eventChangeParent = function () {
         var masterParent = $scope.menu.master.menuParent;
         var selectedParent = Helper.findItem(masterParent, "id", $scope.menu.input.menuParent.id);
@@ -200,25 +219,25 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         NProgress.start();
         var apiUrl = "/api/MasterMenu/" + ID;
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.menu.input = response;
-            $scope.menu.input.tglAwalAktif = $scope.menu.input.tglAwalAktif != null ? $scope.menu.input.tglAwalAktif.toDate() : null;
-            $scope.menu.input.tglAkhirAktif = $scope.menu.input.tglAkhirAktif != null ? $scope.menu.input.tglAkhirAktif.toDate() : null;
-            $scope.menu.isView = true;
-            NProgress.done();
-        })
-        .error(function (response, code) {
-            NProgress.done();
+                $scope.menu.input = response;
+                $scope.menu.input.tglAwalAktif = $scope.menu.input.tglAwalAktif != null ? $scope.menu.input.tglAwalAktif.toDate() : null;
+                $scope.menu.input.tglAkhirAktif = $scope.menu.input.tglAkhirAktif != null ? $scope.menu.input.tglAkhirAktif.toDate() : null;
+                $scope.menu.isView = true;
+                NProgress.done();
+            })
+            .error(function (response, code) {
+                NProgress.done();
 
-            var data = {
-                title: "MENU",
-                exception: response,
-                exceptionCode: code,
-                operation: "GET",
-                apiUrl: apiUrl
-            };
+                var data = {
+                    title: "MENU",
+                    exception: response,
+                    exceptionCode: code,
+                    operation: "GET",
+                    apiUrl: apiUrl
+                };
 
-            Helper.notifErrorHttp(data);
-        });
+                Helper.notifErrorHttp(data);
+            });
     }
 
     $scope.eventClickBack = function (id) {

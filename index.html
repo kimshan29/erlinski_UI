@@ -8,7 +8,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="plugins/mdi/css/materialdesignicons.min.css" />
-  <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+  <link rel="icon" type="image/png" href="images/icons/Unilever.ico" />
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="plugins/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -42,7 +42,8 @@
   <!-- <link href="plugins/angular-datatables/css/responsive.dataTables.min.css" rel="stylesheet"> -->
 
   <!-- <link href="css/default-theme.css" rel="stylesheet"> -->
-
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="./plugins/sweet-alert/sweetalert.css">
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <!-- Angular Loading Bar -->
@@ -88,15 +89,16 @@
     <header class="main-header">
 
       <!-- Logo -->
-      <a href="index2.html" class="logo" style="background: #fff !Important;position: fixed;">
+      <a href="/index.html#/home" class="logo" style="background: #fff !Important;position: fixed;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">
-          <!-- <img src="images/icons/favicon.ico" style="width: 30px"> -->
-          <b>App</b>
+          <img src="./images/Unilever.png" style="width: 30px;margin-top: 7px;">
+          <!-- <b>App</b> -->
         </span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">
-          <b>Kantin Apps</b>
+          <!-- <b>Kantin Apps</b> -->
+          <img src="./images/unilever_wide.png" style="width: 158px;margin-left: -11px;margin-top: -6px;">
         </span>
       </a>
 
@@ -178,9 +180,12 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <!-- <li class="treeview">
-            <span>Home</span>
             <a href="/index.html#/home">
-              <i class="fa fa-home"></i>
+              <i class="fa fa-shopping-cart"></i>
+              <span>Order Menu</span>
+              <span class="pull-right-container">
+               
+              </span>
             </a>
           </li> -->
           <li class="treeview">
@@ -201,16 +206,16 @@
                   <i class="fa fa-circle-o"></i> Display Menu</a>
               </li>
               <li>
-                <a href="/index.html#/displayMenu">
-                  <i class="fa fa-circle-o"></i> Tenant</a>
+                <a href="/index.html#/orderMenu">
+                  <i class="fa fa-circle-o"></i> Order Menu</a>
               </li>
               <li>
-                <a href="/index.html#/inputSchedule">
-                  <i class="fa fa-circle-o"></i> Input Schedule Admin</a>
+                <a href="/index.html#/scheduleKantin">
+                  <i class="fa fa-circle-o"></i>Schedule Kantin</a>
               </li>
               <li>
-                <a href="/index.html#/inputSchedule">
-                  <i class="fa fa-circle-o"></i> Input Schedule Vendor</a>
+                <a href="/index.html#/scheduleVendor">
+                  <i class="fa fa-circle-o"></i>Schedule Vendor</a>
               </li>
 
 
@@ -219,14 +224,14 @@
           <li class="treeview">
             <a href="#">
               <i class="fa fa-square-o"></i>
-              <span>Master Form</span>
+              <span>Master Data</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               <li>
-                <a href="/index.html#/vendor">
+                <a href="/index.html#/masterVendor">
                   <i class="fa fa-circle-o"></i> Vendor</a>
               </li>
               <li>
@@ -246,8 +251,12 @@
                   <i class="fa fa-circle-o"></i> Master Counting</a>
               </li>
               <li>
-                <a href="/index.html#/masterMenu">
+                <a href="/index.html#/masterRunningText">
                   <i class="fa fa-circle-o"></i> Master Running Text</a>
+              </li>
+              <li>
+                <a href="/index.html#/masterImage">
+                  <i class="fa fa-circle-o"></i> Master Image</a>
               </li>
             </ul>
           </li>
@@ -261,7 +270,7 @@
             </a>
             <ul class="treeview-menu">
               <li>
-                <a href="/index.html#/m-menu">
+                <a href="/index.html#/reportAll">
                   <i class="fa fa-circle-o"></i> All Counting Canteen</a>
               </li>
               <li>
@@ -433,28 +442,30 @@
   <script src="script/functions.js"></script>
   <!-- Angular Controller -->
   <script src="script/controller/logoutCtrl.js"></script>
-  <script src="script/controller/formProjectCtrl.js"></script>
-  <script src="script/controller/laporanGratifikasiCtrl.js"></script>
-  <script src="script/controller/komitmenKepatuhanCtrl.js"></script>
   <script src="script/controller/dashboardCtrl.js"></script>
-  <script src="script/controller/materiSosialisasiCtrl.js"></script>
   <script src="script/controller/displayMenuCtrl.js"></script>
-  <script src="script/controller/kebijakanCtrl.js"></script>
-  <script src="script/controller/pelayananKipCtrl.js"></script>
-  <script src="script/controller/whistleBlowingSystemCtrl.js"></script>
+  <script src="script/controller/masterVendorCtrl.js"></script>
+  <script src="script/controller/masterMenuMakananCtrl.js"></script>
+  <script src="script/controller/masterRunningTextCtrl.js"></script>
+  <script src="script/controller/masterImageCtrl.js"></script>
+  <script src="script/controller/scheduleKantinCtrl.js"></script>
+  <script src="script/controller/scheduleVendorCtrl.js"></script>
+  <script src="script/controller/orderMenuCtrl.js"></script>
+  <!-- Report -->
+  <script src="script/controller/reportAllCtrl.js"></script>
 
 
   <script src="script/controller/mMenuCtrl.js"></script>
   <script src="script/controller/mPeranCtrl.js"></script>
-  <script src="script/controller/mUserCtrl.js"></script>
-  <script src="script/controller/form3Ctrl.js"></script>
-  <script src="script/controller/form1Ctrl.js"></script>
-  <script src="script/controller/formBooksCtrl.js"></script>
-
+  <script src="script/controller/masterUsertrl.js"></script>
 
   <script src="https://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
   <script src="dist/js/saveHtmlToPdf.js"></script>
+
+  <!-- Sweet Alert -->
+  <script src="./node_modules/sweetalert/dist/sweetalert.min.js"></script>
+
   <!-- <script src="dist/js/jspdf.min.js"></script> -->
   <script>
     // var myVar;

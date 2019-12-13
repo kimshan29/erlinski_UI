@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<link rel="icon" type="image/png" href="images/icons/Unilever.ico" />
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 	<!--===============================================================================================-->
@@ -26,17 +26,31 @@
 </head>
 
 <body>
+	<style>
+		.background-login {
+			background: #9CECFB;
+			/* fallback for old browsers */
+			background: -webkit-linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
+			/* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
+			/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+
+		}
+	</style>
 	<div class="limiter">
-		<div class="container-login100" style="background-color: aliceblue">
+		<div class="container-login100 background-login">
 			<div class="wrap-login100 p-t-190 p-b-30" ng-app="loginApp" ng-controller="loginCtrl">
 				<form class="login100-form validate-form" style="margin-top: -155px;">
 					<div class="wrap-input100 img-responsive">
-						<!-- <img src="" alt="" class="text-center" style="width: 100%"> -->
+						<img src="./images/Unilever.png" alt="" class="text-center" style="display: block;
+						margin-left: auto;
+						margin-right: auto;
+						width: 50%;">
 					</div>
 
 					<span class="login100-form-title p-t-20 p-b-45">
-						Counting Kantin
+						Canteen Counting
 					</span>
 
 					<div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
@@ -108,6 +122,8 @@
 					password: $scope.password,
 					loginAs: $scope.loginAs
 				};
+
+				// $scope.currentUser = JSON.parse($cookies.get('currentUser'));
 				document.location.href = "index.html#/home";
 				// console.log(JSON.stringify(data));
 				// $http.post(apiUrl, data).success(function (response) {

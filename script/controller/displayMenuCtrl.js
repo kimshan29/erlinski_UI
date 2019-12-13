@@ -7,6 +7,11 @@ mainApp.controller("displayMenuCtrl", function ($route, $scope, $uibModal, $rout
     $scope.announcement.isEditMode = false;
     // console.log($scope.announcement.isEditMode);
 
+
+    $scope.currentDate = new Date();
+    console.log($scope.currentDate);
+
+
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -16,7 +21,6 @@ mainApp.controller("displayMenuCtrl", function ($route, $scope, $uibModal, $rout
         }
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
-
         $scope.renderListAnnouncement();
     }
 

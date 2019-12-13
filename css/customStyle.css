@@ -39,14 +39,34 @@
 
 /* Panel Color Custom */
 
-.panel-ip1>.panel-heading {
+.panel-biru>.panel-heading {
   color: #fff;
-  background-color: #155e9b;
-  border-color: #155e9b;
+  background-color: #0097ef;
+  border-color: #0097ef;
 }
 
-.panel-ip1 {
-  border-color: #155e9b;
+.panel-biru {
+  border-color: #0097ef;
+}
+
+.panel-kuning>.panel-heading {
+  color: #fff;
+  background-color: #ffcb00;
+  border-color: #ffcb00;
+}
+
+.panel-kuning {
+  border-color: #ffcb00;
+}
+
+.panel-hijau>.panel-heading {
+  color: #fff;
+  background-color: #ffcb00;
+  border-color: #ffcb00;
+}
+
+.panel-hijau {
+  border-color: #ffcb00;
 }
 
 .panel-ip2>.panel-heading {
@@ -84,9 +104,11 @@
   0% {
     transform: scale(1.1)
   }
+
   50% {
     transform: scale(0.8)
   }
+
   100% {
     transform: scale(1.1)
   }
@@ -186,19 +208,23 @@
 }
 
 @keyframes shake {
+
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
   }
+
   20%,
   80% {
     transform: translate3d(2px, 0, 0);
   }
+
   30%,
   50%,
   70% {
     transform: translate3d(-4px, 0, 0);
   }
+
   40%,
   60% {
     transform: translate3d(4px, 0, 0);

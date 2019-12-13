@@ -7,132 +7,43 @@
 <section class="content">
     <div class="box box-info">
 
-        <!-- /.box-header -->
+        <div class="box-header">
+            <!-- <h3 class="box-title">Table</h3> -->
+            <form class="form-inline pull-right">
+                <div class="form-group">
+                    <label>Search</label>
+                    <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                </div>
+            </form>
+        </div>
         <div class="box-body">
             <div class="table-responsive">
                 <table class="table no-margin">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Nama Menu</th>
-                            <th>Jenis Menu</th>
-                            <th>Info Kalori</th>
-                            <th>Info Alergi</th>
-                            <th>File</th>
-                            <th>Nama Vendor</th>
-                            <th>Action</th>
+                            <th class="text-center">Nama Menu</th>
+                            <th class="text-center">Menu Parent</th>
+                            <th class="text-center">No Urut</th>
+                            <th class="text-center">Level Menu</th>
+                            <th class="text-center">Tipe Menu</th>
+                            <th class="text-center">Flag Berlaku</th>
+                            <th class="text-center judul-action" style="width:30% !important;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ayam Penyet</td>
-                            <td><span class="label label-success">Menu Makanan</span></td>
+                        <tr ng-repeat="item in listRole">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.namaMenu}}</td>
+                            <td>{{item.keterangan}}</td>
                             <td>
-                                Info Kalori
-                            </td>
-                            <td>
-                                Info Alergi
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
-                                    <span class='fa fa-list'></span>
-                                </button>
-                            </td>
-                            <td>
-                                Vendor A
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                     <span class='fa fa-pencil'></span>
                                 </button>
-                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
+                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
                                     <span class='fa fa-trash'></span>
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Melon</td>
-                            <td><span class="label label-success">Buah</span></td>
-                            <td>
-                                Info Kalori
-                            </td>
-                            <td>
-                                Info Alergi
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
-                                    <span class='fa fa-list'></span>
-                                </button>
-                            </td>
-                            <td>
-                                Vendor A
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-pencil'></span>
-                                </button>
-                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-trash'></span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Tahu</td>
-                            <td><span class="label label-success">Menu Tambahan</span></td>
-                            <td>
-                                Info Kalori
-                            </td>
-                            <td>
-                                Info Alergi
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
-                                    <span class='fa fa-list'></span>
-                                </button>
-                            </td>
-                            <td>
-                                Vendor A
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-pencil'></span>
-                                </button>
-                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-trash'></span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Sayur Bayam</td>
-                            <td><span class="label label-success">Sayur</span></td>
-                            <td>
-                                Info Kalori
-                            </td>
-                            <td>
-                                Info Alergi
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
-                                    <span class='fa fa-list'></span>
-                                </button>
-                            </td>
-                            <td>
-                                Vendor A
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-default btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-pencil'></span>
-                                </button>
-                                <button type='button' class='btn btn-danger btn-sm' ng-disabled="!item.isRevise" style="border-radius:50%; background-color: #32c7d7 !important;" uib-tooltip="Revise" data-toggle="modal" data-target="#myModalRevisi" data-backdrop="static" data-keyboard="false" ng-click="eventClickRevisi(item.id, item.namaLaporan)">
-                                    <span class='fa fa-trash'></span>
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -140,8 +51,99 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Tambah Menu</a>
+            <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Menu</a>
         </div>
         <!-- /.box-footer -->
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="width: 70%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        <!-- <b>Tambah Master Menu</b> -->
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-info">
+
+                        <div class="box-header">
+                            <h3 class="box-title">Tambah Master Menu</h3>
+                        </div>
+                        <div class="box-body">
+                            <form class="form-horizontal">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Nama Menu</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.namaMenu" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Url</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.url" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Menu Parent</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.id" ng-options="item.id as item.namaMenu for item in menu.master.menuParent" ng-change="eventChangeParent()">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">No Urut</label>
+                                        <div class="col-md-8">
+                                            <input type="number" class="form-control" ng-model="form.noUrut" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Event Handler</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.evenHadler" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Level Menu</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.level" ng-options="item as item for item in menu.master.level">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Tipe Menu</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.tipe">
+                                                <option value="">-</option>
+                                                <option value="Header">Header</option>
+                                                <option value="Item">Item</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Target</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.target">
+                                                <option value="">-</option>
+                                                <option value="_self">_self</option>
+                                                <option value="_blank">_blank</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

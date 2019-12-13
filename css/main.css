@@ -420,11 +420,11 @@ iframe {
   border-radius: 25px;
   top: 0;
   left: 0;
-  background: #005bea;
-  background: -webkit-linear-gradient(left, #005bea, #00c6fb);
+  background: #6f0000;
+  /* background: -webkit-linear-gradient(left, #005bea, #00c6fb);
   background: -o-linear-gradient(left, #005bea, #00c6fb);
   background: -moz-linear-gradient(left, #005bea, #00c6fb);
-  background: linear-gradient(left, #005bea, #00c6fb);
+  background: linear-gradient(left, #005bea, #00c6fb); */
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;

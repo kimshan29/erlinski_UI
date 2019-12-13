@@ -95,7 +95,7 @@
 .skin-blue .sidebar-menu>li.active>a,
 .skin-blue .sidebar-menu>li.menu-open>a {
     color: #fff;
-    background: #ffcb00
+    background: #0097ef
         /*background: linear-gradient(to right, #2e4182,#135f9c);*/
 }
 
@@ -129,7 +129,7 @@
     color: #fff;
     /* background: #1e7bc7
      */
-    background: #fb387e;
+    background: #ffcb00;
 }
 
 .skin-blue .sidebar-form {
