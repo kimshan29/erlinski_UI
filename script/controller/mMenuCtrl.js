@@ -41,7 +41,7 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
             icon: "fa fa-th"
         }
     ];
-    $scope.menu.master.level = [1, 2, 3];
+    $scope.menu.master.level = ["1", "2", "3"];
 
     $scope.isAdd = false;
 
@@ -54,64 +54,40 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
             $scope.currentUser = {};
         }
 
-        $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers').withOption('responsive', true).withDisplayLength(10);
 
-        $scope.renderMenu();
+        $scope.renderList();
     }
 
-    $scope.renderMenu = function () {
+    $scope.getMenuParent = function () {
+        var apiUrl = "/api/akses/getParentMenu";
+        HttpRequest.get(apiUrl).success(function (response) {
+
+            $scope.menu.master.menuParent = response.items;
+            console.log(JSON.stringify($scope.menu.master.menuParent));
+
+        });
+    }
+
+    $scope.renderList = function () {
         // NProgress.start();
-        // var apiUrl = "/api/MasterMenu";
-        // HttpRequest.get(apiUrl).success(function (response) {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/akses";
+        HttpRequest.get(apiUrl).success(function (response) {
 
-        //     var apiUrl2 = "/api/MasterMenu";
-        //     HttpRequest.get(apiUrl2).success(function (response) {
-        //         $scope.menu.master.menuParent = response;
-        //         $scope.menu.master.menuParent.unshift({id:"",namaMenu:""});
-        //     });
+            $scope.listMenu = response.items;
+            $scope.getMenuParent();
+            console.log(JSON.stringify($scope.listMenu));
 
-        //     $scope.menu.data = response;
-        //     NProgress.done();
-        // });
+            $('.Loading').hide();
+            $('.page-form').show();
+        });
     }
 
     //Event Handlers ===================================================================================================================
     $scope.eventClickAdd = function () {
-        $scope.menu.input = {};
-        $scope.menu.isEditMode = true;
-        $scope.isAdd = true;
-
-        $scope.lastNoUrut = null;
-
-        var apiUrl2 = "/api/GetLastNoUrutMenu?idParen=";
-        HttpRequest.get(apiUrl2).success(function (response) {
-            $scope.lastNoUrut = response.LastUrutan;
-
-            $scope.menu.input = {
-                id: "00000000-0000-0000-0000-000000000000",
-                namaMenu: "",
-                menuParent: {
-                    id: "00000000-0000-0000-0000-000000000000",
-                    name: ""
-                },
-                url: null,
-                icon: null,
-                level: null,
-                tipe: null,
-                noUrut: $scope.lastNoUrut,
-                target: "",
-                onClickHandler: "",
-                isNotif: false,
-                flagBerlaku: false,
-                flagTampil: false,
-                tglAwalAktif: null,
-                tglAkhirAktif: null,
-                dibuatOleh: null,
-                dibuatTgl: null,
-                diubahOleh: null,
-                diubahTgl: null
-            };
-        });
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
     }
 
     $scope.eventClickCancel = function () {
@@ -120,57 +96,56 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     }
 
     $scope.eventClickSave = function () {
-        var apiUrl = "/api/MasterMenu";
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/akses/addAkses";
+        $scope.form.createdBy = $scope.currentUser.email;
 
-        if ($scope.isAdd == true) {
-            $scope.menu.input.dibuatOleh = $scope.currentUser.email;
-        } else {
-            $scope.menu.input.diubahOleh = $scope.currentUser.email;
-        }
-
-        HttpRequest.post(apiUrl, $scope.menu.input).success(function (response) {
-                $scope.renderMenu();
-                $scope.menu.isEditMode = false;
-            })
-            .error(function (response, code) {
-                NProgress.done();
-                var data = {
-                    title: "MENU",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "POST",
-                    apiUrl: apiUrl
-                };
-
-                Helper.notifErrorHttp(data);
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            console.log(JSON.stringify($scope.form));
+            $('.Loading').hide();
+            $('.page-form').show();
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
             });
+
+        })
+
+
+    }
+
+    $scope.eventClickUpdate = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/akses/updateAkses";
+        $scope.form.createdBy = $scope.currentUser.email;
+
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            $('.Loading').hide();
+            $('.page-form').show();
+            console.log(JSON.stringify($scope.form));
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
+            });
+        })
     }
 
     $scope.eventClickEdit = function (id) {
-        NProgress.start();
-        $scope.isAdd = false;
-        var apiUrl = "/api/MasterMenu/" + id;
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+
+        var apiUrl = "/api/akses?id=" + id;
+        console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-                $scope.menu.input = response;
-                $scope.menu.input.tglAwalAktif = $scope.menu.input.tglAwalAktif != null ? $scope.menu.input.tglAwalAktif.toDate() : null;
-                $scope.menu.input.tglAkhirAktif = $scope.menu.input.tglAkhirAktif != null ? $scope.menu.input.tglAkhirAktif.toDate() : null;
-                $scope.menu.isEditMode = true;
-                NProgress.done();
-            })
-            .error(function (response, code) {
-                NProgress.done();
+            $scope.form = response.items;
+            console.log(JSON.stringify($scope.form));
 
-                var data = {
-                    title: "MENU",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "GET",
-                    apiUrl: apiUrl
-                };
-
-                Helper.notifErrorHttp(data);
-            });
+        })
     }
 
     $scope.eventClickHapus = function (id, name) {
@@ -202,6 +177,39 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         }
     }
 
+    $scope.eventClickDelete = function (id) {
+        swal({
+                title: "Delete!!!",
+                text: "Yakin Ingin Menghapus Data ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                $('.Loading').show();
+                $('.page-form').hide();
+                if (willDelete) {
+                    $scope.dataForm = {
+                        id: id,
+                        updateBy: $scope.currentUser.email
+                    }
+                    var apiUrl = "/api/akses/deleteAkses";
+                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                        $('.Loading').hide();
+                        $('.page-form').show();
+                        swal("Data Berhasil Dihapus!", {
+                            icon: "success",
+                        });
+                        $scope.renderList();
+                    })
+
+                } else {
+                    // swal("Data To");
+                    $('.Loading').hide();
+                    $('.page-form').show();
+                }
+            });
+    }
     $scope.eventChangeParent = function () {
         var masterParent = $scope.menu.master.menuParent;
         var selectedParent = Helper.findItem(masterParent, "id", $scope.menu.input.menuParent.id);
@@ -240,10 +248,15 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
             });
     }
 
-    $scope.eventClickBack = function (id) {
-        NProgress.start();
-        $scope.menu.isView = false;
-        NProgress.done();
+    $scope.closeModal = function () {
+        $('#myModal').modal('hide');
+        $scope.clearForm();
+    }
+
+    $scope.clearForm = function () {
+        $scope.form.id = "";
+        $scope.form.namaMenu = "";
+        $scope.form.menuParent = "";
     }
 
     //Start of Application =============================================================================================================

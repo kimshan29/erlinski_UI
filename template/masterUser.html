@@ -1,131 +1,146 @@
-<section class="content-header">
-    <h1>
-        Master User
-        <!-- <small>advanced tables</small> -->
-    </h1>
-</section>
-<section class="content">
-    <div class="box box-info">
-
-        <div class="box-header">
-            <!-- <h3 class="box-title">Table</h3> -->
-            <form class="form-inline pull-right">
-                <div class="form-group">
-                    <label>Search</label>
-                    <input type="text" ng-model="search" class="form-control" placeholder="Search">
-                </div>
-            </form>
-        </div>
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table no-margin">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Jabatan</th>
-                            <th>Role User</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in listUser">
-                            <td>{{$index + 1}}</td>
-                            <td>{{item.nama}}</td>
-                            <td>{{item.username}}</td>
-                            <td>
-                                {{item.password}}
-                            </td>
-                            <td>
-                                {{item.jabatan}}
-                            </td>
-                            <td>
-                                {{item.role}}
-                            </td>
-                            <td>
-                                <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
-                                    <span class='fa fa-pencil'></span>
-                                </button>
-                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
-                                    <span class='fa fa-trash'></span>
-                                </button>
-                            </td>
-                        </tr>
-
-
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah User</a>
-        </div>
-        <!-- /.box-footer -->
+<div class="content Loading loading-position">
+    <div>
+        <p class="text-center">
+            <img class="blink-image" src="./../images/loading.gif">
+        </p>
     </div>
+</div>
+<div class="page-form">
+    <section class="content-header">
+        <h1>
+            Master User
+            <!-- <small>advanced tables</small> -->
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box box-info">
 
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog" style="width: 50%">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">
-                        <!-- <b>Tambah Master Menu</b> -->
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <div class="box box-info">
-
-                        <div class="box-header">
-                            <h3 class="box-title">Tambah Master User</h3>
-                        </div>
-                        <div class="box-body">
-                            <form class="form-horizontal" name="myForm">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Nama</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                        <input type="text" class="form-control" ng-model="form.nama" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Username</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="form.username" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Password</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="form.password" required>
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-hide="divPilihanJawaban">
-                                    <label class="col-md-4 control-label">Jabatan</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.jabatan" ng-options="item.id as item.nama for item in master.jabatan"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Role Akses</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.role" required ng-options="item.id as item.nama for item in master.role"></select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+            <div class="box-header">
+                <!-- <h3 class="box-title">Table</h3> -->
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
                     </div>
+                </form>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Jabatan</th>
+                                <th>Role User</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in listUser">
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.nama}}</td>
+                                <td>{{item.username}}</td>
+                                <td>
+                                    {{item.password}}
+                                </td>
+                                <td>
+                                    {{item.jabatan}}
+                                </td>
+                                <td>
+                                    {{item.role}}
+                                </td>
+                                <td>
+                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                        <span class='fa fa-pencil'></span>
+                                    </button>
+                                    <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                        <span class='fa fa-trash'></span>
+                                    </button>
+                                </td>
+                            </tr>
 
+
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah User</a>
+            </div>
+            <!-- /.box-footer -->
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 50%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <!-- <b>Tambah Master Menu</b> -->
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title">Tambah Master User</h3>
+                            </div>
+                            <div class="box-body">
+                                <form class="form-horizontal" name="myForm">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Nama</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                            <input type="text" class="form-control" ng-model="form.nama" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Email</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.email" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Username</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.username" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Password</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.password" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-hide="divPilihanJawaban">
+                                        <label class="col-md-4 control-label">Jabatan</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.jabatan" ng-options="item.id as item.nama for item in master.jabatan"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Role Akses</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.role" required ng-options="item.id as item.nama for item in master.role"></select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>

@@ -300,3 +300,8 @@
   background: #0085b8;
   color: white;
 }
+
+.loading-position {
+  width: 20%;
+  margin-top: 20%;
+}

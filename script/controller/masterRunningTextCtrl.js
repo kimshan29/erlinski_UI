@@ -21,22 +21,19 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
     }
 
     $scope.renderRunningText = function () {
-        // NProgress.start();
-        // $('.Loading').show();
-        // $('.page-form').hide();
+        $('.Loading').show();
+        $('.page-form').hide();
 
 
-        // var apiUrl = "/api/MasterRunningText";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listMasterRunningText = response;
-        //     console.log(JSON.stringify($scope.listMasterRunningText));
+        var apiUrl = "/api/RunningText";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listMasterRunningText = response.items;
+            console.log(JSON.stringify($scope.listMasterRunningText));
 
+            $('.Loading').hide();
+            $('.page-form').show();
 
-
-        //     $('.Loading').hide();
-        //     $('.page-form').show();
-        //     NProgress.done();
-        // });
+        });
 
     }
 
@@ -45,8 +42,13 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
         var dataForm = $scope.form;
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/MasterRunningText";
+        var apiUrl = "/api/RunningText/addRunningText";
 
+        if ($scope.form.status == true) {
+            $scope.form.status = "Aktive";
+        } else {
+            $scope.form.status = "Non Aktive";
+        }
         console.log(JSON.stringify(dataForm));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
             $scope.eventClickCloseModal();
@@ -56,55 +58,97 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
         });
     }
 
+    $scope.eventClickUpdate = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/RunningText/updateRunningText";
+        $scope.form.createdBy = $scope.currentUser.email;
+        if ($scope.form.status == false) {
+            $scope.form.status = "Non Aktive";
+        } else {
+            $scope.form.status = "Aktive";
+        }
 
+        console.log(JSON.stringify($scope.form));
+
+
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            $('.Loading').hide();
+            $('.page-form').show();
+            console.log(JSON.stringify($scope.form));
+            $scope.renderRunningText();
+            $scope.eventClickCloseModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
+            });
+        })
+    }
 
     $scope.eventClickAdd = function () {
-        $scope.modeEdit = false;
-        $scope.modeAdd = true;
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
     }
 
     $scope.eventClickEdit = function (id) {
 
-        console.log(id);
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+        var apiUrl = "/api/RunningText?id=" + id;
+        console.log(apiUrl);
 
-        $('#myModal').modal({
-            show: true
-        });
-
-        var apiUrl = "/api/MasterRunningText/" + id;
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response;
-
+            $scope.form = response.items;
+            if ($scope.form.status == "Non Aktive") {
+                $scope.form.status = false;
+            } else {
+                $scope.form.status = true;
+            }
             console.log(JSON.stringify($scope.form));
+
         })
+        // $scope.form = {
+        //     "id": "7",
+        //     "message": "Launcing Aplikasi",
+        //     "status": true,
+        //     "delete": "0",
+        //     "createdBy": null,
+        //     "createdDate": null,
+        //     "updatedBy": null,
+        //     "updatedDate": null
+        // }
 
     }
 
-    $scope.eventClickHapus = function (id) {
-        var apiUrl = "/api/MasterRunningText/" + id;
-        // console.log(apiUrl);
-        var hapus = confirm("Are You Sure You Want to Delete This Item?");
+    $scope.eventClickDelete = function (id) {
+        swal({
+                title: "Delete!!!",
+                text: "Yakin Ingin Menghapus Data ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                $('.Loading').show();
+                $('.page-form').hide();
+                if (willDelete) {
+                    $scope.dataForm = {
+                        id: id,
+                        updateBy: $scope.currentUser.email
+                    }
+                    var apiUrl = "/api/RunningText/deleteRunningText";
+                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                        $('.Loading').hide();
+                        $('.page-form').show();
+                        swal("Data Berhasil Dihapus!", {
+                            icon: "success",
+                        });
+                        $scope.renderRunningText();
+                    })
 
-        if (hapus) {
-            // NProgress.start();
-
-            HttpRequest.del(apiUrl).success(function (response) {
-                    $scope.renderRunningText();
-                })
-                .error(function (response, code) {
-                    // NProgress.done();
-
-                    var data = {
-                        title: "Master Running Text",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "DELETE",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
+                } else {
+                    // swal("Data To");
+                }
+            });
     }
 
 

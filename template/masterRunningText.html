@@ -1,11 +1,11 @@
-<!-- <div class="content Loading">
-    <div style="margin-top: 20%;">
+<div class="content Loading loading-position">
+    <div>
         <p class="text-center">
-            <img class="blink-image" src="../icons/favicon.ico">
+            <img class="blink-image" src="./../images/loading.gif">
         </p>
-        <p class="text-center">Loading......</p>
     </div>
-</div> -->
+</div>
+
 <div class="page-form">
     <section class="content-header">
         <h1>
@@ -34,7 +34,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <table class="table no-margin">
-                            <thead>
+                            <thead class="bg-primary">
                                 <tr>
                                     <th class="text-center">No.</th>
                                     <th class="text-center">Message</th>
@@ -46,16 +46,14 @@
                                 <tr dir-paginate="item in listMasterRunningText |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                     <td class="text-center">{{pageSize * (currentPage-1)+$index+1}}</td>
                                     <td>{{item.message }}</td>
-                                    <td class="text-center">{{item.isActive == false ? "Tidak Aktive" : "Aktive"}}</td>
+                                    <!-- <td class="text-center">{{item.status == "false" ? "Tidak Aktive" : "Aktive"}}</td> -->
+                                    <td class="text-center">{{item.status}}</td>
                                     <td class="text-center">
-                                        <!-- <button type='button' class='btn btn-info btn-sm' ng-show="crudAkses.updates" ng-click="eventClickEdit(item.id, item.typeSK)">
-                                            <span class='fa fa-pencil'></span> Edit
-                                        </button> -->
-                                        <button type='button' class='btn btn-success btn-sm' data-toggle="modal" ng-click="eventClickEdit(item.id)" ng-hide="akses" data-backdrop="static" data-keyboard="false">
-                                            <span class='fa fa-pencil'></span> Edit
+                                        <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                            <span class='fa fa-pencil'></span>
                                         </button>
-                                        <button type='button' class='btn btn-danger btn-sm' ng-click="eventClickHapus(item.id)">
-                                            <span class='fa fa-times-circle'></span> Hapus
+                                        <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                            <span class='fa fa-trash'></span>
                                         </button>
                                     </td>
                                 </tr>
@@ -95,7 +93,7 @@
                                 <label class="col-md-4 control-label">Status</label>
                                 <div class="col-md-8">
                                     <label class="container-checkbox" style="font-weight:400 !important">
-                                        <input type="checkbox" ng-model="form.isActive"><span class="checkmark"></span>
+                                        <input type="checkbox" ng-model="form.status"><span class="checkmark"></span>
                                     </label>
                                 </div>
                             </div>
@@ -104,7 +102,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
                     </div>
                 </div>
             </div>

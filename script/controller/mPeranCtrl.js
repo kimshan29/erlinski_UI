@@ -2,14 +2,8 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
     $scope.currentUser = {};
 
-    $scope.peran = {};
-    $scope.peran.data = {};
-    $scope.peran.master = {};
-    $scope.peran.input = {};
-    $scope.peranPopup = {};
-    $scope.peranPopup.data = {};
-    $scope.peran.isEditMode = false;
-    $scope.isAdd = false;
+    $scope.pageSize = 10;
+    $scope.currentPage = 1;
 
     //Procedures =====================================================================================================================
     $scope.formLoad = function () {
@@ -21,160 +15,124 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
         // $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers').withOption('responsive', true).withDisplayLength(10);
 
-        $scope.renderperan();
+        $scope.renderList();
     }
 
-    $scope.renderperan = function () {
-        $scope.listRole = [{
-                id: "1",
-                namaRole: "Super Admin",
-                keterangan: "Super Admin"
-            },
-            {
-                id: "2",
-                namaRole: "Admin",
-                keterangan: "Admin"
-            },
-            {
-                id: "3",
-                namaRole: "Vendor",
-                keterangan: "Vendor Kantin"
-            },
-            {
-                id: "4",
-                namaRole: "User",
-                keterangan: "Karyawan"
-            }
-        ]
+    $scope.pilihAkses = function (id) {
+        $scope.idPeran = id;
+        var apiUrl = "/api/akses";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listMenu = response.items;
+            console.log(JSON.stringify($scope.listRole));
 
-        $scope.listMenu = [{
-                id: "1",
-                namaMenu: "Master Menu Makanan",
-            },
-            {
-                id: "2",
-                namaMenu: "Master Vendor",
-            }
-        ]
 
-        // NProgress.start();
-        // var apiUrl = "/api/MasterRole";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.peran.data = response;
-        //     NProgress.done();
-        // });
+        })
+    }
+    $scope.renderList = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/role";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listRole = response.items;
+            console.log(JSON.stringify($scope.listRole));
+            $('.Loading').hide();
+            $('.page-form').show();
+
+        })
+
+
+
     }
 
     //Event Handlers ===================================================================================================================
-    $scope.eventClickAdd = function () {
-        $scope.peran.input = {};
-        $scope.peran.isEditMode = true;
-        $scope.isAdd = true;
-
-        $scope.peran.input = {
-            id: "00000000-0000-0000-0000-000000000000",
-            namaPeran: "",
-            keterangan: "",
-            flagBerlaku: false,
-            tglAwalAktif: null,
-            tglAkhirAktif: null,
-            dibuatOleh: null,
-            dibuatTgl: null,
-            diubahOleh: null,
-            diubahTgl: null
-        }
-    }
-
-    $scope.eventClickCancel = function () {
-        $scope.renderperan();
-        $scope.peran.isEditMode = false;
-        $scope.isAdd = false;
-    }
-
     $scope.eventClickSave = function () {
-        NProgress.start();
-        var apiUrl = "/api/MasterRole";
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/role/addRole";
+        $scope.form.createdBy = $scope.currentUser.email;
 
-        if ($scope.isAdd == true) {
-            $scope.peran.input.dibuatOleh = $scope.currentUser.email;
-        } else {
-            $scope.peran.input.diubahOleh = $scope.currentUser.email;
-        }
-        HttpRequest.post(apiUrl, $scope.peran.input).success(function (response) {
-                $scope.renderperan();
-                $scope.peran.isEditMode = false;
-                NProgress.done();
-            })
-            .error(function (response, code) {
-                NProgress.done();
-
-                var data = {
-                    title: "PERAN",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "POST",
-                    apiUrl: apiUrl
-                };
-
-                Helper.notifErrorHttp(data);
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            console.log(JSON.stringify($scope.form));
+            $('.Loading').hide();
+            $('.page-form').show();
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
             });
+
+        })
+
+
     }
 
-    $scope.eventClickEdit = function (id) {
-        NProgress.start();
+    $scope.eventClickUpdate = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/role/updateRole";
+        $scope.form.createdBy = $scope.currentUser.email;
 
-        var apiUrl = "/api/MasterRole/" + id;
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            $('.Loading').hide();
+            $('.page-form').show();
+            console.log(JSON.stringify($scope.form));
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
+            });
+        })
+    }
+
+    $scope.eventClickAdd = function () {
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
+    }
+    $scope.eventClickEdit = function (id) {
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+
+        var apiUrl = "/api/role?id=" + id;
+        console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-                $scope.peran.input = response;
-                $scope.peran.input.tglAwalAktif = $scope.peran.input.tglAwalAktif != null ? $scope.peran.input.tglAwalAktif.toDate() : null;
-                $scope.peran.input.tglAkhirAktif = $scope.peran.input.tglAkhirAktif != null ? $scope.peran.input.tglAkhirAktif.toDate() : null;
-                $scope.peran.isEditMode = true;
-                $scope.isAdd = false;
-                NProgress.done();
-            })
-            .error(function (response, code) {
-                NProgress.done();
+            $scope.form = response.items;
+            console.log(JSON.stringify($scope.form));
 
-                var data = {
-                    title: "PERAN",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "GET",
-                    apiUrl: apiUrl
-                };
+        })
 
-                Helper.notifErrorHttp(data);
-            });
     }
 
-    $scope.eventClickHapus = function (id, name) {
+    $scope.eventClickDelete = function (id) {
+        swal({
+                title: "Delete!!!",
+                text: "Yakin Ingin Menghapus Data ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                $('.Loading').show();
+                $('.page-form').hide();
+                if (willDelete) {
+                    $scope.dataForm = {
+                        id: id,
+                        updateBy: $scope.currentUser.email
+                    }
+                    var apiUrl = "/api/role/deleteRole";
+                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                        $('.Loading').hide();
+                        $('.page-form').show();
+                        swal("Data Berhasil Dihapus!", {
+                            icon: "success",
+                        });
+                        $scope.renderList();
+                    })
 
-        var apiUrl = "/api/MasterRole?idPeran=" + id + "&userEmail=" + $scope.currentUser.email;
-        var hapus = confirm("Hapus " + name + "?");
-
-        if (hapus) {
-            NProgress.start();
-
-            HttpRequest.del(apiUrl).success(function (response) {
-                    $scope.renderperan();
-                    $scope.peran.isEditMode = false;
-                    NProgress.done();
-                })
-                .error(function (response, code) {
-                    NProgress.done();
-
-                    var data = {
-                        title: "PERAN",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "DELETE",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
+                } else {
+                    // swal("Data To");
+                }
+            });
     }
 
     $scope.eventClickAkses = function (id) {
@@ -203,55 +161,43 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
     }
 
     $scope.eventClickSaveAkses = function () {
-        NProgress.start();
-        var apiUrl = "/api/MenuAccessInRole";
+        // var apiUrl = "/api/MenuAccessInRole";
 
-        $scope.peranPopup.data.diubahOleh = $scope.currentUser.email;
-        HttpRequest.post(apiUrl, $scope.peranPopup.data).success(function (response) {
-                $('#modalAkses').modal('hide');
-                NProgress.done();
-            })
-            .error(function (response, code) {
-                NProgress.done();
+        // $scope.peranPopup.data.diubahOleh = $scope.currentUser.email;
+        // HttpRequest.post(apiUrl, $scope.peranPopup.data).success(function (response) {
+        //         $('#modalAkses').modal('hide');
+        //         NProgress.done();
+        //     })
+        //     .error(function (response, code) {
+        //         NProgress.done();
 
-                var data = {
-                    title: "PERAN AKSES",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "POST",
-                    apiUrl: apiUrl
-                };
+        //         var data = {
+        //             title: "PERAN AKSES",
+        //             exception: response,
+        //             exceptionCode: code,
+        //             operation: "POST",
+        //             apiUrl: apiUrl
+        //         };
 
-                Helper.notifErrorHttp(data);
-            });
-    }
-
-    $scope.eventClickCancelAkses = function () {
-        NProgress.start();
-        $('#modalAkses').modal('hide');
-        NProgress.done();
-    }
-
-    $scope.isParent = function (menuParent) {
-        if (menuParent != null) {
-            return "padding-left-20-important";
-        } else {
-            return "font-bold font-14";
+        //         Helper.notifErrorHttp(data);
+        //     });
+        $scope.formAkses = {
+            idRole: $scope.idPeran,
+            listMenu: $scope.listMenu
         }
+        console.log(JSON.stringify($scope.formAkses));
+
+    }
+    $scope.closeModal = function () {
+        $('#myModal').modal('hide');
+        $scope.clearForm();
     }
 
-    $scope.haveParent = function (id, menuParent) {
-        if (menuParent != null) {
-            return "treegrid-" + id + " treegrid-parent-" + menuParent;
-        } else {
-            return "treegrid-" + id + " treegrid-expand";
-        }
+    $scope.clearForm = function () {
+        $scope.form.id = "";
+        $scope.form.namaRole = "";
+        $scope.form.keterangan = "";
     }
-
-    $scope.reconfigureTable = function () {
-        $('.tree').treegrid();
-    }
-
 
     //Start of Application =============================================================================================================
     $scope.formLoad();

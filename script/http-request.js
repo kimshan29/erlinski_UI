@@ -1,6 +1,6 @@
 //Http Request
 
-var webServiceBaseUrl = "http://localhost/canteencounting";
+var webServiceBaseUrl = "http://api.canteencounting.com";
 // var webServiceBaseUrl = "http://192.168.100.185:2010";
 
 mainApp.factory("HttpRequest", function ($http, $q) {
