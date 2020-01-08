@@ -20,7 +20,9 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
     $scope.pilihAkses = function (id) {
         $scope.idPeran = id;
-        var apiUrl = "/api/akses";
+        var apiUrl = "/api/akses/getAksesByIdRole?id=" + $scope.idPeran;
+        console.log(apiUrl);
+
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.listMenu = response.items;
             console.log(JSON.stringify($scope.listRole));
@@ -135,24 +137,39 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
             });
     }
 
-    $scope.eventClickAkses = function (id) {
-        NProgress.start();
+    $scope.item = {};
+    $scope.checkAll = function () {
+        $scope.item.status = true;
+    }
+    $scope.eventClickSaveAkses = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
 
-        var apiUrl = "/api/MenuAccessInRoleByIdRole/" + id;
+        $scope.currentUser.email = "Admin";
+        var apiUrl = "/api/aksesRole/addAksesRole";
+        $scope.formAkses = {
+            idRole: $scope.idPeran,
+            listMenu: $scope.listMenu,
+            createdBy: $scope.currentUser.email
+        }
 
-        HttpRequest.get(apiUrl).success(function (response) {
-                $scope.peranPopup.data = response;
-                NProgress.done();
-                $('#modalAkses').modal('show');
+        console.log(JSON.stringify($scope.formAkses));
+        // $scope.peranPopup.data.diubahOleh = $scope.currentUser.email;
+        HttpRequest.post(apiUrl, $scope.formAkses).success(function (response) {
+                $('#myModalAkses').modal('hide');
+                $scope.renderList();
+
+                // $('.Loading').hide();
+                // $('.page-form').show();
             })
             .error(function (response, code) {
-                NProgress.done();
+
 
                 var data = {
-                    title: "PERAN - AKSES",
+                    title: "PERAN AKSES",
                     exception: response,
                     exceptionCode: code,
-                    operation: "GET",
+                    operation: "POST",
                     apiUrl: apiUrl
                 };
 
@@ -160,34 +177,6 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
             });
     }
 
-    $scope.eventClickSaveAkses = function () {
-        // var apiUrl = "/api/MenuAccessInRole";
-
-        // $scope.peranPopup.data.diubahOleh = $scope.currentUser.email;
-        // HttpRequest.post(apiUrl, $scope.peranPopup.data).success(function (response) {
-        //         $('#modalAkses').modal('hide');
-        //         NProgress.done();
-        //     })
-        //     .error(function (response, code) {
-        //         NProgress.done();
-
-        //         var data = {
-        //             title: "PERAN AKSES",
-        //             exception: response,
-        //             exceptionCode: code,
-        //             operation: "POST",
-        //             apiUrl: apiUrl
-        //         };
-
-        //         Helper.notifErrorHttp(data);
-        //     });
-        $scope.formAkses = {
-            idRole: $scope.idPeran,
-            listMenu: $scope.listMenu
-        }
-        console.log(JSON.stringify($scope.formAkses));
-
-    }
     $scope.closeModal = function () {
         $('#myModal').modal('hide');
         $scope.clearForm();

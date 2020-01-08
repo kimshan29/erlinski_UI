@@ -1,4 +1,4 @@
-mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper) {
+mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, Upload, $timeout) {
 
     $scope.Helper = Helper;
     $scope.currentUser = {};
@@ -20,11 +20,10 @@ mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParam
     }
 
     $scope.getVendor = function () {
-        var apiUrl = "/api/vendor";
+        var apiUrl = "/api/vendor?username=" + $scope.currentUser.username;
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.master.vendor = response.items;
             console.log(JSON.stringify($scope.master.vendor));
-
         })
     }
 
@@ -39,7 +38,9 @@ mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParam
     $scope.renderList = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/menu";
+        var apiUrl = "/api/menu?username=" + $scope.currentUser.username;
+        console.log(apiUrl);
+
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.listMenuMakanan = response.items;
             console.log(JSON.stringify($scope.listMenuMakanan));
@@ -58,8 +59,9 @@ mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParam
         $scope.btnUpdate = false;
     }
     $scope.eventClickSave = function (file) {
-        console.log(file);
-
+        // console.log(file);
+        $('.Loading').show();
+        $('.page-form').hide();
         $scope.form.username = $scope.currentUser.email;
         var dataForm = $scope.form;
         var apiUrl = "/api/menu/addMenu";
@@ -69,46 +71,47 @@ mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParam
             $scope.idMenu = response;
             $scope.renderList();
             $scope.closeModal();
-            // if (file == undefined) {
-            //     $scope.eventClickCancel();
-            //     console.log("1");
-            //     $scope.listMenuMakanan();
-            // } else {
-            //     file.upload = Upload.upload({
-            //         url: 'http://192.168.100.185:20010/api/UploadMenuMakanan',
-            //         // url: '',
-            //         data: {
-            //             idMenu: $scope.idMenu,
-            //             file: file
-            //         },
-            //     });
+            if (file == undefined) {
+                $scope.closeModal();
+                console.log("1");
+                $scope.renderList();
+            } else {
+                file.upload = Upload.upload({
+                    url: 'http://api.canteencounting.com/api/menu/uploadMenu',
+                    // url: '',
+                    data: {
+                        id: $scope.idMenu,
+                        file: file
+                    },
+                });
 
-            //     file.upload.then(function (response) {
-            //         $timeout(function () {
-            //             file.result = response.data;
-            //             console.log(JSON.stringify(response.data));
-            //         });
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        console.log(JSON.stringify(response.data));
+                    });
+                    $('.Loading').hide();
+                    $('.page-form').show();
+                    // Get List Upload File
+                    swal("Data Berhasil Disimpan", {
+                        icon: "success",
+                    });
+                    console.log(response.data);
+                    $scope.renderList();
+                    $scope.closeModal();
+                    $scope.clearForm();
 
-            //         // Get List Upload File
-            //         $scope.listMenuMakanan();
-            //         swal("Data Berhasil Disimpan", {
-            //             icon: "success",
-            //         });
-            //         console.log(response.data);
-            //         // $scope.eventClickCloseModal();
-            //         $scope.clearForm();
-            //         //  $scope.announcement.isEditMode = false;
-            //     }, function (response) {
-            //         if (response.status > 0)
-            //             $scope.errorMsg = response.status + ': ' + response.data;
-            //         console.log(response.data);
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                    console.log(response.data);
 
-            //     }, function (evt) {
-            //         // Math.min is to fix IE which reports 200% sometimes
-            //         file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 
-            //     });
-            // }
+                });
+            }
 
             console.log(JSON.stringify($scope.form));
         });
@@ -117,21 +120,61 @@ mainApp.controller("masterMenuMakananCtrl", function ($http, $scope, $routeParam
 
     }
 
-    $scope.eventClickUpdate = function () {
+    $scope.eventClickUpdate = function (file) {
         $('.Loading').show();
         $('.page-form').hide();
         var apiUrl = "/api/menu/updateMenu";
-        $scope.form.createdBy = $scope.currentUser.email;
+        $scope.form.createdBy = $scope.currentUser.username;
 
         HttpRequest.post(apiUrl, $scope.form).success(function (response) {
-            $('.Loading').hide();
-            $('.page-form').show();
+
             console.log(JSON.stringify($scope.form));
+            var idMakanan = $scope.form.id;
+            console.log("idMakanan:" + idMakanan);
+
             $scope.renderList();
             $scope.closeModal();
-            swal("Data Berhasil Disimpan", {
-                icon: "success",
-            });
+            if (file == undefined) {
+                $scope.closeModal();
+                console.log("1");
+                $scope.renderList();
+            } else {
+                file.upload = Upload.upload({
+                    url: 'http://api.canteencounting.com/api/menu/uploadMenu',
+                    // url: '',
+                    data: {
+                        id: idMakanan,
+                        file: file
+                    },
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        console.log(JSON.stringify(response.data));
+                    });
+
+                    // Get List Upload File
+                    swal("Data Berhasil Diupdate", {
+                        icon: "success",
+                    });
+                    console.log(response.data);
+                    $scope.renderList();
+                    $scope.closeModal();
+                    $scope.clearForm();
+
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                    console.log(response.data);
+
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+                });
+            }
+
         })
     }
     $scope.eventClickEdit = function (id) {

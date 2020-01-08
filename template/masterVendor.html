@@ -1,7 +1,7 @@
-<div class="content Loading loading-position">
+<div class="content Loading">
   <div>
     <p class="text-center">
-      <img class="blink-image" src="./../images/loading.gif">
+      <img class="blink-image loading-position" src="./../images/loading.gif">
     </p>
   </div>
 </div>
@@ -173,7 +173,7 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+            <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="closeModal()">Close</button>
             <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
             <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
           </div>

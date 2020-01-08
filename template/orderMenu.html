@@ -1,14 +1,33 @@
+<style>
+    .box-part {
+        background: #fb387e;
+        border-radius: 0;
+        /* padding: 9px 10px; */
+        margin: 15px 0px;
+        box-shadow: 1px 1px 2px 0 #abafb2;
+    }
+
+    .img-card {
+        width: 100%;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+    }
+
+    .img-static {
+        width: 100%;
+        height: 10vw;
+        object-fit: cover;
+    }
+</style>
 <section class="content-header">
     <h1>
         Order Menu
-        <!-- <small>advanced tables</small> -->
     </h1>
-    <!-- <ol class="breadcrumb">
-        <li>
-            <i class="fa fa-dashboard"></i> Master Form</li>
-       
-        <li class="active">Master Kebijakan</li>
-    </ol> -->
+
+    <!-- Date: {{dateNow}}
+    Shift: {{idShift}} -->
 </section>
 <section class="content">
     <div class="row" ng-show="!lapGratifikasi.isEditMode">
@@ -20,50 +39,21 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <ul class="users-list clearfix">
-                        <li ng-repeat="item in listMenu">
-                            <label ng-hide="true">{{item.id}}</label>
-                            <img src="{{item.imgUrl}}" alt="User Image" style="cursor:pointer;" ng-click="pilihMenu(item)">
-                            <a class="users-list-name" href="#">{{item.namaMenu}}</a>
-                            <span class="users-list-date">{{item.kalori}}</span>
-                            <span class="users-list-date">{{item.alergi}}</span>
-                        </li>
-                        <!-- <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li>
-                        <li>
-                            <img src="./../images/menu-makanan/mini-menu/menu1.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Daging Sapi Panggang</a>
-                            <span class="users-list-date">70 kl</span>
-                        </li> -->
-                    </ul>
+
+                    <div id="cardMenu" class="col-md-3" ng-repeat="menu in listDisplayMenu">
+                        <div class="box-part text-center" style="cursor:pointer;" ng-click="pilihMenu(menu)">
+                            <img class="img-static" src="{{menu.urlImage}}" alt="Avatar" class="img-card">
+
+                            <div class="title" style="color:white">
+                                <h3>{{menu.namaMenu}}</h3>
+                                <div class="text-left" style="margin-left: 10px;;">
+                                    <p>Info Kalori : {{menu.infoKalori}} kl</p>
+                                    <p style="margin-top: -10px; padding-bottom: 15px;">Info Alergi : {{menu.infoAlergi}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,22 +68,47 @@
                     <ul class="products-list product-list-in-box">
                         <li class="item" ng-repeat="row in listPesanan">
                             <div class="product-img">
-                                <img src="{{row.imgUrl}}" alt="Product Image">
+                                <img src="{{row.urlImage}}" alt="Product Image">
                             </div>
                             <div class="product-info">
                                 <a href="javascript:void(0)" class="product-title">{{row.namaMenu}}
                                     <i style="float:right;color: red;" class="fa fa-trash" ng-click="hapusItemOrder($index)"></i>
                                     <span class="product-description">
-                                        <p>{{row.kalori}}</p>
-                                        <p>{{row.alergi}}</p>
+                                        <p>{{row.infoKalori}}</p>
+                                        <p style="margin-top: -10px; padding-bottom: 15px;">{{row.infoAlergi}}</p>
                                     </span>
 
                             </div>
                         </li>
                     </ul>
 
-                    <button class="btn btn-default btn-block bg-maroon" style="height:50px;" type="button" ng-click="orderMenu(listPesanan)">Order Menu</button>
+                    <button class="btn btn-default btn-block bg-maroon" ng-disabled="listPesanan == ''" style="height:50px;" type="button" ng-click="orderMenu(listPesanan)">Order Menu</button>
 
+                </div>
+            </div>
+
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">List Menu Yang Sudah di Order</h3>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="products-list product-list-in-box">
+                        <li class="item" ng-repeat="row in listAfterOrder">
+                            <div class="product-img">
+                                <img src="{{row.urlImage}}" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">{{row.namaMenu}}
+                                    <span class="product-description">
+                                        <p>{{row.infoKalori}}</p>
+                                        <p style="margin-top: -10px; padding-bottom: 15px;">{{row.infoAlergi}}</p>
+                                    </span>
+
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

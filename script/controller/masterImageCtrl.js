@@ -14,111 +14,207 @@ mainApp.controller("masterImageCtrl", function ($route, $scope, $uibModal, $rout
         } catch (err) {
             $scope.currentUser = {};
         }
-        // alert("testing");
-        // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderImage();
+        $scope.renderList();
     }
 
-    $scope.renderImage = function () {
-        // NProgress.start();
-        // $('.Loading').show();
-        // $('.page-form').hide();
-
-
-        // var apiUrl = "/api/MasterImage";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listMasterImage = response;
-        //     console.log(JSON.stringify($scope.listMasterImage));
-
-
-
-        //     $('.Loading').hide();
-        //     $('.page-form').show();
-        //     NProgress.done();
-        // });
-
-    }
-
-    $scope.eventClickSave = function () {
-
-        var dataForm = $scope.form;
+    $scope.renderList = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/MasterImage";
 
-        console.log(JSON.stringify(dataForm));
-        HttpRequest.post(apiUrl, dataForm).success(function (response) {
-            $scope.eventClickCloseModal();
-            swal('', 'Data Berhasil Disimpan', 'success')
+
+        var apiUrl = "/api/image";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listImage = response.items;
+            console.log(JSON.stringify($scope.listImage));
+
             $('.Loading').hide();
             $('.page-form').show();
         });
+
     }
-
-
 
     $scope.eventClickAdd = function () {
         $scope.modeEdit = false;
         $scope.modeAdd = true;
+
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
+    }
+    $scope.eventClickSave = function (file) {
+        console.log(file);
+        $('.Loading').show();
+        $('.page-form').hide();
+        if (file == undefined) {
+            $scope.closeModal();
+            console.log("1");
+            $scope.renderList();
+        } else {
+            if ($scope.form.status == true) {
+                $scope.form.status = "Aktive";
+            } else {
+                $scope.form.status = "Non Aktive";
+            }
+            file.upload = Upload.upload({
+                url: 'http://api.canteencounting.com/api/image/addImage',
+                // url: '',
+                data: {
+                    id: $scope.form.id,
+                    keteranganImage: $scope.form.keteranganImage,
+                    status: $scope.form.status,
+                    file: file
+                },
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                    console.log(JSON.stringify(response.data));
+                });
+                $('.Loading').hide();
+                $('.page-form').show();
+                // Get List Upload File
+                swal("Data Berhasil Disimpan", {
+                    icon: "success",
+                });
+                console.log(response.data);
+                $scope.renderList();
+                $scope.closeModal();
+                $scope.clearForm();
+
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+                console.log(response.data);
+
+            }, function (evt) {
+                // Math.min is to fix IE which reports 200% sometimes
+                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+            });
+        }
+
+
+
     }
 
+    $scope.eventClickUpdate = function (file) {
+        $('.Loading').show();
+        $('.page-form').hide();
+        if (file == undefined) {
+            $scope.closeModal();
+            console.log("1");
+            $scope.renderList();
+        } else {
+            if ($scope.form.status == true) {
+                $scope.form.status = "Aktive";
+            } else {
+                $scope.form.status = "Non Aktive";
+            }
+            file.upload = Upload.upload({
+                url: 'http://api.canteencounting.com/api/image/updateImage',
+                // url: '',
+                data: {
+                    id: $scope.form.id,
+                    keteranganImage: $scope.form.keteranganImage,
+                    status: $scope.form.status,
+                    file: file
+                },
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                    console.log(JSON.stringify(response.data));
+                });
+                $('.Loading').hide();
+                $('.page-form').show();
+                // Get List Upload File
+                swal("Data Berhasil Disimpan", {
+                    icon: "success",
+                });
+                console.log(response.data);
+                $scope.renderList();
+                $scope.closeModal();
+                $scope.clearForm();
+
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+                console.log(response.data);
+
+            }, function (evt) {
+                // Math.min is to fix IE which reports 200% sometimes
+                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+            });
+        }
+    }
     $scope.eventClickEdit = function (id) {
 
-        console.log(id);
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+        var apiUrl = "/api/image?id=" + id;
+        console.log(apiUrl);
 
-        $('#myModal').modal({
-            show: true
-        });
-
-        var apiUrl = "/api/MasterImage/" + id;
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response;
-
+            $scope.form = response.items;
+            if ($scope.form.status == "Non Aktive") {
+                $scope.form.status = false;
+            } else {
+                $scope.form.status = true;
+            }
             console.log(JSON.stringify($scope.form));
+
         })
 
     }
 
-    $scope.eventClickHapus = function (id) {
-        var apiUrl = "/api/MasterImage/" + id;
-        // console.log(apiUrl);
-        var hapus = confirm("Are You Sure You Want to Delete This Item?");
+    $scope.eventClickDelete = function (id) {
+        swal({
+                title: "Delete!!!",
+                text: "Yakin Ingin Menghapus Data ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                $('.Loading').show();
+                $('.page-form').hide();
+                if (willDelete) {
+                    $scope.dataForm = {
+                        id: id,
+                        updateBy: $scope.currentUser.email
+                    }
+                    var apiUrl = "/api/image/deleteimage";
+                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                        $('.Loading').hide();
+                        $('.page-form').show();
+                        swal("Data Berhasil Dihapus!", {
+                            icon: "success",
+                        });
+                        $scope.renderList();
+                    })
 
-        if (hapus) {
-            // NProgress.start();
-
-            HttpRequest.del(apiUrl).success(function (response) {
-                    $scope.renderImage();
-                })
-                .error(function (response, code) {
-                    // NProgress.done();
-
-                    var data = {
-                        title: "Master Running Text",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "DELETE",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
+                } else {
+                    // swal("Data To");
+                }
+            });
     }
 
 
     $scope.clearForm = function () {
         $scope.form.id = '';
-        $scope.form.message = '';
-        $scope.form.isActive = '';
+        $scope.form.keteranganImage = '';
+        $scope.form.status = '';
+        $scope.form.file = undefined;
 
     }
 
-    $scope.eventClickCloseModal = function () {
+    $scope.closeModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderImage();
+        $scope.renderList();
     }
 
 

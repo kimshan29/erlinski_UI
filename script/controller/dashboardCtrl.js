@@ -3,27 +3,7 @@ mainApp.controller("dashboardCtrl", function ($route, $scope, $uibModal, $routeP
 
 
     $scope.currentUser = {};
-    $scope.listKebijakan = {};
-    $scope.listAnnouncement = {};
-    // $scope.listKebijakan.data = [{
-    //         id: "1",
-    //         kebijakan: "Lorem Ipsum is simply dummy text of the printing and typesetting industry 1"
-    //     },
-    //     {
-    //         id: "2",
-    //         kebijakan: "Lorem Ipsum is simply dummy text of the printing and typesetting industry 2"
-    //     }, {
-    //         id: "3",
-    //         kebijakan: "Lorem Ipsum is simply dummy text of the printing and typesetting industry 3"
-    //     }, {
-    //         id: "4",
-    //         kebijakan: "Lorem Ipsum is simply dummy text of the printing and typesetting industry 4"
-    //     }, {
-    //         id: "5",
-    //         kebijakan: "Lorem Ipsum is simply dummy text of the printing and typesetting industry 5"
-    //     }
-    // ]
-    //Form Load ======================================================================
+    //    ========================================================
     $scope.formLoad = function () {
         try {
             $scope.currentUser = JSON.parse($cookies.get('currentUser'));
@@ -33,126 +13,237 @@ mainApp.controller("dashboardCtrl", function ($route, $scope, $uibModal, $routeP
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        // Disabled Menu Dashboard
-        $("#komitmenkepatuhan").addClass("disabledbutton");
-        $("#komitmenBenturanKepentingan").addClass("disabledbutton");
-        $("#daftarKhusus").addClass("disabledbutton");
-        $("#lhkpn").addClass("disabledbutton");
-        $("#faqs").addClass("disabledbutton");
-
-        $scope.renderKebijakan();
-        $scope.renderAnnouncement();
-        $("#materiSosialisasi").addClass("disabledbutton");
-        // $("#pelayananKip").addClass("disabledbutton");
-        // $("#wbs").addClass("disabledbutton");
-    }
-
-    $scope.renderKebijakan = function () {
-        var apiUrl = "/api/MateriSosialisasi";
-        HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listKebijakan.data = response;
-
-            // console.log(JSON.stringify($scope.listKebijakan.data));
-        })
-    }
-
-    $scope.renderAnnouncement = function () {
-        var apiUrl = "/api/Announcement";
-        HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listAnnouncement.data = response;
-            // console.log(JSON.stringify($scope.listAnnouncement.data));
-        })
-    }
+        console.log(JSON.stringify($scope.currentUser));
 
 
-    $scope.popUpDetailAccouncement = function (id) {
-        $('#detailAnnouncement').modal({
-            show: true
+
+        // Create the chart
+        Highcharts.chart('chartDaily', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Grafik Daily'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                        name: "Employee",
+                        y: 40,
+                        drilldown: "Employee"
+                    },
+                    {
+                        name: "Third Party",
+                        y: 30,
+                        drilldown: "Third Party"
+                    },
+                    {
+                        name: "Visitor",
+                        y: 30,
+                        drilldown: "Visitor"
+                    }
+                ]
+            }]
         });
 
-        var apiUrl = "/api/Announcement/" + id;
-        HttpRequest.get(apiUrl).success(function (response) {
-            $scope.previewAnnouncement = response;
-            // console.log(JSON.stringify($scope.previewAnnouncement.isi));
-            $('#previewAnnouncement').html($scope.previewAnnouncement.isi);
+        // Weekly
+        Highcharts.chart('chartWeekly', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Grafik Weekly'
+            },
+            subtitle: {
+                text: ''
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Jumlah Yang Makan'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+
+            series: [{
+                name: "Browsers",
+                colorByPoint: true,
+                data: [{
+                        name: "Employee",
+                        y: 40,
+                        drilldown: "Employee"
+                    },
+                    {
+                        name: "Third Party",
+                        y: 30,
+                        drilldown: "Third Party"
+                    },
+                    {
+                        name: "Visitor",
+                        y: 30,
+                        drilldown: "Visitor"
+                    }
+                ]
+            }]
+
         });
+
+        // Monthly
+        Highcharts.chart('chartMonthly', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Grafik Monthly'
+            },
+            subtitle: {
+                text: ''
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Jumlah Yang Makan'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+
+            series: [{
+                name: "Browsers",
+                colorByPoint: true,
+                data: [{
+                        name: "Employee",
+                        y: 40,
+                        drilldown: "Employee"
+                    },
+                    {
+                        name: "Third Party",
+                        y: 30,
+                        drilldown: "Third Party"
+                    },
+                    {
+                        name: "Visitor",
+                        y: 30,
+                        drilldown: "Visitor"
+                    }
+                ]
+            }]
+
+        });
+
+        // Yearly
+        Highcharts.chart('chartYearly', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Grafik Yearly'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                        name: "Employee",
+                        y: 40,
+                        drilldown: "Employee"
+                    },
+                    {
+                        name: "Third Party",
+                        y: 30,
+                        drilldown: "Third Party"
+                    },
+                    {
+                        name: "Visitor",
+                        y: 30,
+                        drilldown: "Visitor"
+                    }
+                ]
+            }]
+        });
+
     }
 
 
-    $scope.popUpDetailKebijakan = function (id) {
-        $('#detailKebijakan').modal({
-            show: true
-        })
-
-        var apiUrl = "/api/MateriSosialisasi/" + id;
-        HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response;
-            $scope.form.tanggalDokumen = response.tanggalDokumen.toDate();
-            // console.log(JSON.stringify($scope.form));
-        })
-    }
-
-    $scope.openGolKPK = function () {
-        // alert("test");
-        window.open("https://gol.kpk.go.id");
-    }
-
-    $scope.openGCGNews = function () {
-        // window.open();
-        alert("Belum Ada Link");
-    }
-
-    $scope.openGCGForum = function () {
-        window.open("http://forum.indonesiapower.co.id/c/proses-bisnis/manajemen-hubungan-stakeholders");
-    }
-
-    // download Kebijakan
-    $scope.eventClickGetFileKebijakan = function (id) {
-        var apiUrl = "/api/DownloadMateriSosialisasi/" + id;
-        document.location.href = webServiceBaseUrl + apiUrl;
-        // alert("File Not Found!!!")
-    }
-
-    // Function switch link form
-    $scope.switchLink = function () {
-        linkKey = $scope.selected;
-
-        switch (linkKey) {
-            case 'laporanGratifikasi':
-                alert('Testing');
-                break;
-            case 'surveyPemahamanGcg':
-                alert('survey');
-                break;
-            case 'pelayananKip':
-                $('#formPelayananKip').modal({
-                    show: true
-                });
-                $('#myModal').modal('hide');
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    $scope.eventClickSaveKip = function () {
-
-        // $('#myModal').modal('hide');
-
-        $('#formPelayananKip').modal('hide');
-        location.href = "/index.html#/pelayananKip";
-        // alert("test");
-
-
-    }
-
-    $scope.clearModalForm = function () {
-
-    }
-    $scope.eventClickFormKIP = function () {
-        alert("Testttttt");
-    }
     //Start of Application ===============================================================
     $scope.formLoad();
 })

@@ -22,6 +22,9 @@
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+	<!-- Sweet Alert CSS -->
+	<link rel="stylesheet" href="./plugins/sweet-alert/sweetalert.css">
 	<!--===============================================================================================-->
 </head>
 
@@ -54,7 +57,7 @@
 					</span>
 
 					<div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
-						<input class="input100" ng-model="email" type="text" name="username" placeholder="Username">
+						<input class="input100" ng-model="username" type="text" name="username" placeholder="Username">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -103,7 +106,8 @@
 	<!-- Angular Loading Bar -->
 	<script src="plugins/loader/nprogress.js"></script>
 	<link href="plugins/loader/nprogress.css" rel='stylesheet' />
-
+	<!-- Sweet Alert -->
+	<script src="./node_modules/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script type="text/javascript">
 		var app = angular.module('loginApp', ['ngCookies', 'ngSanitize']);
@@ -114,37 +118,42 @@
 			$scope.loginClick = function () {
 				NProgress.start();
 
-				// var apiUrl = "localhost";
-				var apiUrl = "";
-				$scope.loginAs = "Indonesia Power";
+				// var apiUrl = "http://localhost/api-canteen/index.php/api/user/login";
+				var apiUrl = "http://api.canteencounting.com/api/user/login";
 				var data = {
-					username: $scope.email,
-					password: $scope.password,
-					loginAs: $scope.loginAs
+					username: $scope.username,
+					password: $scope.password
+
 				};
 
 				// $scope.currentUser = JSON.parse($cookies.get('currentUser'));
-				document.location.href = "index.html#/home";
+				// document.location.href = "index.html#/home";
 				// console.log(JSON.stringify(data));
-				// $http.post(apiUrl, data).success(function (response) {
-				// 		console.log(JSON.stringify(response));
+				$http.post(apiUrl, data).success(function (response) {
+						console.log(JSON.stringify(response.items));
 
-				// 		if (response.employeeNumber == null && response.name == null) {
-				// 			$scope.isValidLogin = false;
-				// 			NProgress.done();
-				// 		} else {
-				// 			$cookies.put('currentUser', JSON.stringify(response));
-				// 			$scope.currentUser = JSON.parse($cookies.get('currentUser'));
-				// 			NProgress.done();
-				// 			document.location.href = "index.html#/home";
-				// 			console.log(currentUser.name);
-				// 		}
-				// 	})
-				// 	.error(function (response, code) {
-				// 		NProgress.done();
-				// 		alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
-				// 		console.log("error : " + JSON.stringify(response));
-				// 	});
+						if (response.status == "not_found") {
+							$scope.isValidLogin = false;
+							swal("Username & Password Anda Salah !!!", {
+								icon: "warning",
+							});
+							console.log("1");
+
+							NProgress.done();
+						} else {
+							console.log("2");
+							$cookies.put('currentUser', JSON.stringify(response.items));
+							$scope.currentUser = JSON.parse($cookies.get('currentUser'));
+							NProgress.done();
+							document.location.href = "index.html#/home";
+							console.log(currentUser);
+						}
+					})
+					.error(function (response, code) {
+						NProgress.done();
+						alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
+						console.log("error : " + JSON.stringify(response));
+					});
 			};
 		});
 	</script>

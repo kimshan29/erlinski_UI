@@ -1,6 +1,6 @@
 var mainApp = angular.module('mainApp', ['ngRoute', 'ngSanitize', 'ngCookies', 'datatables', 'datatables.columnfilter',
     'ngFileUpload', 'ui.bootstrap', 'uiSwitch', 'ngCkeditor', 'validation', 'validation.rule',
-    'angularUtils.directives.dirPagination', 'htmlToPdfSave', 'summernote'
+    'angularUtils.directives.dirPagination'
 ]);
 
 
@@ -10,18 +10,20 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
 
         try {
             currentUser = JSON.parse($cookies.get('currentUser'));
+            console.log(currentUser);
+
         } catch (err) {}
 
-        // if (currentUser == null)
-        //     document.location.href = 'login.html';
+        if (currentUser == null)
+            document.location.href = 'login.html';
 
-        // $('.Loading').Hide();
+        $('.Loading').hide();
 
     });
 
     $rootScope.$on('$routeChangeSuccess', function (e, current, pre) {
 
-        //console.log('Current route name: ' + $location.path() + '. currentUser : ' + $cookies.get('currentUser'));
+        console.log('Current route name: ' + $location.path() + '. currentUser : ' + $cookies.get('currentUser'));
         var currentUser = null;
 
         try {
@@ -31,8 +33,8 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
         $cookies.put('currentRoute', $location.path());
 
 
-        // if (path != "/401" && path != "/error" && path != "/new-kr" && path != "/new-dmr" && path != "/map-risk") {
-        //     var url = "/main.aspx#" + path;
+        // if (path != "/404" && path != "/error") {
+        //     var url = "/index.html#" + path;
         //     var encodedUrl = encodeURIComponent(url);
         //     var fullEncodedUrl = encodeURIComponent($location.absUrl());
 
@@ -61,13 +63,18 @@ mainApp.config(function ($routeProvider) {
     $routeProvider
         // Home
         .when('/', {
-            templateUrl: 'template/404error.html',
-            // controller: 'dashboardCtrl',
+            templateUrl: 'template/displayMenu.html',
+            controller: 'displayMenuCtrl',
             cache: false,
         })
         .when('/home', {
-            templateUrl: 'template/404error.html',
-            // controller: 'dashboardCtrl',
+            templateUrl: 'template/displayMenu.html',
+            controller: 'displayMenuCtrl',
+            cache: false,
+        })
+        .when('/dashboard', {
+            templateUrl: 'template/dashboard.html',
+            controller: 'dashboardCtrl',
             cache: false,
         })
         .when('/orderMenu', {
@@ -105,6 +112,11 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterRunningTextCtrl',
             cache: false
         })
+        .when('/masterShift', {
+            templateUrl: 'template/masterShift.html',
+            controller: 'masterShiftCtrl',
+            cache: false
+        })
         .when('/masterImage', {
             templateUrl: 'template/masterImage.html',
             controller: 'masterImageCtrl',
@@ -114,6 +126,21 @@ mainApp.config(function ($routeProvider) {
             templateUrl: 'template/reportAll.html',
             cache: false,
             controller: 'reportAllCtrl'
+        })
+        .when('/reportTotalCounting', {
+            templateUrl: 'template/reportTotalCounting.html',
+            cache: false,
+            controller: 'reportTotalCountingCtrl'
+        })
+        .when('/reportCountingVendor', {
+            templateUrl: 'template/reportCountingVendor.html',
+            cache: false,
+            controller: 'reportCountingVendorCtrl'
+        })
+        .when('/reportCountingEmployee', {
+            templateUrl: 'template/reportCountingEmployee.html',
+            cache: false,
+            controller: 'reportCountingEmployeeCtrl'
         })
         .when('/form3', {
             templateUrl: 'template/form3.html',
@@ -132,8 +159,8 @@ mainApp.config(function ($routeProvider) {
 
         //Form Project
         .when('/project', {
-            templateUrl: 'template/formProject.html?' + $.now(),
-            controller: 'formProjectCtrl',
+            templateUrl: 'template/404error.html?' + $.now(),
+            // controller: 'formProjectCtrl',
             cache: false
         })
         // Master Menu

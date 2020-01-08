@@ -1,7 +1,7 @@
-<div class="content Loading loading-position">
+<div class="content Loading">
     <div>
         <p class="text-center">
-            <img class="blink-image" src="./../images/loading.gif">
+            <img class="blink-image loading-position" src="./../images/loading.gif">
         </p>
     </div>
 </div>
@@ -31,29 +31,31 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
+                                <th>NIP</th>
                                 <th>Username</th>
-                                <th>Password</th>
+                                <!-- <th>Password</th> -->
                                 <th>Jabatan</th>
                                 <th>Role User</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in listUser">
+                            <tr dir-paginate="item in listUser |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
-                                <td>{{item.nama}}</td>
+                                <td>{{item.namaLengkap}}</td>
+                                <td>{{item.nip}}</td>
                                 <td>{{item.username}}</td>
-                                <td>
+                                <!-- <td>
                                     {{item.password}}
+                                </td> -->
+                                <td>
+                                    {{item.namaJabatan}}
                                 </td>
                                 <td>
-                                    {{item.jabatan}}
+                                    {{item.namaRole}}
                                 </td>
                                 <td>
-                                    {{item.role}}
-                                </td>
-                                <td>
-                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                    <button type='button' class='btn btn-info btn-sm' style=" border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
@@ -65,6 +67,8 @@
 
                         </tbody>
                     </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
                 </div>
                 <!-- /.table-responsive -->
             </div>
@@ -89,7 +93,7 @@
                         <div class="box box-info">
 
                             <div class="box-header">
-                                <h3 class="box-title">Tambah Master User</h3>
+                                <h3 class="box-title">Registrasi User</h3>
                             </div>
                             <div class="box-body">
                                 <form class="form-horizontal" name="myForm">
@@ -97,37 +101,57 @@
                                         <label class="col-md-4 control-label">Nama</label>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                            <input type="text" class="form-control" ng-model="form.nama" required>
+                                            <input type="text" class="form-control" ng-model="form.namaLengkap" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">NIP</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.nip" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Email</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="form.email" required>
+                                            <!-- <input type="text" class="form-control" ng-model="form.email" required> -->
+                                            <input type="email" name="email" class="form-control" ng-model="form.email">
+                                            <p ng-show="myForm.email.$invalid && !myForm.email.$pristine" class="help-block">Enter a valid email.</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Username</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="form.username" required>
+                                            <input type="text" class="form-control" ng-model="form.username" ng-change="cekUserName(form.username)" required>
+                                            <div class="alert alert-danger1" ng-show="showValidasi">
+                                                <strong>Username Sudah Terdaftar</strong>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Password</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="form.password" required>
+                                            <input type="password" class="form-control" ng-model="form.password" ng-change="minPass()" required>
+                                            <div class="alert alert-danger1" ng-show="jmlChar < 8">
+                                                <strong>Minimal 8 Karakter</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" ng-hide="divPilihanJawaban">
+                                    <div class="form-group">
                                         <label class="col-md-4 control-label">Jabatan</label>
                                         <div class="col-md-8">
-                                            <select class="form-control" ng-model="form.jabatan" ng-options="item.id as item.nama for item in master.jabatan"></select>
+                                            <select class="form-control" ng-model="form.jabatan" ng-options="item.id as item.namaJabatan for item in master.jabatan"></select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Role Akses</label>
                                         <div class="col-md-8">
-                                            <select class="form-control" ng-model="form.role" required ng-options="item.id as item.nama for item in master.role"></select>
+                                            <select class="form-control" ng-model="form.roleUser" required ng-options="item.id as item.namaRole for item in master.role" ng-change="getVendor(form.roleUser)"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="aktiveVendor">
+                                        <label class="col-md-4 control-label">Pilih Vendor</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" ng-model="form.vendor" ng-options="item.id as item.namaVendor for item in master.vendor"></select>
                                         </div>
                                     </div>
                                 </form>
@@ -136,8 +160,9 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="closeModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
                     </div>
                 </div>
             </div>

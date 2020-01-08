@@ -1,19 +1,11 @@
 mainApp.controller("masterUsertrl", function ($scope, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder) {
     $scope.Helper = Helper;
     $scope.currentUser = {};
+    $scope.pageSize = 10;
+    $scope.currentPage = 1;
+    $scope.master = {};
 
-    $scope.user = {};
-    $scope.user.data = {};
-    $scope.user.master = {};
-    $scope.user.master.unit = [];
-    $scope.user.master.peran = [];
-    $scope.user.input = {};
-    $scope.user.isEditMode = false;
-    $scope.isAdd = false;
-
-    $scope.userexist = false;
-    $scope.emailexist = false;
-    $scope.user.exist = {};
+    $scope.aktiveVendor = false;
 
     //Procedures =====================================================================================================================
     $scope.formLoad = function () {
@@ -25,7 +17,8 @@ mainApp.controller("masterUsertrl", function ($scope, $routeParams, $q, $cookies
 
         // $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers').withOption('responsive', true).withDisplayLength(10);
 
-        $scope.renderUser();
+        $scope.renderList();
+        $scope.renderVendor();
 
 
     }
@@ -49,233 +42,209 @@ mainApp.controller("masterUsertrl", function ($scope, $routeParams, $q, $cookies
         // console.log(JSON.stringify($scope.user.input.fullName))
 
     }
+    $scope.getJabatan = function () {
+        var apiUrl = "/api/jabatan";
+        HttpRequest.get(apiUrl).success(function (response) {
 
-    $scope.renderUser = function () {
-        // NProgress.start();
-        // var apiUrl = "/api/UserInRole";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        // NProgress.done();
-        // });
+            $scope.master.jabatan = response.items;
+            console.log(JSON.stringify($scope.master.jabatan));
+
+        });
     }
 
+    $scope.getMasterRole = function () {
+        var apiUrl = "/api/role";
+        HttpRequest.get(apiUrl).success(function (response) {
+
+            $scope.master.role = response.items;
+            console.log(JSON.stringify($scope.master.role));
+
+
+        });
+    }
+    $scope.renderList = function () {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/user";
+        HttpRequest.get(apiUrl).success(function (response) {
+
+            $scope.listUser = response.items;
+            $scope.getJabatan();
+            $scope.getMasterRole();
+            console.log(JSON.stringify($scope.listUser));
+
+            $('.Loading').hide();
+            $('.page-form').show();
+        });
+    }
+
+    $scope.renderVendor = function () {
+        var apiUrl = "/api/vendor";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.master.vendor = response.items;
+            console.log(JSON.stringify($scope.listVendor));
+        })
+    }
+
+    $scope.getVendor = function (idRoleVendor) {
+        console.log(idRoleVendor);
+
+        if (idRoleVendor == 3) {
+            $scope.aktiveVendor = true;
+            $scope.renderVendor();
+        } else {
+            $scope.aktiveVendor = false;
+        }
+
+    }
+
+    $scope.cekUserName = (username) => {
+        var apiUrl = "/api/user?username=" + username;
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.statusUser = response.status;
+
+            if ($scope.statusUser == true) {
+                $scope.showValidasi = true;
+            } else {
+                $scope.showValidasi = false;
+            }
+            // console.log($scope.statusUser);
+
+        })
+    }
     //Event Handlers ===================================================================================================================
     $scope.eventClickAdd = function () {
-        $scope.user.input = {};
-        $scope.isAdd = true;
-        $scope.user.isEditMode = true;
-        $scope.user.input.typeUser = "INDONESIA POWER";
-        $scope.hideJVC();
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
     }
 
     $scope.eventClickCancel = function () {
-        $scope.renderUser();
-        $scope.user.isEditMode = false;
+        $scope.renderList();
+
     }
 
     $scope.eventClickSave = function () {
-        var apiUrl = "/api/UserInRole";
+
         // var apiUrl="";
-        if ($scope.isAdd == true) { // INI TAMBAH USER
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/user/addUser";
+        $scope.form.createdBy = $scope.currentUser.email;
+        console.log(JSON.stringify($scope.form));
 
-            if ($scope.userexist == false && $scope.emailexist == false) {
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            console.log(JSON.stringify($scope.form));
+            $('.Loading').hide();
+            $('.page-form').show();
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
+            });
 
-                $scope.user.input.dibuatOleh = $scope.currentUser.email;
-                // console.log(JSON.stringify($scope.user.input));
-                HttpRequest.post(apiUrl, $scope.user.input).success(function (response) {
-                        $scope.renderUser();
-                        $scope.user.isEditMode = false;
-                    })
-                    .error(function (response, code) {
-                        NProgress.done();
+        })
 
-                        var data = {
-                            title: "User",
-                            exception: response,
-                            exceptionCode: code,
-                            operation: "POST",
-                            apiUrl: apiUrl
-                        };
+    }
+    $scope.eventClickUpdate = function () {
 
-                        Helper.notifErrorHttp(data);
-                    });
-            }
+        // var apiUrl="";
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/api/user/updateUser";
+        $scope.form.createdBy = $scope.currentUser.email;
+        console.log(JSON.stringify($scope.form));
 
-        } else { // INI EDIT USER
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            console.log(JSON.stringify($scope.form));
+            $('.Loading').hide();
+            $('.page-form').show();
+            $scope.renderList();
+            $scope.closeModal();
+            swal("Data Berhasil Diupdate", {
+                icon: "success",
+            });
 
-            $scope.user.input.diubahOleh = $scope.currentUser.email;
-            HttpRequest.post(apiUrl, $scope.user.input).success(function (response) {
-                    $scope.renderUser();
-                    $scope.user.isEditMode = false;
-                })
-                .error(function (response, code) {
-                    NProgress.done();
-
-                    var data = {
-                        title: "User",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "POST",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
-
-
-
+        })
 
     }
 
     $scope.eventClickEdit = function (id) {
-        NProgress.start();
-        $scope.isAdd = false;
-        var apiUrl = "/api/UserInRole/" + id;
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+
+        var apiUrl = "/api/user?id=" + id;
+        console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-                // $scope.emailJvc = false;
-                // $scope.email = false;
-                $scope.user.input = response;
-                // if ($scope.user.input.typeUser == "INDONESIA POWER"){
-                //     $scope.emailJvc = true;
-                //     $scope.email= false;
-                //     console.log("1");
-                // }
-                if ($scope.user.input.typeUser == "NON INDONESIA POWER") {
-                    $scope.email = true;
-                    $scope.emailJvc = false;
-                    console.log("2");
-                } else {
-                    $scope.email = false;
-                    $scope.emailJvc = true;
-                    console.log("3");
-                }
+            $scope.form = response.items;
+            if ($scope.form.roleUser == 3) {
+                $scope.aktiveVendor = true;
+                $scope.renderVendor();
+            } else {
+                $scope.aktiveVendor = false;
+            }
+            console.log(JSON.stringify($scope.form));
 
+        })
+    }
 
-                $scope.user.input.tglAwalAktif = $scope.user.input.tglAwalAktif != null ? $scope.user.input.tglAwalAktif.toDate() : null;
-                $scope.user.input.tglAkhirAktif = $scope.user.input.tglAkhirAktif != null ? $scope.user.input.tglAkhirAktif.toDate() : null;
-                $scope.user.isEditMode = true;
-                $scope.isAdd = false;
-                NProgress.done();
-
-                console.log(JSON.stringify($scope.user.input));
+    $scope.eventClickDelete = function (id) {
+        swal({
+                title: "Delete!!!",
+                text: "Yakin Ingin Menghapus Data ini?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
             })
-            .error(function (response, code) {
-                NProgress.done();
+            .then((willDelete) => {
+                $('.Loading').show();
+                $('.page-form').hide();
+                if (willDelete) {
+                    $scope.dataForm = {
+                        id: id,
+                        updateBy: $scope.currentUser.email
+                    }
+                    var apiUrl = "/api/akses/deleteAkses";
+                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                        $('.Loading').hide();
+                        $('.page-form').show();
+                        swal("Data Berhasil Dihapus!", {
+                            icon: "success",
+                        });
+                        $scope.renderList();
+                    })
 
-                var data = {
-                    title: "User",
-                    exception: response,
-                    exceptionCode: code,
-                    operation: "GET",
-                    apiUrl: apiUrl
-                };
-
-                Helper.notifErrorHttp(data);
+                } else {
+                    // swal("Data To");
+                    $('.Loading').hide();
+                    $('.page-form').show();
+                }
             });
     }
-
-    $scope.eventClickHapus = function (id, name) {
-
-        var apiUrl = "/api/UserInRole?idUserInRole=" + id + "&email=" + $scope.currentUser.email;
-        var hapus = confirm("Hapus " + name + "?");
-
-        if (hapus) {
-            NProgress.start();
-
-            HttpRequest.del(apiUrl).success(function (response) {
-                    $scope.renderUser();
-                    $scope.user.isEditMode = false;
-                    NProgress.done();
-                })
-                .error(function (response, code) {
-                    NProgress.done();
-
-                    var data = {
-                        title: "User",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "DELETE",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
-    }
-
-    $scope.eventChangeUnit = function () {
-        var masterUnit = $scope.user.master.unit;
-        var selectedUnit = Helper.findItem(masterUnit, "id", $scope.user.input.unit.id);
-        $scope.user.input.unit.id = selectedUnit.id;
-        $scope.user.input.unit.name = selectedUnit.name;
-    }
-
-    $scope.eventChangePeran = function () {
-        var masterPeran = $scope.user.master.peran;
-        var selectedPeran = Helper.findItem(masterPeran, "id", $scope.user.input.peran.id);
-        $scope.user.input.peran.id = selectedPeran.id;
-        $scope.user.input.peran.name = selectedPeran.name;
-    }
-
-    $scope.eventCekUserExist = function (name) {
-
-        var DataExist = $scope.user.exist;
-        $scope.exist = Helper.findItem(DataExist, 'userName', name);
-        if ($scope.exist != null) {
-            $scope.userexist = true;
-        } else {
-            $scope.userexist = false;
-        }
-    }
-
-    $scope.eventCekUserExistEmail = function (email) {
-
-        var DataExist = $scope.user.exist;
-        $scope.exist = Helper.findItem(DataExist, 'email', email);
-        if ($scope.exist != null) {
-            $scope.emailexist = true;
-        } else {
-            $scope.emailexist = false;
-        }
-    }
-
-    $scope.hideJVC = function () {
-        $scope.company = true;
-        // $scope.jobTitle = true;
-        $scope.emailJvc = true;
-        $scope.email = false;
-
-
-        $scope.user.input.email = null;
-        $scope.user.input.emailJvc = null;
-        $scope.user.input.fullName = null;
-        $scope.user.input.peran = null;
-        $scope.user.input.groupAkses = null;
-        $scope.user.input.tglAwalAktif = null;
-        $scope.user.input.tglAkhirAktif = null;
-        $scope.user.input.company = null;
-        $scope.user.input.jobTitle = null;
+    $scope.closeModal = function () {
+        $('#myModal').modal('hide');
+        $scope.clearForm();
+        console.log("clearForm");
 
     }
 
-    $scope.showJVC = function () {
-        $scope.company = false;
-        // $scope.jobTitle = false;
+    $scope.clearForm = function () {
+        $scope.form.id = "";
+        $scope.form.nip = "";
+        $scope.form.namaLengkap = "";
+        $scope.form.email = "";
+        $scope.form.username = "";
+        $scope.form.password = "";
+        $scope.form.jabatan = "";
+        $scope.form.roleUser = "";
+        $scope.form.vendor = "";
 
-        $scope.emailJvc = false;
-        $scope.email = true;
+    }
 
-
-        $scope.user.input.email = null;
-        $scope.user.input.emailJvc = null;
-        $scope.user.input.fullName = null;
-        $scope.user.input.peran = null;
-        $scope.user.input.groupAkses = null;
-        $scope.user.input.tglAwalAktif = null;
-        $scope.user.input.tglAkhirAktif = null;
-        $scope.user.input.company = null;
-        $scope.user.input.jobTitle = null;
+    $scope.minPass = () => {
+        var jml = $scope.form.password;
+        $scope.jmlChar = jml.length;
+        console.log($scope.jmlChar);
 
     }
 

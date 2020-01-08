@@ -1,4 +1,4 @@
-mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("masterShiftCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -17,18 +17,18 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderRunningText();
+        $scope.renderShift();
     }
 
-    $scope.renderRunningText = function () {
+    $scope.renderShift = function () {
         $('.Loading').show();
         $('.page-form').hide();
 
 
-        var apiUrl = "/api/RunningText";
+        var apiUrl = "/api/shift";
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listMasterRunningText = response.items;
-            console.log(JSON.stringify($scope.listMasterRunningText));
+            $scope.listMasterShift = response.items;
+            console.log(JSON.stringify($scope.listMasterShift));
 
             $('.Loading').hide();
             $('.page-form').show();
@@ -42,13 +42,8 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
         var dataForm = $scope.form;
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/RunningText/addRunningText";
+        var apiUrl = "/api/Shift/addShift";
 
-        if ($scope.form.status == true) {
-            $scope.form.status = "Aktive";
-        } else {
-            $scope.form.status = "Non Aktive";
-        }
         console.log(JSON.stringify(dataForm));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
             $scope.eventClickCloseModal();
@@ -61,13 +56,9 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
     $scope.eventClickUpdate = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/RunningText/updateRunningText";
+        var apiUrl = "/api/Shift/updateShift";
         $scope.form.createdBy = $scope.currentUser.email;
-        if ($scope.form.status == false) {
-            $scope.form.status = "Non Aktive";
-        } else {
-            $scope.form.status = "Aktive";
-        }
+
 
         console.log(JSON.stringify($scope.form));
 
@@ -76,7 +67,7 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
             $('.Loading').hide();
             $('.page-form').show();
             console.log(JSON.stringify($scope.form));
-            $scope.renderRunningText();
+            $scope.renderShift();
             $scope.eventClickCloseModal();
             swal("Data Berhasil Diupdate", {
                 icon: "success",
@@ -93,29 +84,16 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
 
         $scope.btnSave = false;
         $scope.btnUpdate = true;
-        var apiUrl = "/api/RunningText?id=" + id;
+        var apiUrl = "/api/Shift?id=" + id;
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.items;
-            if ($scope.form.status == "Non Aktive") {
-                $scope.form.status = false;
-            } else {
-                $scope.form.status = true;
-            }
+
             console.log(JSON.stringify($scope.form));
 
         })
-        // $scope.form = {
-        //     "id": "7",
-        //     "message": "Launcing Aplikasi",
-        //     "status": true,
-        //     "delete": "0",
-        //     "createdBy": null,
-        //     "createdDate": null,
-        //     "updatedBy": null,
-        //     "updatedDate": null
-        // }
+
 
     }
 
@@ -135,14 +113,14 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
                         id: id,
                         updateBy: $scope.currentUser.email
                     }
-                    var apiUrl = "/api/RunningText/deleteRunningText";
+                    var apiUrl = "/api/Shift/deleteShift";
                     HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
                         $('.Loading').hide();
                         $('.page-form').show();
                         swal("Data Berhasil Dihapus!", {
                             icon: "success",
                         });
-                        $scope.renderRunningText();
+                        $scope.renderShift();
                     })
 
                 } else {
@@ -154,15 +132,16 @@ mainApp.controller("masterRunningTextCtrl", function ($route, $scope, $uibModal,
 
     $scope.clearForm = function () {
         $scope.form.id = '';
-        $scope.form.message = '';
-        $scope.form.isActive = '';
+        $scope.form.namaShift = '';
+        $scope.form.jamMulai = '';
+        $scope.form.jamSelesai = '';
 
     }
 
     $scope.eventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderRunningText();
+        $scope.renderShift();
     }
 
 

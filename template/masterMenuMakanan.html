@@ -1,7 +1,7 @@
-<div class="content Loading loading-position">
+<div class="content Loading">
     <div>
         <p class="text-center">
-            <img class="blink-image" src="./../images/loading.gif">
+            <img class="blink-image loading-position" src="./../images/loading.gif">
         </p>
     </div>
 </div>
@@ -37,6 +37,7 @@
                                 <th>Info Alergi</th>
                                 <th>File</th>
                                 <th>Nama Vendor</th>
+                                <th>Stok</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -52,12 +53,13 @@
                                     {{item.infoAlergi}}
                                 </td>
                                 <td>
-                                    <button type='button' class='btn btn-edit btn-sm' style="border-radius:50%;" uib-tooltip="List File" data-toggle="modal" data-target="#myModalFile" data-backdrop="static" data-keyboard="false" ng-click="getListFile(item.id, item.bulan, item.tahun)">
-                                        <span class='fa fa-list'></span>
-                                    </button>
+                                    <img style="max-width: 100px;" ng-src="{{item.url}}">
                                 </td>
                                 <td>
                                     {{item.namaVendor}}
+                                </td>
+                                <td>
+                                    {{item.stok}}
                                 </td>
                                 <td>
                                     <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
@@ -116,7 +118,8 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Info Kalori</label>
                                         <div class="col-md-8">
-                                            <textarea class="form-control" ng-model="form.infoKalori" required></textarea>
+                                            <input type="text" maxlength="3" class="form-control" ng-model="form.infoKalori" required onkeypress='validate(event)'>
+                                            <!-- <textarea class="form-control" ng-model="form.infoKalori" required></textarea> -->
                                         </div>
                                     </div>
                                     <div class="form-group" ng-hide="divPilihanJawaban">
@@ -131,36 +134,31 @@
                                             <select class="form-control" ng-model="form.namaVendor" required ng-options="item.id as item.namaVendor for item in master.vendor"></select>
                                         </div>
                                     </div>
+                                    <!-- <div class="form-group">
+                                        <label class="col-md-4 control-label">Stok</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.stok" required>
+                                        </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">File</label>
                                         <div class="col-md-8">
-                                            <div ng-show="modeAdd">
-                                                <input type="file" ngf-select ng-model="form.file" name="file" accept="" ngf-max-size="50MB" ngf-model-invalid="errorFile">
-                                                <i ng-show="myForm.file.$error.required">*required</i>
-                                                <br>
-                                                <i ng-show="myForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 50M</i>
-                                                <span class="progress" ng-show="form.file.progress >= 0">
-                                                    <div style="width:{{form.file.progress}}%" ng-bind="form.file.progress + '%'"></div>
-                                                </span>
-                                                <span ng-show="form.file.result">Upload Successful</span>
-                                                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-                                            </div>
-                                            <div ng-show="modeEdit">
-                                                <input type="file" ngf-select ng-model="form.file" name="file" accept="" ngf-max-size="50MB" ngf-model-invalid="errorFile" ng-show="editFile">
-                                                <table class="table">
-                                                    <tr ng-repeat="n in listFile">
-                                                        <td>{{n.judulDokumen}}</td>
-                                                        <td>
-                                                            <button type='button' class='btn btn-edit btn-sm' ng-click="showEditFile()">
-                                                                <span class='fa fa-pencil'></span>
-                                                            </button>
-                                                            <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapusFile(item.id, n.id)">
-                                                                <span class='fa fa-times-circle'></span>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
+                                            <input type="file" ngf-select ng-model="form.file" ng-disabled="activeUpload" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                            <i ng-show="myForm.file.$error.maxSize">File too large
+                                                {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
+                                            <br>
+                                            <table class="table">
+                                                <tr ng-repeat="n in listFile">
+                                                    <td>
+                                                        <label>{{n.judulDokumen}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <button type='button' class='btn btn-delete btn-sm' ng-click="eventClickHapusFile(formFile.idCOI,n.id)">
+                                                            <span class='fa fa-times-circle'></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </form>
@@ -169,7 +167,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="closeModal()">Close</button>
                         <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.file)">Save</button>
                         <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button>
                     </div>
@@ -178,3 +176,22 @@
         </div>
     </section>
 </div>
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

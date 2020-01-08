@@ -9,6 +9,8 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.menu.input = {};
     $scope.menu.isEditMode = false;
     $scope.menu.isView = false;
+    $scope.pageSize = 10;
+    $scope.currentPage = 1;
 
     $scope.menu.master.icon = [{
             icon: "fa fa-angle-double-right"
@@ -128,7 +130,7 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
             console.log(JSON.stringify($scope.form));
             $scope.renderList();
             $scope.closeModal();
-            swal("Data Berhasil Disimpan", {
+            swal("Data Berhasil Diupdate", {
                 icon: "success",
             });
         })
@@ -251,12 +253,20 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.closeModal = function () {
         $('#myModal').modal('hide');
         $scope.clearForm();
+        console.log("clearForm");
+
     }
 
     $scope.clearForm = function () {
         $scope.form.id = "";
         $scope.form.namaMenu = "";
         $scope.form.menuParent = "";
+        $scope.form.url = "";
+        $scope.form.noUrut = "";
+        $scope.form.levelMenu = "";
+        $scope.form.tipeMenu = "";
+        $scope.form.icon = "";
+        $scope.form.target = "";
     }
 
     //Start of Application =============================================================================================================

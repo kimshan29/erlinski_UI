@@ -40,14 +40,25 @@ mainApp.controller("masterVendorCtrl", function ($http, $scope, $routeParams, $q
         $scope.form.createdBy = $scope.currentUser.email;
 
         HttpRequest.post(apiUrl, $scope.form).success(function (response) {
-            console.log(JSON.stringify($scope.form));
-            $('.Loading').hide();
-            $('.page-form').show();
-            $scope.renderList();
-            $scope.closeModal();
-            swal("Data Berhasil Disimpan", {
-                icon: "success",
-            });
+            $scope.statusValidasi = response.status;
+
+            if ($scope.statusValidasi == "failed") {
+                $('.Loading').hide();
+                $('.page-form').show();
+                swal("Warning", "Data Vendor & Initial Sudah Ada !!!", {
+                    icon: "info",
+                });
+            } else {
+                console.log(JSON.stringify($scope.form));
+                $('.Loading').hide();
+                $('.page-form').show();
+                $scope.renderList();
+                $scope.closeModal();
+                swal("Data Berhasil Disimpan", {
+                    icon: "success",
+                });
+            }
+
 
         })
 
@@ -66,7 +77,7 @@ mainApp.controller("masterVendorCtrl", function ($http, $scope, $routeParams, $q
             console.log(JSON.stringify($scope.form));
             $scope.renderList();
             $scope.closeModal();
-            swal("Data Berhasil Disimpan", {
+            swal("Data Berhasil Diupdate", {
                 icon: "success",
             });
         })
@@ -85,7 +96,7 @@ mainApp.controller("masterVendorCtrl", function ($http, $scope, $routeParams, $q
 
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.items;
-            $scope.form.tglBergabung = response.tglBergabung.toDate();
+            $scope.form.tglBergabung = $scope.form.tglBergabung.toDate();
             console.log(JSON.stringify($scope.form));
 
         })
@@ -134,6 +145,8 @@ mainApp.controller("masterVendorCtrl", function ($http, $scope, $routeParams, $q
     $scope.closeModal = function () {
         $('#myModal').modal('hide');
         $scope.clearForm();
+        $('.Loading').hide();
+        $('.page-form').show();
     }
 
     $scope.clearForm = function () {

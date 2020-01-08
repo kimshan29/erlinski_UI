@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        Report All
+        Report Counting By Nama
         <!-- <small>advanced tables</small> -->
     </h1>
 </section>
@@ -34,7 +34,19 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-danger" ng-disabled="startDate==null && endDate==null" uib-tooltip="Search By Date" ng-click="searchByDate(startDate, endDate)"><span class="fa fa-search"></span></button>
+                    <label>Status</label>
+                    <div class="input-group">
+                        <select class="form-control" ng-model="status" ng-options="item.id as item.namaRole for item in master.role"></select>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label>Nama</label>
+                    <div class="input-group">
+                        <select class="form-control" ng-model="nama" required ng-options="item.nama for item in master.nama"></select>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <button class="btn btn-danger" ng-disabled="startDate==null && endDate==null" uib-tooltip="Search By Date" ng-click="getByEmployee(startDate, endDate, status)"><span class="fa fa-search"></span></button>
                     <button class="btn btn-success" uib-tooltip="Export Excel" ng-click="exportToExcel('#tableToExport')"><span class="fa fa-file-excel-o"></span></button>
                 </div>
                 <div class="form-group" style="float: right;">
@@ -52,7 +64,6 @@
                             <th>Date</th>
                             <th>Status</th>
                             <th>Nama Lengkap</th>
-                            <th>Vendor</th>
                             <th>Menu Utama</th>
                             <th>Menu Tambahan</th>
                             <th>Sayur</th>
@@ -64,12 +75,9 @@
                         <tr ng-repeat="item in listData">
                             <td>{{$index + 1}}</td>
                             <td>{{item.date}}</td>
-                            <td>{{item.status}}</td>
+                            <td>{{item.status}}A</td>
                             <td>
                                 {{item.namaLengkap}}
-                            </td>
-                            <td>
-                                {{item.vendor}}
                             </td>
                             <td>
                                 {{item.menuUtama}}

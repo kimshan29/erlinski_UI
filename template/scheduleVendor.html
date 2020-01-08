@@ -24,28 +24,28 @@
                             <th>No</th>
                             <th>Date</th>
                             <th>Jadwal</th>
-                            <th>Menu Utama</th>
+                            <!-- <th>Menu Utama</th>
                             <th>Menu Tambahan</th>
                             <th>Sayur</th>
-                            <th>Buah</th>
+                            <th>Buah</th> -->
+                            <th>Nama Vendor</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ayam Penyet</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                            <td class="text-center">{{pageSize * (currentPage-1)+$index+1}}</td>
+                            <td>{{item.date}}</td>
+                            <td>{{item.shift}}</td>
+
                             <td>
-                                Info Kalori
-                            </td>
-                            <td>
-                                Info Alergi
+                                {{item.namaVendor}}
                             </td>
 
                             <td>
+                                <button type='button' class='btn btn-success btn-sm' style="border-radius:50%;" uib-tooltip="View Menu Makanan" data-toggle="modal" data-target="#myModalDetailMakanan" data-backdrop="static" data-keyboard="false" ng-click="viewDetail(item.id)">
+                                    <span class='fa fa-search'></span>
+                                </button>
                                 <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                     <span class='fa fa-pencil'></span>
                                 </button>
@@ -57,6 +57,8 @@
 
                     </tbody>
                 </table>
+                <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                </dir-pagination-controls>
             </div>
             <!-- /.table-responsive -->
         </div>
@@ -67,6 +69,42 @@
         <!-- /.box-footer -->
     </div>
 
+    <div class="modal fade" id="myModalDetailMakanan" role="dialog">
+        <div class="modal-dialog" style="width: 50%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        <!-- <b>Tambah Master Menu</b> -->
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Jenis Menu</th>
+                                <th>Nama Menu</th>
+                                <th>Stok</th>
+                                <!-- <th>&nbsp;</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in listDetailMenuMakanan">
+                                <td>{{row.jenisMenu}}</td>
+                                <td>{{row.namaMenu}}</td>
+                                <td>{{row.stok}}</td>
+                                <!-- <td>
+                                    <span style="cursor:pointer;" id="basic-addon1" ng-click="deleteDetailMenuMakanan($index)"><i class="fa fa-times-circle" style="color:red;"></i></span>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog" style="width: 50%">
             <!-- Modal content-->
@@ -86,49 +124,78 @@
                         <div class="box-body">
                             <form class="form-horizontal" name="myForm">
                                 <div class="form-group">
+                                    <label class="col-md-4 control-label">Nama Vendor</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                        <select class="form-control" ng-model="form.vendor" ng-options="item.id as item.namaVendor for item in master.vendor" ng-change="getDataSift(form.vendor)"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Pilih Shift</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" ng-model="form.shift" required ng-options="item.shift as item.shift for item in master.shift" ng-change="getDateVendor(form.shift, form.vendor)"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-4 control-label">Date</label>
                                     <div class="col-md-8">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                            <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.date" ng-init="form.date = form.date.toDate()" is-open="form.date.$$dateOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="form.date.$$dateOpened = true">
-                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                </button>
-                                            </span>
+                                        <select class="form-control" ng-model="form.date" required ng-options="item.date as item.date for item in master.dateRange"></select>
+                                    </div>
+                                </div>
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Input Menu
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Pilih Jenis Menu</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" ng-model="jenisMenu" ng-options="item as item.namaJenisMenu for item in master.jenisMenu" ng-disabled="form.date == null"></select>
+                                            </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Search Menu</label>
+                                            <div class="col-md-8">
+                                                <!-- <select class="form-control" ng-model="menuUtama" required ng-options="item.id as item.namaMenu for item in master.menuUtama"></select> -->
+                                                <input type="text" placeholder="Ketikan Nama Menu" ng-model="namaMenu" ng-disabled="form.date == null" uib-typeahead="item as item.namaMenu for item in renderMenuMakanan($viewValue, form.vendor, jenisMenu.id)" typeahead-loading="loadingMenuMakanan" typeahead-no-results="noResultsMenuMakanan" class="form-control" typeahead-min-length="3" typeahead-editable="true" typeahead-show-hint="true" typeahead-wait-ms="0" typeahead-input-formatter="$model.namaMenu" />
+                                                <i ng-show="loadingMenuMakanan" class="glyphicon glyphicon-refresh"></i>
+                                                <div ng-show="noResultsMenuMakanan">
+                                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Stok</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="stok" onkeypress='validate(event)' ng-disabled="form.date == null">
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <button class="btn btn-sm btn-primary" uib-tooltip="Tambah Menu Makanan" ng-disabled="jenisMenu==null || namaMenu==null || stok==null" ng-click="addDetailMenuMakanan(jenisMenu,namaMenu,stok)"><span class="fa fa-plus"></span></button>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Jenis Menu</th>
+                                                    <th>Nama Menu</th>
+                                                    <th>Stok</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="ls in form.detailMenuMakanan">
+                                                    <td>{{ls.jenisMenu}}</td>
+                                                    <td>{{ls.namaMenu}}</td>
+                                                    <td>{{ls.stok}}</td>
+                                                    <td>
+                                                        <span style="cursor:pointer;" id="basic-addon1" ng-click="deleteDetailMenuMakanan($index)"><i class="fa fa-times-circle" style="color:red;"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Pilih Sift</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.sift" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Menu Utama</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.menuUtama" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Menu Tambahan</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.menuTambahan" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Sayur</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.sayur" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Buah</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.buah" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
-                                    </div>
-                                </div>
+
 
                             </form>
                         </div>
@@ -136,10 +203,31 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                    <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="closeModal()">Close</button>
+                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

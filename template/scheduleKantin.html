@@ -30,35 +30,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ayam Penyet</td>
-                            <td></td>
+                        <tr dir-paginate="item in listScheduleKantin |filter:search|itemsPerPage:pageSize" current-page="currentPage"">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.startDate}}</td>
+                            <td>{{item.endDate}}</td>
                             <td>
-                                Info Kalori
+                                {{item.vendor}}
                             </td>
                             <td>
-                                Info Alergi
+                                {{item.shift}}
                             </td>
 
                             <td>
-                                <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
-                                    <span class='fa fa-pencil'></span>
-                                </button>
-                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
-                                    <span class='fa fa-trash'></span>
-                                </button>
+                                <button type='button' class='btn btn-info btn-sm' style=" border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                            <span class='fa fa-pencil'></span>
+                            </button>
+                            <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                <span class='fa fa-trash'></span>
+                            </button>
                             </td>
                         </tr>
 
                     </tbody>
                 </table>
+                <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                </dir-pagination-controls>
             </div>
             <!-- /.table-responsive -->
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+            <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
         </div>
         <!-- /.box-footer -->
     </div>
@@ -112,13 +114,13 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Pilih Vendor</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.jenisMenu" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
+                                        <select class="form-control" ng-model="form.vendor" required ng-options="item.id as item.namaVendor for item in master.vendor"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Pilih Sift</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" ng-model="form.jenisMenu" required ng-options="item.id as item.namaJenisMenu for item in master.jenisMenu"></select>
+                                        <select class="form-control" ng-model="form.shift" required ng-options="item.id as item.namaShift for item in master.shift"></select>
                                     </div>
                                 </div>
 
@@ -129,7 +131,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-click="eventClickSave()">Save</button>
+                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                    <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
                 </div>
             </div>
         </div>
