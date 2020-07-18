@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-	<title>Indonesia Power</title>
+	<title>Erlinski Apps</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/Unilever.ico" />
+	<!-- <link rel="icon" type="image/png" href="images/icons/Unilever.ico" /> -->
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 	<!--===============================================================================================-->
@@ -31,11 +31,11 @@
 <body>
 	<style>
 		.background-login {
-			background: #9CECFB;
-			/* fallback for old browsers */
-			background: -webkit-linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
-			/* Chrome 10-25, Safari 5.1-6 */
-			background: linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
+			  background: #ed4534;
+			  /* fallback for old browsers */
+			  background: -webkit-linear-gradient(to right, #ed4534, #f5af19);
+			  /* Chrome 10-25, Safari 5.1-6 */
+			  background: linear-gradient(to right, #ed4534, #f5af19);
 			/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
@@ -45,15 +45,15 @@
 		<div class="container-login100 background-login">
 			<div class="wrap-login100 p-t-190 p-b-30" ng-app="loginApp" ng-controller="loginCtrl">
 				<form class="login100-form validate-form" style="margin-top: -155px;">
-					<div class="wrap-input100 img-responsive">
+					<!-- <div class="wrap-input100 img-responsive">
 						<img src="./images/Unilever.png" alt="" class="text-center" style="display: block;
 						margin-left: auto;
 						margin-right: auto;
 						width: 50%;">
-					</div>
+					</div> -->
 
 					<span class="login100-form-title p-t-20 p-b-45">
-						Canteen Counting
+						Selamat Datang Di Erlinski Application
 					</span>
 
 					<div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
@@ -116,44 +116,45 @@
 
 			$scope.isValidLogin = true;
 			$scope.loginClick = function () {
-				NProgress.start();
-
+				
 				// var apiUrl = "http://localhost/api-canteen/index.php/api/user/login";
-				var apiUrl = "http://api.canteencounting.com/api/user/login";
-				var data = {
-					username: $scope.username,
-					password: $scope.password
+				// var apiUrl = "http://api.canteencounting.com/api/user/login";
+				// var data = {
+				// 	username: $scope.username,
+				// 	password: $scope.password
 
-				};
+				// };
+
+				document.location.href = "index.html#/home";
 
 				// $scope.currentUser = JSON.parse($cookies.get('currentUser'));
 				// document.location.href = "index.html#/home";
 				// console.log(JSON.stringify(data));
-				$http.post(apiUrl, data).success(function (response) {
-						console.log(JSON.stringify(response.items));
+				// $http.post(apiUrl, data).success(function (response) {
+				// 		console.log(JSON.stringify(response.items));
 
-						if (response.status == "not_found") {
-							$scope.isValidLogin = false;
-							swal("Username & Password Anda Salah !!!", {
-								icon: "warning",
-							});
-							console.log("1");
+				// 		if (response.status == "not_found") {
+				// 			$scope.isValidLogin = false;
+				// 			swal("Username & Password Anda Salah !!!", {
+				// 				icon: "warning",
+				// 			});
+				// 			console.log("1");
 
-							NProgress.done();
-						} else {
-							console.log("2");
-							$cookies.put('currentUser', JSON.stringify(response.items));
-							$scope.currentUser = JSON.parse($cookies.get('currentUser'));
-							NProgress.done();
-							document.location.href = "index.html#/home";
-							console.log(currentUser);
-						}
-					})
-					.error(function (response, code) {
-						NProgress.done();
-						alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
-						console.log("error : " + JSON.stringify(response));
-					});
+				// 			NProgress.done();
+				// 		} else {
+				// 			console.log("2");
+				// 			$cookies.put('currentUser', JSON.stringify(response.items));
+				// 			$scope.currentUser = JSON.parse($cookies.get('currentUser'));
+				// 			NProgress.done();
+				// 			document.location.href = "index.html#/home";
+				// 			console.log(currentUser);
+				// 		}
+				// 	})
+				// 	.error(function (response, code) {
+				// 		NProgress.done();
+				// 		alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
+				// 		console.log("error : " + JSON.stringify(response));
+				// 	});
 			};
 		});
 	</script>

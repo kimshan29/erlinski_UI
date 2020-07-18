@@ -14,8 +14,8 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
 
         } catch (err) {}
 
-        if (currentUser == null)
-            document.location.href = 'login.html';
+        // if (currentUser == null)
+        //     document.location.href = 'login.html';
 
         $('.Loading').hide();
 
@@ -92,9 +92,9 @@ mainApp.config(function ($routeProvider) {
             controller: 'scheduleVendorCtrl',
             cache: false
         })
-        .when('/displayMenu', {
-            templateUrl: 'template/displayMenu.html',
-            controller: 'displayMenuCtrl',
+        .when('/transaksi', {
+            templateUrl: 'template/transaksi.html',
+            controller: 'transaksiCtrl',
             cache: false
         })
         .when('/masterMenu', {
@@ -112,9 +112,9 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterRunningTextCtrl',
             cache: false
         })
-        .when('/masterShift', {
-            templateUrl: 'template/masterShift.html',
-            controller: 'masterShiftCtrl',
+        .when('/masterMerk', {
+            templateUrl: 'template/masterMerk.html',
+            controller: 'masterMerkCtrl',
             cache: false
         })
         .when('/masterImage', {
@@ -122,30 +122,40 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterImageCtrl',
             cache: false
         })
-        .when('/reportAll', {
-            templateUrl: 'template/reportAll.html',
+        .when('/penjualanHarian', {
+            templateUrl: 'template/reportHarian.html',
             cache: false,
-            controller: 'reportAllCtrl'
+            controller: 'reportHarianCtrl'
         })
-        .when('/reportTotalCounting', {
-            templateUrl: 'template/reportTotalCounting.html',
+        .when('/penjualanKasir', {
+            templateUrl: 'template/reportKasir.html',
             cache: false,
-            controller: 'reportTotalCountingCtrl'
+            controller: 'reportKasirCtrl'
         })
-        .when('/reportCountingVendor', {
-            templateUrl: 'template/reportCountingVendor.html',
+        .when('/penjualanProduk', {
+            templateUrl: 'template/reportProduk.html',
             cache: false,
-            controller: 'reportCountingVendorCtrl'
+            controller: 'reportProdukCtrl'
         })
-        .when('/reportCountingEmployee', {
-            templateUrl: 'template/reportCountingEmployee.html',
+        .when('/reportInvoice', {
+            templateUrl: 'template/reportInvoice.html',
             cache: false,
-            controller: 'reportCountingEmployeeCtrl'
+            controller: 'reportInvoiceCtrl'
         })
-        .when('/form3', {
-            templateUrl: 'template/form3.html',
+        .when('/masterSatuan', {
+            templateUrl: 'template/masterSatuan.html',
             cache: false,
-            controller: 'form3Ctrl'
+            controller: 'masterSatuanCtrl'
+        })
+        .when('/masterKategori', {
+            templateUrl: 'template/masterKategori.html',
+            cache: false,
+            controller: 'masterKategoriCtrl'
+        })
+        .when('/masterBarang', {
+            templateUrl: 'template/masterBarang.html',
+            cache: false,
+            controller: 'masterBarangCtrl'
         })
         .when('/login', {
             templateUrl: 'login.html'

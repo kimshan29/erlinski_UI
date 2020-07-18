@@ -1,9 +1,9 @@
 .skin-blue .main-header .navbar {
-    background: #005eef;
+    background: #ed4534;
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #005eef, #00acef);
+    background: -webkit-linear-gradient(to right, #ed4534, #f5af19);
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #005eef, #00acef);
+    background: linear-gradient(to right, #ed4534, #f5af19);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
@@ -36,7 +36,7 @@
 }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-    background-color: #135f9c
+    background-color: #faa307
 }
 
 @media (max-width:767px) {
@@ -74,7 +74,8 @@
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
 .skin-blue .left-side {
-    background-color: #ffffff
+    /* background-color: #ffffff */
+    background-color: #222d32
 }
 
 .skin-blue .user-panel>.info,
@@ -95,7 +96,7 @@
 .skin-blue .sidebar-menu>li.active>a,
 .skin-blue .sidebar-menu>li.menu-open>a {
     color: #fff;
-    background: #0097ef
+    background: #faa307
         /*background: linear-gradient(to right, #2e4182,#135f9c);*/
 }
 
@@ -107,11 +108,14 @@
 
 .skin-blue .sidebar-menu>li>.treeview-menu {
     margin: 0 1px;
-    background: #ecf0f5
+    /* background: #ecf0f5
+     */
+     background: #2c3b41
 }
 
 .skin-blue .sidebar a {
-    color: #161617
+    /* color: #161617 */
+    color: white
 }
 
 .skin-blue .sidebar a:hover {
@@ -119,7 +123,7 @@
 }
 
 .skin-blue .sidebar-menu .treeview-menu>li>a {
-    color: black
+    color: white
 }
 
 /* Hover anak treeview */

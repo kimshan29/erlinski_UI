@@ -1,0 +1,271 @@
+<style>
+    /* .card {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        border-radius: 5px;
+        margin-left: 32px;
+        margin-top: 15px;
+    } */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: #fbfbfb;
+    }
+
+
+    /* Add rounded corners to the top left and the top right corner of the image */
+    img {
+        border-radius: 5px 5px 0 0;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+
+    }
+
+    .div-scroll {
+        overflow: auto;
+        height: 800px;
+    }
+
+
+    .divMenu {
+        border: 0px solid;
+        padding: 10px;
+        box-shadow: 4px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+
+    .runningText {
+        color: #FFFFFF;
+        font: normal 18px arial, sans-serif;
+        background-color: #005eef;
+        border: #000000 0px solid;
+        height: 42px;
+        /* width: 70%; */
+        margin: 0 auto;
+        padding: 4px 5px 3px 5px;
+        -moz-border-radius: 17px;
+        -webkit-border-radius: 17px;
+        border-radius: 17px;
+        -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+    }
+
+    .marquee {
+
+        overflow: hidden;
+        position: relative;
+        color: #FFFFFF;
+        font: normal 24px arial, sans-serif;
+        background-color: #00a8ef;
+        border: #000000 0px solid;
+        height: 60px;
+        /* width: 70%; */
+        margin: 0 auto;
+        padding: 4px 5px 3px 5px;
+        -moz-border-radius: 17px;
+        -webkit-border-radius: 17px;
+        border-radius: 13px;
+        -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
+    }
+
+    .marquee p {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        /* margin: 0; */
+        line-height: 50px;
+        /* text-align: center; */
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+        -moz-animation: scroll-left 5s linear infinite;
+        -webkit-animation: scroll-left 2s linear infinite;
+        animation: scroll-left 25s linear infinite;
+    }
+
+    @-moz-keyframes scroll-left {
+        0% {
+            -moz-transform: translateX(100%);
+        }
+
+        100% {
+            -moz-transform: translateX(-100%);
+        }
+    }
+
+    @-webkit-keyframes scroll-left {
+        0% {
+            -webkit-transform: translateX(100%);
+        }
+
+        100% {
+            -webkit-transform: translateX(-100%);
+        }
+    }
+
+    @keyframes scroll-left {
+        0% {
+            -moz-transform: translateX(100%);
+            -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+        }
+
+        100% {
+            -moz-transform: translateX(-100%);
+            -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+        }
+    }
+
+    .box-part {
+        background: #fb387e;
+        border-radius: 0;
+        /* padding: 9px 10px; */
+        margin: 15px 0px;
+        box-shadow: 1px 1px 2px 0 #abafb2;
+    }
+
+    .img-card {
+        width: 100%;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+    }
+
+    .img-static {
+        width: 100%;
+        /* height: 10vw; */
+        height: 6vw;
+        object-fit: cover;
+    }
+</style>
+
+<div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="marquee">
+                    <!-- <div ng-repeat="ls in listRunningText">
+                        <p style="top:3px;"> {{ls.message}} </p>
+                    </div> -->
+                    <p style="top:3px;"> {{ls.message}} </p>
+                </div>
+
+                <br>
+                <div class="box"><br>
+                    <div class="box-body">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-8">
+                                <div class="box box-primary"><br>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <form>
+                                                <form class="form-horizontal" name="myForm">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label">Date</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                                            <input type="text" class="form-control" ng-model="form.namaShift" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label">No. Transaksi</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" ng-model="form.namaShift" required>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </form>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <thead class="bg-info">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Kode Barang</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{item.nama}}</td>
+                                                        <td>
+                                                            <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                                                <span class='fa fa-pencil'></span>
+                                                            </button>
+                                                            <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                                                <span class='fa fa-trash'></span>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                            <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                                            </dir-pagination-controls>
+                                        </div>
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
+                                                                     
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box box-primary"><br>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <form>
+                                                <form class="form-horizontal" name="myForm">
+                                                    <div class="form-group ">
+                                                        <label class="col-md-4 control-label">Barcode/Id</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" placeholder="" ng-model="form.namaShift" required>                                                            
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label">Qty</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" placeholder="" ng-model="form.namaShift" required>
+                                                        </div>
+
+                                                    </div>
+                                                    <button class="btn btn-info pull-right">Add Chart</button>
+                                                </form>                                                
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $('#tglSurat').datepicker({
+        autoclose: true
+    });
+    $('#tglPemberianData').datepicker({
+        autoclose: true
+    });
+</script>
+<!-- Info boxes -->
+
+<!-- <div class="col-md-12">
+        
+      </div> -->

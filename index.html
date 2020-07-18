@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Counting-Cantin Aplication</title>
+  <title>Erlinski Skincare</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="plugins/mdi/css/materialdesignicons.min.css" />
-  <link rel="icon" type="image/png" href="images/icons/Unilever.ico" />
+  <!-- <link rel="icon" type="image/png" href="images/icons/Unilever.ico" /> -->
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="plugins/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -34,6 +34,9 @@
   <link rel="stylesheet" href="./plugins/sweet-alert/sweetalert.css">
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <!-- Leaftlet Maps -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
   <!-- Angular Loading Bar -->
   <script src="plugins/loader/nprogress.js"></script>
   <link href="plugins/loader/nprogress.css" rel='stylesheet' />
@@ -70,27 +73,27 @@
   </style>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse" ng-app="mainApp">
+<body class="hold-transition skin-blue sidebar-mini" ng-app="mainApp">
   <div class="wrapper">
 
     <header class="main-header">
 
       <!-- Logo -->
-      <a href="/index.html#/home" class="logo" style="background: #fff !Important;position: fixed;">
+      <a href="/index.html#/home" class="logo" style="background: #040404 !Important;position: fixed;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">
-          <img src="./images/Unilever.png" style="width: 30px;margin-top: 7px;">
+          <!-- <img src="./images/Unilever.png" style="width: 30px;margin-top: 7px;"> -->
           <!-- <b>App</b> -->
         </span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">
-          <!-- <b>Kantin Apps</b> -->
-          <img src="./images/unilever_wide.png" style="width: 158px;margin-left: -11px;margin-top: -6px;">
+          <b style="color:#ed4534 !important;">Erlinski Skincare</b>
+          <!-- <img src="./images/unilever_wide.png" style="width: 158px;margin-left: -11px;margin-top: -6px;"> -->
         </span>
       </a>
 
       <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top" style="position: fixed;width: 95.5%">
+      <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->
         <a href="" class="sidebar-toggle" data-toggle="push-menu" role="button">
           <span class="sr-only">Toggle navigation</span>
@@ -142,17 +145,25 @@
     <aside class="main-sidebar">
       <!-- sidebar: style can be found in sidebar.less -->
       <section class="sidebar">
-
+        <div class="user-panel">
+          <div class="pull-left image">
+            <img src="images/profile_icon.png" class="img-circle" alt="User Image">
+          </div>
+          <div class="pull-left info">
+            <p>Super Admin</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          </div>
+        </div>
         <ul class="sidebar-menu" data-widget="tree" ng-controller="mainNavigationCtrl">
           <li class="treeview" ng-repeat="header in dataMenu | orderBy:'noUrut'">
             <a href="#">
               <i class="{{header.icon}}"></i>
-              <span style="width: 240px !important">{{header.namaMenu}}</span>
+              <span>{{header.namaMenu}}</span>
               <!-- <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span> -->
             </a>
-            <ul class="treeview-menu" style="width: 240px !important">
+            <ul class="treeview-menu" >
               <li ng-repeat="item in header.menuItem">
                 <a ng-href="{{item.url}}">
                   <i class="{{item.icon}}"></i>{{item.namaMenu}}</a>
@@ -169,7 +180,7 @@
       <!-- Content Header (Page header) -->
 
       <!-- Main content ===== Ini adalah tempat untuk membuat ng-viefw angularjs-->
-      <section class="content" style="padding-top: 4%">
+      <section class="content">
         <!-- Tempat Content ng-view angularjs -->
         <div ng-view></div>
         <!-- <div header-page></div> -->
@@ -284,20 +295,26 @@
   <script src="./script/controller/mainNavigationCtrl.js"></script>
   <script src="./script/controller/logoutCtrl.js"></script>
   <script src="./script/controller/dashboardCtrl.js"></script>
-  <script src="./script/controller/displayMenuCtrl.js"></script>
-  <script src="./script/controller/masterVendorCtrl.js"></script>
-  <script src="./script/controller/masterMenuMakananCtrl.js"></script>
-  <script src="./script/controller/masterRunningTextCtrl.js"></script>
-  <script src="./script/controller/masterShiftCtrl.js"></script>
-  <script src="./script/controller/masterImageCtrl.js"></script>
+  <script src="./script/controller/transaksiCtrl.js"></script>
   <script src="./script/controller/scheduleKantinCtrl.js"></script>
   <script src="./script/controller/scheduleVendorCtrl.js"></script>
   <script src="./script/controller/orderMenuCtrl.js"></script>
+
+  <!-- Master Data -->
+  <script src="./script/controller/masterVendorCtrl.js"></script>
+  <script src="./script/controller/masterMenuMakananCtrl.js"></script>
+  <script src="./script/controller/masterRunningTextCtrl.js"></script>
+  <script src="./script/controller/masterMerkCtrl.js"></script>
+  <script src="./script/controller/masterImageCtrl.js"></script>
+  <script src="./script/controller/masterSatuanCtrl.js"></script>
+  <script src="./script/controller/masterKategoriCtrl.js"></script>
+  <script src="./script/controller/masterBarangCtrl.js"></script>
+
   <!-- Report -->
-  <script src="./script/controller/reportAllCtrl.js"></script>
-  <script src="./script/controller/reportTotalCountingCtrl.js"></script>
-  <script src="./script/controller/reportCountingEmployeeCtrl.js"></script>
-  <script src="./script/controller/reportCountingVendorCtrl.js"></script>
+  <script src="./script/controller/reportHarianCtrl.js"></script>
+  <script src="./script/controller/reportKasirCtrl.js"></script>
+  <script src="./script/controller/reportProdukCtrl.js"></script>
+  <script src="./script/controller/reportInvoiceCtrl.js"></script>
 
 
   <script src="./script/controller/mMenuCtrl.js"></script>
@@ -317,6 +334,9 @@
   <script src="plugins/angular-highcharts/src/highcharts-ng.js"></script>
   <!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+  <!-- Leaftlet Maps -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
   <!-- <script src="dist/js/jspdf.min.js"></script> -->
   <script>
     // var myVar;

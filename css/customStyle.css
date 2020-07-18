@@ -311,3 +311,27 @@
   background-color: #f2dede;
   border-color: #ebccd1;
 }
+
+.bg-default {
+  color: #fff;
+  background: #faa307
+}
+
+.btn {
+  border-radius: 2em !important;
+}
+
+.btn-erlinski {
+  background-color: #ed4534;
+  border-color: #ebccd1;
+  color: white;
+}
+
+.btn-erlinski:hover {
+  background-color: #ed4534;
+ opacity: 0.7;
+}
+
+h1 {
+  color: #ed4534 !important;
+}
