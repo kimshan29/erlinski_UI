@@ -1,4 +1,4 @@
-mainApp.controller("masterKategoriCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -17,16 +17,17 @@ mainApp.controller("masterKategoriCtrl", function ($route, $scope, $uibModal, $r
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderShift();
+        $scope.renderData();
     }
 
-    $scope.renderShift = function () {
+    $scope.renderData = function () {
         $('.Loading').show();
         $('.page-form').hide();
+        
+        // alert("test")
 
-
-        $scope.listMasterShift = [];
-        console.log(JSON.stringify($scope.listMasterShift));
+        // $scope.listMasterShift = [];
+        // console.log(JSON.stringify($scope.listMasterShift));
 
         $('.Loading').hide();
         $('.page-form').show();
@@ -72,7 +73,7 @@ mainApp.controller("masterKategoriCtrl", function ($route, $scope, $uibModal, $r
             $('.Loading').hide();
             $('.page-form').show();
             console.log(JSON.stringify($scope.form));
-            $scope.renderShift();
+            $scope.renderData();
             $scope.eventClickCloseModal();
             swal("Data Berhasil Diupdate", {
                 icon: "success",
@@ -125,7 +126,7 @@ mainApp.controller("masterKategoriCtrl", function ($route, $scope, $uibModal, $r
                         swal("Data Berhasil Dihapus!", {
                             icon: "success",
                         });
-                        $scope.renderShift();
+                        $scope.renderData();
                     })
 
                 } else {
@@ -146,7 +147,7 @@ mainApp.controller("masterKategoriCtrl", function ($route, $scope, $uibModal, $r
     $scope.eventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderShift();
+        $scope.renderData();
     }
 
 

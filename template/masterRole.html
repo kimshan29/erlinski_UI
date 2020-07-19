@@ -8,7 +8,7 @@
 <div class="page-form">
     <section class="content-header">
         <h1>
-            Master Role
+            Master Status Member
             <!-- <small>advanced tables</small> -->
         </h1>
     </section>
@@ -27,7 +27,7 @@
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table no-margin">
-                        <thead class="bg-primary">
+                        <thead class="bg-default">
                             <tr>
                                 <th>No</th>
                                 <th>Nama Role</th>
@@ -45,7 +45,7 @@
                                     <button type=" button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="pilihAkses(item.id)" ng-hide="akses" data-target="#myModalAkses" data-backdrop="static" data-keyboard="false">Pilih Akses</button>
                                 </td>
                                 <td>
-                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
@@ -64,7 +64,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-                <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Role</a>
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Role</a>
             </div>
             <!-- /.box-footer -->
         </div>
@@ -142,7 +142,7 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama Menu</th>
-                                                    <th>Akses <input type="checkbox" ng-click="checkAll()"></th>
+                                                    <th>Akses</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

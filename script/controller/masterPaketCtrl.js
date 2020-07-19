@@ -1,4 +1,4 @@
-mainApp.controller("masterMerkCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("masterPaketCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -17,23 +17,52 @@ mainApp.controller("masterMerkCtrl", function ($route, $scope, $uibModal, $route
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderShift();
+        $scope.renderPaket();
     }
 
-    $scope.renderShift = function () {
+    $scope.renderPaket = function () {
         $('.Loading').show();
         $('.page-form').hide();
 
+        $scope.listData = [
+            {
+                id:"1",
+                nama:"Paket Simple",
+                keterangan:"Lorem ipsum",
+                poin: 12
+            },
+            {
+                id: "2",
+                nama: "Paket Santay",
+                keterangan: "Lorem ipsum",
+                poin: 20
+            },
+            {
+                id: "3",
+                nama: "Paket Mantap",
+                keterangan: "Lorem ipsum",
+                poin: 40
+            },
+            {
+                id: "4",
+                nama: "Paket Sederhana",
+                keterangan: "Lorem ipsum",
+                poin: 30
+            }
+        ];
+        
+        // var apiUrl = "/api/paket";
+        // HttpRequest.get(apiUrl).success(function (response) {
+        //     $scope.listMasterData = response.items;
+        //     console.log(JSON.stringify($scope.listMasterData));
 
-        var apiUrl = "/api/shift";
-        HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listMasterShift = response.items;
-            console.log(JSON.stringify($scope.listMasterShift));
+        //     $('.Loading').hide();
+        //     $('.page-form').show();
 
-            $('.Loading').hide();
-            $('.page-form').show();
+        // });
 
-        });
+        $('.Loading').hide();
+        $('.page-form').show();
 
     }
 

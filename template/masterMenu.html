@@ -27,7 +27,7 @@
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table no-margin">
-                        <thead class="bg-primary">
+                        <thead class="bg-default">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Nama Menu</th>
@@ -47,7 +47,7 @@
                                 <td>{{item.levelMenu}}</td>
                                 <td>{{item.tipeMenu}}</td>
                                 <td class="text-center">
-                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
@@ -63,9 +63,9 @@
                 <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Menu</a>
-            </div>
+           <div class="box-footer clearfix">
+               <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+           </div>
             <!-- /.box-footer -->
         </div>
 

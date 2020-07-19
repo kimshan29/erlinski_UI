@@ -102,9 +102,14 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterMenuMakananCtrl',
             cache: false
         })
-        .when('/masterVendor', {
-            templateUrl: 'template/masterVendor.html',
-            controller: 'masterVendorCtrl',
+        .when('/masterPaket', {
+            templateUrl: 'template/masterPaket.html',
+            controller: 'masterPaketCtrl',
+            cache: false
+        })
+        .when('/masterMember', {
+            templateUrl: 'template/masterMember.html',
+            controller: 'masterMemberCtrl',
             cache: false
         })
         .when('/masterRunningText', {
@@ -112,9 +117,9 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterRunningTextCtrl',
             cache: false
         })
-        .when('/masterMerk', {
-            templateUrl: 'template/masterMerk.html',
-            controller: 'masterMerkCtrl',
+        .when('/rewardMember', {
+            templateUrl: 'template/rewardMember.html',
+            controller: 'rewardMemberCtrl',
             cache: false
         })
         .when('/masterImage', {
@@ -142,10 +147,10 @@ mainApp.config(function ($routeProvider) {
             cache: false,
             controller: 'reportInvoiceCtrl'
         })
-        .when('/masterSatuan', {
-            templateUrl: 'template/masterSatuan.html',
+        .when('/profile', {
+            templateUrl: 'template/profile.html',
             cache: false,
-            controller: 'masterSatuanCtrl'
+            controller: 'profileCtrl'
         })
         .when('/masterKategori', {
             templateUrl: 'template/masterKategori.html',
@@ -181,7 +186,7 @@ mainApp.config(function ($routeProvider) {
         })
 
         // Master Peran
-        .when('/m-peran', {
+        .when('/statusMember', {
             cache: false,
             templateUrl: 'template/masterRole.html?' + $.now(),
             controller: 'mPeranCtrl'

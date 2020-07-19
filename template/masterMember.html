@@ -9,7 +9,7 @@
 <div class="page-form">
     <section class="content-header">
         <h1>
-            Master Merk
+            Data Member
             <!-- <small>advanced tables</small> -->
         </h1>
     </section>
@@ -29,19 +29,25 @@
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table no-margin">
-                        <thead class="bg-info">
+                        <thead class="bg-default">
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
+                                <th>Nama Member</th>
+                                <th>Jenis Member</th>
+                                <th>Telepon</th>
+                                <th>Kota</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr dir-paginate="item in listMasterShift |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                            <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
                                 <td>{{item.nama}}</td>
+                                <td>{{item.jenisMember}}</td>
+                                <td>{{item.telepon}}</td>
+                                <td>{{item.kota}}</td>
                                 <td>
-                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
@@ -60,7 +66,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-                <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data Member</a>
             </div>
             <!-- /.box-footer -->
         </div>
@@ -80,15 +86,21 @@
                         <div class="box box-info">
 
                             <div class="box-header">
-                                <h3 class="box-title">Tambah Master Merk</h3>
+                                <h3 class="box-title">Tambah Master Kategori</h3>
                             </div>
                             <div class="box-body">
                                 <form class="form-horizontal" name="myForm">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Nama Merk</label>
+                                        <label class="col-md-4 control-label">Nama</label>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
                                             <input type="text" class="form-control" ng-model="form.namaShift" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Keterangan</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.keterangan">
                                         </div>
                                     </div>
                                 </form>

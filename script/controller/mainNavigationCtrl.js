@@ -26,7 +26,7 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
         //     $scope.dataMenu = response.items;
         //     console.log(JSON.stringify($scope.dataMenu));
         // })
-        console.log(JSON.stringify($scope.dataMenu));
+        // console.log(JSON.stringify($scope.dataMenu));
         $scope.dataMenu = [{
                 "icon": "fa fa-home",
                 "namaMenu": "Home",
@@ -34,11 +34,6 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                         "url": "/index.html#/dashboard",
                         "icon": "fa fa-circle-o",
                         "namaMenu": "Dashboard"
-                    },
-                    {
-                        "url": "/index.html#/transaksi",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Transaksi"
                     }
                 ]
             },
@@ -51,19 +46,46 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                         "namaMenu": "Master Barang"
                     },
                     {
-                        "url": "/index.html#/masterKategori",
+                        "url": "/index.html#/masterPaket",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Master Kategori"
+                        "namaMenu": "Master Paket"
+                    }, {
+                        "url": "/index.html#/statusMember",
+                        "icon": "fa fa-circle-o",
+                        "namaMenu": "Status Member"
+                    }
+                    
+                ]
+            },
+            {
+                "icon": "fa fa-users",
+                "namaMenu": "Member Data",
+                "menuItem": [
+                    {
+                        "url": "/index.html#/masterMember",
+                        "icon": "fa fa-circle-o",
+                        "namaMenu": "Data Member"
                     },
                     {
-                        "url": "/index.html#/masterMerk",
+                        "url": "/index.html#/rewardMember",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Master Merk"
+                        "namaMenu": "Reward Member"
+                    }
+                ]
+            },
+            {
+                "icon": "fa fa-shopping-cart",
+                "namaMenu": "Pembelian Atau Penjualan",
+                "menuItem": [
+                    {
+                        "url": "/index.html#/stokIn",
+                        "icon": "fa fa-circle-o",
+                        "namaMenu": "Stok In"
                     },
                     {
-                        "url": "/index.html#/masterSatuan",
+                        "url": "/index.html#/penjualanMember",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Master Satuan"
+                        "namaMenu": "Penjualan Member"
                     }
                 ]
             },
@@ -73,22 +95,12 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                 "menuItem": [{
                         "url": "/index.html#/penjualanHarian",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Penjualan Harian"
+                        "namaMenu": "Riwayat Pembelian"
                     },
                     {
                         "url": "/index.html#/penjualanProduk",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Penjualan Produk"
-                    },
-                    {
-                        "url": "/index.html#/penjualanKasir",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Penjualan Kasir"
-                    },
-                    {
-                        "url": "/index.html#/reportInvoice",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Invoice"
+                        "namaMenu": "Riwayat Penjualan"
                     }
                 ]
             },
@@ -101,19 +113,9 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                         "namaMenu": "Master Menu"
                     },
                     {
-                        "url": "/index.html#/m-peran",
+                        "url": "/index.html#/profile",
                         "icon": "fa fa-circle-o",
-                        "namaMenu": "Master Role"
-                    },
-                    {
-                        "url": "/index.html#/m-user",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Master User"
-                    },
-                    {
-                        "url": "/index.html#/attendance",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Attendance"
+                        "namaMenu": "Profile"
                     }
                 ]
             }

@@ -41,19 +41,19 @@
   <script src="plugins/loader/nprogress.js"></script>
   <link href="plugins/loader/nprogress.css" rel='stylesheet' />
   <style type="text/css">
-    .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
+    /* .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
       color: #ffffff !important;
-    }
+    } */
 
     .skin-blue .main-header li.user-header {
-      background-color: #0081BC !important;
+      background-color: #f3a23f !important;
     }
 
     .navbar-nav>.user-menu>.dropdown-menu>.user-footer {
-      background-color: #054e98 !important;
+      background-color: #dc9c3a !important;
     }
 
-    .btn-default-custom {
+    /* .btn-default-custom {
       background-color: #0081bc !important;
       color: #444 !important;
       border-color: #ddd;
@@ -61,7 +61,7 @@
 
     .navbar-nav>.user-menu>.dropdown-menu>.user-footer .btn-default-custom {
       color: #ffffff !important;
-    }
+    } */
 
 
 
@@ -79,7 +79,7 @@
     <header class="main-header">
 
       <!-- Logo -->
-      <a href="/index.html#/home" class="logo" style="background: #040404 !Important;position: fixed;">
+      <a href="/index.html#/home" class="logo" style="background: #ce1e09 !Important;position: fixed;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">
           <!-- <img src="./images/Unilever.png" style="width: 30px;margin-top: 7px;"> -->
@@ -87,7 +87,7 @@
         </span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">
-          <b style="color:#ed4534 !important;">Erlinski Skincare</b>
+          <b style="color:#fff !important;">Erlinski Skincare</b>
           <!-- <img src="./images/unilever_wide.png" style="width: 158px;margin-left: -11px;margin-top: -6px;"> -->
         </span>
       </a>
@@ -127,7 +127,7 @@
                 </div> -->
                   <div class="pull-right">
                     <!-- <a href=""  class="btn btn-default">Sign out</a> -->
-                    <input type="button" ng-click="logout()" class="btn btn-default-custom btn-flat" name="Sign Out" value="Sign Out">
+                    <input type="button" ng-click="logout()" class="btn btn-erlinski btn-flat" name="Sign Out" value="Sign Out">
                   </div>
                 </li>
               </ul>
@@ -301,14 +301,15 @@
   <script src="./script/controller/orderMenuCtrl.js"></script>
 
   <!-- Master Data -->
-  <script src="./script/controller/masterVendorCtrl.js"></script>
+  <script src="./script/controller/masterPaketCtrl.js"></script>
   <script src="./script/controller/masterMenuMakananCtrl.js"></script>
   <script src="./script/controller/masterRunningTextCtrl.js"></script>
-  <script src="./script/controller/masterMerkCtrl.js"></script>
+  <script src="./script/controller/rewardMemberCtrl.js"></script>
   <script src="./script/controller/masterImageCtrl.js"></script>
-  <script src="./script/controller/masterSatuanCtrl.js"></script>
+  <script src="./script/controller/profileCtrl.js"></script>
   <script src="./script/controller/masterKategoriCtrl.js"></script>
   <script src="./script/controller/masterBarangCtrl.js"></script>
+  <script src="./script/controller/masterMemberCtrl.js"></script>
 
   <!-- Report -->
   <script src="./script/controller/reportHarianCtrl.js"></script>

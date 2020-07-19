@@ -1,4 +1,4 @@
-mainApp.controller("masterSatuanCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -25,8 +25,45 @@ mainApp.controller("masterSatuanCtrl", function ($route, $scope, $uibModal, $rou
         $('.page-form').hide();
 
 
-        $scope.listMasterShift = [];
-        console.log(JSON.stringify($scope.listMasterShift));
+        $scope.listData = [
+            {
+                id:1,
+                nama:"Shandy Tias",
+                jenisMember:"Distributor",
+                telepon:"082383893",
+                kota:"Bogor"
+            },
+            {
+                id: 1,
+                nama: "Shandy Tias",
+                jenisMember: "Distributor",
+                telepon: "082383893",
+                kota: "Bogor"
+            }
+            ,
+            {
+                id: 1,
+                nama: "Shandy Tias",
+                jenisMember: "Distributor",
+                telepon: "082383893",
+                kota: "Bogor"
+            },
+            {
+                id: 1,
+                nama: "Shandy Tias",
+                jenisMember: "Distributor",
+                telepon: "082383893",
+                kota: "Bogor"
+            },
+            {
+                id: 1,
+                nama: "Shandy Tias",
+                jenisMember: "Distributor",
+                telepon: "082383893",
+                kota: "Bogor"
+            }
+        ];
+        console.log(JSON.stringify($scope.listData));
 
         $('.Loading').hide();
         $('.page-form').show();

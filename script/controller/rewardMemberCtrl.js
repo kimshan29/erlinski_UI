@@ -1,4 +1,4 @@
-mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("rewardMemberCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -17,57 +17,52 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderShift();
+        $scope.renderData();
     }
 
-    $scope.renderShift = function () {
+    $scope.renderData = function () {
         $('.Loading').show();
         $('.page-form').hide();
 
 
-        $scope.listData = [
-            {
-                id:1,
-                namaBarang:"Sabun Wajah",
-                merk:"Erlinski",
-                stok:1000,
-                url: ""
-            },
-            {
-                id: 2,
-                namaBarang: "Cream Malam",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 3,
-                namaBarang: "Day Cream",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 1,
-                namaBarang: "Toner",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            }
-        ];
-        console.log(JSON.stringify($scope.listData));
-
-        $('.Loading').hide();
-        $('.page-form').show();
         // var apiUrl = "/api/shift";
         // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listData = response.items;
-        //     console.log(JSON.stringify($scope.listData));
+        //     $scope.listMasterShift = response.items;
+        //     console.log(JSON.stringify($scope.listMasterShift));
 
         //     $('.Loading').hide();
         //     $('.page-form').show();
 
         // });
+
+        $scope.listData = [
+            {
+                id:1,
+                tanggal:"10-10-2019",
+                keterangan:"Transaksi dengan agen",
+                poin : 10
+            },
+            {
+                id:1,
+                tanggal:"10-10-2019",
+                keterangan:"Transaksi dengan agen",
+                poin : 10
+            },
+            {
+                id:1,
+                tanggal:"10-10-2019",
+                keterangan:"Transaksi dengan agen",
+                poin : 10
+            },
+            {
+                id:1,
+                tanggal:"10-10-2019",
+                keterangan:"Transaksi dengan agen",
+                poin : 10
+            }
+        ]
+         $('.Loading').hide();
+         $('.page-form').show();
 
     }
 
@@ -101,7 +96,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
             $('.Loading').hide();
             $('.page-form').show();
             console.log(JSON.stringify($scope.form));
-            $scope.renderShift();
+            $scope.renderData();
             $scope.eventClickCloseModal();
             swal("Data Berhasil Diupdate", {
                 icon: "success",
@@ -154,7 +149,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                         swal("Data Berhasil Dihapus!", {
                             icon: "success",
                         });
-                        $scope.renderShift();
+                        $scope.renderData();
                     })
 
                 } else {
@@ -175,7 +170,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
     $scope.eventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderShift();
+        $scope.renderData();
     }
 
 

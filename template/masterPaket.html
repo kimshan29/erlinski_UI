@@ -9,7 +9,7 @@
 <div class="page-form">
     <section class="content-header">
         <h1>
-            Master Satuan
+            Master Paket
             <!-- <small>advanced tables</small> -->
         </h1>
     </section>
@@ -29,19 +29,26 @@
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table no-margin">
-                        <thead class="bg-primary">
-                            <tr>
+                        <thead class="bg-default">
+                            <tr class="bg-default">
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Action</th>
+                                <th>Nama Paket</th>
+                                <th>Keterangan</th>
+                                <th>Poin</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr dir-paginate="item in listMasterShift |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                            <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
                                 <td>{{item.nama}}</td>
-                                <td>
-                                    <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                <td>{{item.keterangan}}</td>
+                                <td>{{item.poin}}</td>
+                                <td class="text-center">
+                                    <button type='button' class='btn btn-success btn-sm' style="border-radius:50%;" uib-tooltip="Detail Paket" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickDetailPaket(item.id)">
+                                        <span class='fa fa-search'></span>
+                                    </button>
+                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
@@ -60,7 +67,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-                <a href="" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
             </div>
             <!-- /.box-footer -->
         </div>
@@ -80,17 +87,55 @@
                         <div class="box box-info">
 
                             <div class="box-header">
-                                <h3 class="box-title">Tambah Master Satuan</h3>
+                                <h3 class="box-title">Tambah Master Paket</h3>
                             </div>
                             <div class="box-body">
                                 <form class="form-horizontal" name="myForm">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Nama Satuan</label>
+                                        <label class="col-md-4 control-label">Nama</label>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                            <input type="text" class="form-control" ng-model="form.namaShift" required>
+                                            <input type="text" class="form-control" ng-model="form.nama" required>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Poin</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.poin" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Scan Barcode</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.poin">
+                                            <button style="margin-top:10px;" class="btn btn-primary">Add Barang</button>
+                                        </div>
+                                    </div>
+                                    <table class="table tabel-bordered">
+                                        <thead class="bg-default">
+                                            <tr>
+                                                <th>ID Barang</th>
+                                                <th>Jenis Barang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>123</td>
+                                                <td>Skin Care</td>
+                                                <td>Night Cream</td>
+                                                <td>1000</td>
+                                                <td class="text-center">
+                                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                                         <span class='fa fa-trash'></span>
+                                                     </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </form>
                             </div>
                         </div>

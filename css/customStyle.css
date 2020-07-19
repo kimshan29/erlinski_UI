@@ -314,7 +314,7 @@
 
 .bg-default {
   color: #fff;
-  background: #faa307
+  background: #fc4f3b
 }
 
 .btn {
@@ -322,7 +322,7 @@
 }
 
 .btn-erlinski {
-  background-color: #ed4534;
+  background-color: #fc4f3b;
   border-color: #ebccd1;
   color: white;
 }
@@ -335,3 +335,7 @@
 h1 {
   color: #ed4534 !important;
 }
+
+/* body{
+  color: #ed4534 !important;
+} */
