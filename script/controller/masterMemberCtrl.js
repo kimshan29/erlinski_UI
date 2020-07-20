@@ -18,20 +18,31 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
         $scope.renderShift();
-    }
 
+
+    }
+    $scope.SelectFile = function (e) {
+        console.log(e);
+
+        // var reader = new FileReader();
+        // reader.onload = function (e) {
+        //     $scope.PreviewImage = e.target.result;
+        //     $scope.$apply();
+        // };
+
+        // reader.readAsDataURL(e.target.files[0]);
+    };
     $scope.renderShift = function () {
         $('.Loading').show();
         $('.page-form').hide();
 
 
-        $scope.listData = [
-            {
-                id:1,
-                nama:"Shandy Tias",
-                jenisMember:"Distributor",
-                telepon:"082383893",
-                kota:"Bogor"
+        $scope.listData = [{
+                id: 1,
+                nama: "Shandy Tias",
+                jenisMember: "Distributor",
+                telepon: "082383893",
+                kota: "Bogor"
             },
             {
                 id: 1,
@@ -39,8 +50,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
                 jenisMember: "Distributor",
                 telepon: "082383893",
                 kota: "Bogor"
-            }
-            ,
+            },
             {
                 id: 1,
                 nama: "Shandy Tias",
@@ -120,6 +130,8 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
     $scope.eventClickAdd = function () {
         $scope.btnSave = true;
         $scope.btnUpdate = false;
+
+        // alert("test")
     }
 
     $scope.eventClickEdit = function (id) {

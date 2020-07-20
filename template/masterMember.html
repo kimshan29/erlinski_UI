@@ -73,40 +73,174 @@
 
         <!-- Modal Form -->
         <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog" style="width: 50%">
+            <div class="modal-dialog" style="width: 90%">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">
-                            <!-- <b>Tambah Master Menu</b> -->
+                            <b>Resgiter Menu</b>
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <div class="box box-info">
+                        <form class="form-horizontal" name="myForm">
+                            <div class="col-md-6">
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Identitas Diri</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Nama Lengkap</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                                <input type="text" class="form-control" ng-model="form.namaLengkap" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Alamat</label>
+                                            <div class="col-md-8">
+                                                <textarea type="text" class="form-control" ng-model="form.alamat"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Provinsi</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control text-back" ng-model="form.provinsi" ng-options="item as item.name for item in lapGratifikasi.master.provinsi track by item.code" ng-change="getKabupatenRumah(formLapGratifikasi.identitasPelapor.provinsiRumah.code);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Kab/Kota</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control text-back" ng-model="form.kota" ng-options="item as item.name for item in lapGratifikasi.master.kotaRumah track by item.code" ng-change="getKecamatanRumah(formLapGratifikasi.identitasPelapor.kotaRumah.code);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Kecamatan</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control text-back" ng-model="form.kecamatan" ng-options="item as item.name for item in lapGratifikasi.master.kecamatanRumah track by item.code" ng-change="getKelurahanRumah(formLapGratifikasi.identitasPelapor.kecamatanRumah.code);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Kel/Desa</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control text-back" ng-model="form.desa" ng-options="item as item.name for item in lapGratifikasi.master.desaRumah track by item.code" ng-change="getKodePosRumah(formLapGratifikasi.identitasPelapor.desaRumah.code);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Kode Pos</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.kodePos">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">No Rekening</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noRekening" name="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Bank</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control text-back" ng-model="form.namaBank" ng-options="item as item.name for item in lapGratifikasi.master.desaRumah track by item.code" ng-change="getKodePosRumah(formLapGratifikasi.identitasPelapor.desaRumah.code);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">No Telepon</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noTelepon" name="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Upload Scan KTP</label>
+                                            <div class="col-md-8">
+                                                <input type="file" ngf-select ng-model="form.fileKTP" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                                <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
+                                                <i ng-show="myForm.file.$error.maxSize">File too large
+                                                    {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
 
-                            <div class="box-header">
-                                <h3 class="box-title">Tambah Master Kategori</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Upload Bukti Transfer</label>
+                                            <div class="col-md-8">
+                                                <input type="file" ngf-select ng-model="form.fileTransfer" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile" ng-change="SelectFile(event)">
+                                                <i ng-show="myForm.file.$error.maxSize">File too large
+                                                    {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Status</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" ng-model="form.roleUser" required ng-options="item.id as item.namaRole for item in master.role" ng-change="getVendor(form.roleUser)"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="box-body">
-                                <form class="form-horizontal" name="myForm">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Nama</label>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                            <input type="text" class="form-control" ng-model="form.namaShift" required>
+                            <div class="col-md-6">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Social Media</h3>
+                                    </div>
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Email</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.email">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Akun Instagram</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.instagram">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Akun Facebook</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.facebook">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Akun Twitter</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.twitter">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Keterangan</label>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="form.keterangan">
+                                </div>
+                                <div class="box box-success">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Location Maps</h3>
+                                    </div>
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Latitude</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.latitude">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Longitude</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.longitude">
+                                            </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
 
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
@@ -137,5 +271,15 @@
             theEvent.returnValue = false;
             if (theEvent.preventDefault) theEvent.preventDefault();
         }
+    }
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            alert("Input Menggunakan Angka ");
+            return false;
+        }
+        return true;
     }
 </script>

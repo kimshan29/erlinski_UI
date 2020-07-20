@@ -35,34 +35,33 @@ mainApp.controller("rewardMemberCtrl", function ($route, $scope, $uibModal, $rou
 
         // });
 
-        $scope.listData = [
-            {
-                id:1,
-                tanggal:"10-10-2019",
-                keterangan:"Transaksi dengan agen",
-                poin : 10
+        $scope.listData = [{
+                id: 1,
+                tanggal: "10-10-2019",
+                keterangan: "Transaksi dengan agen",
+                poin: 10
             },
             {
-                id:1,
-                tanggal:"10-10-2019",
-                keterangan:"Transaksi dengan agen",
-                poin : 10
+                id: 1,
+                tanggal: "10-10-2019",
+                keterangan: "Transaksi dengan agen",
+                poin: 10
             },
             {
-                id:1,
-                tanggal:"10-10-2019",
-                keterangan:"Transaksi dengan agen",
-                poin : 10
+                id: 1,
+                tanggal: "10-10-2019",
+                keterangan: "Transaksi dengan agen",
+                poin: 10
             },
             {
-                id:1,
-                tanggal:"10-10-2019",
-                keterangan:"Transaksi dengan agen",
-                poin : 10
+                id: 1,
+                tanggal: "10-10-2019",
+                keterangan: "Transaksi dengan agen",
+                poin: 10
             }
         ]
-         $('.Loading').hide();
-         $('.page-form').show();
+        $('.Loading').hide();
+        $('.page-form').show();
 
     }
 
@@ -107,6 +106,10 @@ mainApp.controller("rewardMemberCtrl", function ($route, $scope, $uibModal, $rou
     $scope.eventClickAdd = function () {
         $scope.btnSave = true;
         $scope.btnUpdate = false;
+
+        console.log($scope.btnSave);
+
+        // alert("test");
     }
 
     $scope.eventClickEdit = function (id) {

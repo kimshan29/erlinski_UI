@@ -36,7 +36,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
   <!-- Leaftlet Maps -->
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+
   <!-- Angular Loading Bar -->
   <script src="plugins/loader/nprogress.js"></script>
   <link href="plugins/loader/nprogress.css" rel='stylesheet' />
@@ -163,7 +166,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </span> -->
             </a>
-            <ul class="treeview-menu" >
+            <ul class="treeview-menu">
               <li ng-repeat="item in header.menuItem">
                 <a ng-href="{{item.url}}">
                   <i class="{{item.icon}}"></i>{{item.namaMenu}}</a>
@@ -307,7 +310,6 @@
   <script src="./script/controller/rewardMemberCtrl.js"></script>
   <script src="./script/controller/masterImageCtrl.js"></script>
   <script src="./script/controller/profileCtrl.js"></script>
-  <script src="./script/controller/masterKategoriCtrl.js"></script>
   <script src="./script/controller/masterBarangCtrl.js"></script>
   <script src="./script/controller/masterMemberCtrl.js"></script>
 
@@ -336,8 +338,6 @@
   <!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
 
-  <!-- Leaftlet Maps -->
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
   <!-- <script src="dist/js/jspdf.min.js"></script> -->
   <script>
     // var myVar;

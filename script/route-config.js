@@ -23,7 +23,7 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
 
     $rootScope.$on('$routeChangeSuccess', function (e, current, pre) {
 
-        console.log('Current route name: ' + $location.path() + '. currentUser : ' + $cookies.get('currentUser'));
+        // console.log('Current route name: ' + $location.path() + '. currentUser : ' + $cookies.get('currentUser'));
         var currentUser = null;
 
         try {
