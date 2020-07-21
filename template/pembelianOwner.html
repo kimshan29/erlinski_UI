@@ -1,0 +1,187 @@
+<div class="content Loading">
+    <div>
+        <p class="text-center">
+            <img class="blink-image loading-position" src="./../images/loading.gif">
+        </p>
+    </div>
+</div>
+
+<div class="page-form">
+    <section class="content-header">
+        <h1>
+            Pembelian Owner / Stok In
+            <!-- <small>advanced tables</small> -->
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box box-info">
+
+            <!-- /.box-header -->
+            <div class="box-header">
+                <!-- <h3 class="box-title">Table</h3> -->
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead class="bg-default">
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>No Invoice</th>
+                                <th>ID Member</th>
+                                <th>Nama Pembeli</th>
+                                <th>Jumlah Barang</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.tanggal}}</td>
+                                <td>{{item.noInvoice}}</td>
+                                <td>{{item.idMember}}</td>
+                                <td>{{item.namaPembeli}}</td>
+                                <td>{{item.jumlahBarang}}</td>
+                                <td>
+                                    <button type='button' class='btn btn-success btn-sm' style="border-radius:50%;" uib-tooltip="View Detail" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickViewDetail(item.id)">
+                                        <span class='fa fa-search'></span>
+                                    </button>
+                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                        <span class='fa fa-pencil'></span>
+                                    </button>
+                                    <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                        <span class='fa fa-trash'></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+            </div>
+            <!-- /.box-footer -->
+        </div>
+
+        <!-- Modal Form -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 90%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <!-- <b>Tambah Master Menu</b> -->
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title">Input Pembelian & Jumlah Barang</h3>
+                            </div>
+                            <div class="box-body">
+                                <form class="form-horizontal" name="myForm">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="col-md-3">
+                                                <label class="control-label">Tanggal</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglBergabung" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label">No Stock In</label>
+                                                <input type="text" class="form-control" ng-model="form.namaJenis" disabled>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+
+                            <div class="box-header">
+                                <h3 class="box-title">Detail Barang</h3>
+                            </div>
+                            <div class="box-body">
+                                <label class="control-label">Scan Barcode</label>
+                                <input type="text" class="form-control" ng-model="form.namaJenis">
+                                <table class="table tabel-bordered" style="margin-top: 10px;">
+                                    <thead class="bg-default">
+                                        <tr>
+                                            <th>ID Barang</th>
+                                            <th>Jenis Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Jumlah</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>123</td>
+                                            <td>Skin Care</td>
+                                            <td>Night Cream</td>
+                                            <td><input type="number" class="form-control"></td>
+                                            <td class="text-center">
+                                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                                    <span class='fa fa-trash'></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

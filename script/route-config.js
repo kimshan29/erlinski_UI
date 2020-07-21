@@ -132,15 +132,25 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterImageCtrl',
             cache: false
         })
-        .when('/penjualanHarian', {
-            templateUrl: 'template/reportHarian.html',
+        .when('/penjualanMember', {
+            templateUrl: 'template/penjualanMember.html',
             cache: false,
-            controller: 'reportHarianCtrl'
+            controller: 'penjualanMemberCtrl'
+        })
+        .when('/stokIn', {
+            templateUrl: 'template/pembelianOwner.html',
+            cache: false,
+            controller: 'pembelianOwnerCtrl'
         })
         .when('/penjualanKasir', {
             templateUrl: 'template/reportKasir.html',
             cache: false,
             controller: 'reportKasirCtrl'
+        })
+        .when('/penjualanHarian', {
+            templateUrl: 'template/reportHarian.html',
+            cache: false,
+            controller: 'reportHarianCtrl'
         })
         .when('/penjualanProduk', {
             templateUrl: 'template/reportProduk.html',
