@@ -35,7 +35,7 @@
                                 <th>Tanggal</th>
                                 <th>Keterangan</th>
                                 <th>Poin</th>
-                                <th>Action</th>
+                                <th ng-hide="true">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +44,7 @@
                                 <td>{{item.tanggal}}</td>
                                 <td>{{item.keterangan}}</td>
                                 <td>{{item.poin}}</td>
-                                <td>
+                                <td ng-hide="true">
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
@@ -63,7 +63,7 @@
                 <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer clearfix">
+            <div class="box-footer clearfix" ng-hide="true">
                 <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
             </div>
             <!-- /.box-footer -->

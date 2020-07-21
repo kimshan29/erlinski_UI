@@ -63,13 +63,13 @@ mainApp.config(function ($routeProvider) {
     $routeProvider
         // Home
         .when('/', {
-            templateUrl: 'template/displayMenu.html',
-            controller: 'displayMenuCtrl',
+            templateUrl: 'template/dashboard.html',
+            controller: 'dashboardCtrl',
             cache: false,
         })
         .when('/home', {
-            templateUrl: 'template/displayMenu.html',
-            controller: 'displayMenuCtrl',
+            templateUrl: 'template/dashboard.html',
+            controller: 'dashboardCtrl',
             cache: false,
         })
         .when('/dashboard', {
