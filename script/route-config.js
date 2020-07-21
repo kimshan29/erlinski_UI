@@ -107,6 +107,11 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterPaketCtrl',
             cache: false
         })
+        .when('/masterJenisBarang', {
+            templateUrl: 'template/masterJenis.html',
+            controller: 'masterJenisCtrl',
+            cache: false
+        })
         .when('/masterMember', {
             templateUrl: 'template/masterMember.html',
             controller: 'masterMemberCtrl',

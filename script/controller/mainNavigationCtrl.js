@@ -31,11 +31,10 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                 "icon": "fa fa-home",
                 "namaMenu": "Home",
                 "menuItem": [{
-                        "url": "/index.html#/dashboard",
-                        "icon": "fa fa-circle-o",
-                        "namaMenu": "Dashboard"
-                    }
-                ]
+                    "url": "/index.html#/dashboard",
+                    "icon": "fa fa-circle-o",
+                    "namaMenu": "Dashboard"
+                }]
             },
             {
                 "icon": "fa fa-square-o",
@@ -46,6 +45,11 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                         "namaMenu": "Master Barang"
                     },
                     {
+                        "url": "/index.html#/masterJenisBarang",
+                        "icon": "fa fa-circle-o",
+                        "namaMenu": "Master Jenis Barang"
+                    },
+                    {
                         "url": "/index.html#/masterPaket",
                         "icon": "fa fa-circle-o",
                         "namaMenu": "Master Paket"
@@ -54,14 +58,13 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
                         "icon": "fa fa-circle-o",
                         "namaMenu": "Status Member"
                     }
-                    
+
                 ]
             },
             {
                 "icon": "fa fa-users",
                 "namaMenu": "Member Data",
-                "menuItem": [
-                    {
+                "menuItem": [{
                         "url": "/index.html#/masterMember",
                         "icon": "fa fa-circle-o",
                         "namaMenu": "Data Member"
@@ -76,8 +79,7 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
             {
                 "icon": "fa fa-shopping-cart",
                 "namaMenu": "Pembelian Atau Penjualan",
-                "menuItem": [
-                    {
+                "menuItem": [{
                         "url": "/index.html#/stokIn",
                         "icon": "fa fa-circle-o",
                         "namaMenu": "Stok In"
