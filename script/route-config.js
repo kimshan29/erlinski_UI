@@ -177,6 +177,11 @@ mainApp.config(function ($routeProvider) {
             cache: false,
             controller: 'masterBarangCtrl'
         })
+        .when('/updatePassword', {
+            templateUrl: 'template/updatePassword.html',
+            cache: false,
+            controller: 'updatePasswordCtrl'
+        })
         .when('/login', {
             templateUrl: 'login.html'
         })
