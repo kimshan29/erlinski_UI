@@ -17,95 +17,141 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderShift();
+        $scope.renderListData();
     }
 
-    $scope.renderShift = function () {
+    $scope.renderListData = function () {
         $('.Loading').show();
         $('.page-form').hide();
+        var apiUrl = "/barang";
+        HttpRequest.get(apiUrl).success(function (response) {
+            // response.header("Access-Control-Allow-Origin", "*");
+            // response.header("Access-Control-Allow-Headers", "X-Requested-With");
+            $scope.listData = response;
+            console.log(JSON.stringify($scope.listData));
 
+            $('.Loading').hide();
+            $('.page-form').show();
 
-        $scope.listData = [
-            {
-                id:1,
-                namaBarang:"Sabun Wajah",
-                merk:"Erlinski",
-                stok:1000,
-                url: ""
-            },
-            {
-                id: 2,
-                namaBarang: "Cream Malam",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 3,
-                namaBarang: "Day Cream",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 1,
-                namaBarang: "Toner",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            }
-        ];
-        console.log(JSON.stringify($scope.listData));
-
-        $('.Loading').hide();
-        $('.page-form').show();
-        // var apiUrl = "/api/shift";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listData = response.items;
-        //     console.log(JSON.stringify($scope.listData));
-
-        //     $('.Loading').hide();
-        //     $('.page-form').show();
-
-        // });
+        });
 
     }
 
     $scope.eventClickSave = function () {
 
-        var dataForm = $scope.form;
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/Shift/addShift";
+        $scope.form.username = $scope.currentUser.email;
+        var dataForm = $scope.form;
+        var apiUrl = "/barang/create";
 
         console.log(JSON.stringify(dataForm));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
-            $scope.eventClickCloseModal();
-            swal('', 'Data Berhasil Disimpan', 'success')
-            $('.Loading').hide();
-            $('.page-form').show();
+            $scope.idBarang = response.data.id;
+            console.log(response.data.id);
+
+
+            if (file == undefined) {
+                $scope.eventClickeventClickCloseModal();
+                console.log("1");
+                $scope.renderList();
+            } else {
+                file.upload = Upload.upload({
+                    url: 'https://api.myerlinski.com/barang/uploadBarang',
+                    // url: '',
+                    data: {
+                        id: $scope.idBarang,
+                        file: file
+                    },
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        console.log(JSON.stringify(response.data));
+                    });
+                    $('.Loading').hide();
+                    $('.page-form').show();
+                    // Get List Upload File
+                    swal("Data Berhasil Disimpan", {
+                        icon: "success",
+                    });
+                    console.log(response.data);
+                    $scope.renderList();
+                    $scope.eventClickeventClickCloseModal();
+                    $scope.clearForm();
+
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                    console.log(response.data);
+
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+                });
+            }
+
+            console.log(JSON.stringify($scope.form));
         });
     }
 
     $scope.eventClickUpdate = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/Shift/updateShift";
-        $scope.form.createdBy = $scope.currentUser.email;
-
-
-        console.log(JSON.stringify($scope.form));
-
+        var apiUrl = "/barang/updateBarang";
+        $scope.form.createdBy = $scope.currentUser.username;
 
         HttpRequest.post(apiUrl, $scope.form).success(function (response) {
-            $('.Loading').hide();
-            $('.page-form').show();
+
             console.log(JSON.stringify($scope.form));
-            $scope.renderShift();
+            var idMakanan = $scope.form.id;
+            console.log("idMakanan:" + idMakanan);
+
+            $scope.renderList();
             $scope.eventClickCloseModal();
-            swal("Data Berhasil Diupdate", {
-                icon: "success",
-            });
+            if (file == undefined) {
+                $scope.eventClickCloseModal();
+                console.log("1");
+                $scope.renderList();
+            } else {
+                file.upload = Upload.upload({
+                    url: 'https://api.myerlinski.com/barang/uploadBarang',
+                    // url: '',
+                    data: {
+                        id: idMakanan,
+                        file: file
+                    },
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        console.log(JSON.stringify(response.data));
+                    });
+
+                    // Get List Upload File
+                    swal("Data Berhasil Diupdate", {
+                        icon: "success",
+                    });
+                    console.log(response.data);
+                    $scope.renderList();
+                    $scope.eventClickCloseModal();
+                    $scope.clearForm();
+
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                    console.log(response.data);
+
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+                });
+            }
+
         })
     }
 
@@ -118,11 +164,11 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
 
         $scope.btnSave = false;
         $scope.btnUpdate = true;
-        var apiUrl = "/api/Shift?id=" + id;
+        var apiUrl = "/barang/" + id;
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response.items;
+            $scope.form = response.data;
 
             console.log(JSON.stringify($scope.form));
 
@@ -147,14 +193,14 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                         id: id,
                         updateBy: $scope.currentUser.email
                     }
-                    var apiUrl = "/api/Shift/deleteShift";
+                    var apiUrl = "/barang/deleteBarang";
                     HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
                         $('.Loading').hide();
                         $('.page-form').show();
                         swal("Data Berhasil Dihapus!", {
                             icon: "success",
                         });
-                        $scope.renderShift();
+                        $scope.renderListData();
                     })
 
                 } else {
@@ -165,17 +211,14 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
 
 
     $scope.clearForm = function () {
-        $scope.form.id = '';
-        $scope.form.namaShift = '';
-        $scope.form.jamMulai = '';
-        $scope.form.jamSelesai = '';
+        $scope.form = {};
 
     }
 
-    $scope.eventClickCloseModal = function () {
+    $scope.eventClickeventClickeventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderShift();
+        $scope.renderListData();
     }
 
 

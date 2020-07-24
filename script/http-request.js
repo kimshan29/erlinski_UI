@@ -1,6 +1,6 @@
 //Http Request
 
-var webServiceBaseUrl = "http://api.canteencounting.com";
+var webServiceBaseUrl = "https://api.myerlinski.com";
 // var webServiceBaseUrl = "http://localhost/api-canteen/index.php";
 
 mainApp.factory("HttpRequest", function ($http, $q) {

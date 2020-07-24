@@ -7,6 +7,17 @@ mainApp.controller("penjualanMemberCtrl", function ($route, $scope, $uibModal, $
 
     $scope.pageSize = 10;
     $scope.currentPage = 1;
+
+    $scope.master = {};
+    $scope.master.jenisTransaksi = [{
+            "id": 1,
+            "nama": "Satuan"
+        },
+        {
+            "id": 2,
+            "nama": "Paket"
+        }
+    ]
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -70,6 +81,17 @@ mainApp.controller("penjualanMemberCtrl", function ($route, $scope, $uibModal, $
 
     }
 
+    $scope.aksesPilihanPaket = false;
+    $scope.getPaket = (value) => {
+        console.log(value);
+        if (value.nama == "Paket") {
+            $scope.aksesPilihanPaket = true;
+        } else {
+            $scope.aksesPilihanPaket = false;
+            $scope.form.pilihanPaket = "";
+        }
+
+    }
     $scope.eventClickSave = function () {
 
         var dataForm = $scope.form;

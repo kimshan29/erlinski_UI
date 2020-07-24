@@ -32,8 +32,10 @@
                         <thead class="bg-default">
                             <tr>
                                 <th>No</th>
+                                <th>ID Member</th>
                                 <th>Nama Member</th>
                                 <th>Jenis Member</th>
+                                <th>Username</th>
                                 <th>Telepon</th>
                                 <th>Kota</th>
                                 <th>Action</th>
@@ -42,8 +44,10 @@
                         <tbody>
                             <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
+                                <td>{{item.idMember}}</td>
                                 <td>{{item.nama}}</td>
                                 <td>{{item.jenisMember}}</td>
+                                <td>{{item.email}}</td>
                                 <td>{{item.telepon}}</td>
                                 <td>{{item.kota}}</td>
                                 <td>
