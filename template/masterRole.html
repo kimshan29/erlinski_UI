@@ -95,6 +95,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-md-4 control-label">Level</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" ng-model="form.level" onkeypress="return validate(event)" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-md-4 control-label">Keterangan</label>
                                         <div class="col-md-8">
                                             <textarea class="form-control" ng-model="form.keterangan" required></textarea>
@@ -171,3 +177,24 @@
         </div>
     </section>
 </div>
+
+
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

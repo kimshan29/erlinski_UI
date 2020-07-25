@@ -20,7 +20,7 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
     $scope.pilihAkses = function (id) {
         $scope.idPeran = id;
-        var apiUrl = "/api/akses/getAksesByIdRole?id=" + $scope.idPeran;
+        var apiUrl = "/akses/getAksesByIdRole?id=" + $scope.idPeran;
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
@@ -33,9 +33,9 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
     $scope.renderList = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/role";
+        var apiUrl = "/role";
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listRole = response.items;
+            $scope.listRole = response;
             console.log(JSON.stringify($scope.listRole));
             $('.Loading').hide();
             $('.page-form').show();
@@ -50,8 +50,11 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
     $scope.eventClickSave = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/role/addRole";
-        $scope.form.createdBy = $scope.currentUser.email;
+        var apiUrl = "/role/create";
+        // $scope.form.createdBy = $scope.currentUser.email;
+        $scope.form.createdBy = "admin@gmail.com";
+
+        console.log(JSON.stringify($scope.form));
 
         HttpRequest.post(apiUrl, $scope.form).success(function (response) {
             console.log(JSON.stringify($scope.form));
@@ -71,10 +74,10 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
     $scope.eventClickUpdate = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/role/updateRole";
+        var apiUrl = "/role/" + $scope.form.id;
         $scope.form.createdBy = $scope.currentUser.email;
 
-        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+        HttpRequest.put(apiUrl, $scope.form).success(function (response) {
             $('.Loading').hide();
             $('.page-form').show();
             console.log(JSON.stringify($scope.form));
@@ -94,11 +97,11 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
         $scope.btnSave = false;
         $scope.btnUpdate = true;
 
-        var apiUrl = "/api/role?id=" + id;
+        var apiUrl = "/role/" + id;
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response.items;
+            $scope.form = response.data;
             console.log(JSON.stringify($scope.form));
 
         })
@@ -117,12 +120,12 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
                 $('.Loading').show();
                 $('.page-form').hide();
                 if (willDelete) {
-                    $scope.dataForm = {
-                        id: id,
-                        updateBy: $scope.currentUser.email
-                    }
-                    var apiUrl = "/api/role/deleteRole";
-                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                    // $scope.dataForm = {
+                    //     id: id,
+                    //     updateBy: $scope.currentUser.email
+                    // }
+                    var apiUrl = "/role/" + id;
+                    HttpRequest.del(apiUrl).success(function () {
                         $('.Loading').hide();
                         $('.page-form').show();
                         swal("Data Berhasil Dihapus!", {
@@ -146,7 +149,7 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
         $('.page-form').hide();
 
         $scope.currentUser.email = "Admin";
-        var apiUrl = "/api/aksesRole/addAksesRole";
+        var apiUrl = "/aksesRole/addAksesRole";
         $scope.formAkses = {
             idRole: $scope.idPeran,
             listMenu: $scope.listMenu,

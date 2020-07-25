@@ -105,19 +105,66 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
     $scope.getKelurahan = (idKecamatan) => {
         console.log("Get Desa");
     }
-    $scope.eventClickSave = function () {
 
-        var dataForm = $scope.form;
+    $scope.eventClickSave = function (file, file2, file3) {
+
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/Shift/addShift";
+        // $scope.form.email = $scope.currentUser.email;
+        $scope.form.createdBy = $scope.currentUser.email;
 
-        console.log(JSON.stringify(dataForm));
+        var dataForm = $scope.form;
+        var apiUrl = "/barang/create";
+
+        console.log(JSON.stringify($scope.form));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
-            $scope.eventClickCloseModal();
-            swal('', 'Data Berhasil Disimpan', 'success')
-            $('.Loading').hide();
-            $('.page-form').show();
+            $scope.idBarang = response.data.id;
+            // console.log(response.data.id);
+
+
+            if (file == undefined) {
+                $scope.eventClickCloseModal();
+                console.log("1");
+                $scope.renderListData();
+            } else {
+                file.upload = Upload.upload({
+                    url: 'https://api.myerlinski.com/barang/uploadBarang',
+                    // url: '',
+                    data: {
+                        id: $scope.idBarang,
+                        file: file
+                    },
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        console.log(JSON.stringify(response.data));
+                    });
+                    $('.Loading').hide();
+                    $('.page-form').show();
+                    // Get List Upload File
+                    swal("Data Berhasil Disimpan", {
+                        icon: "success",
+                    });
+                    console.log(response.data);
+                    $scope.renderListData();
+                    $scope.eventClickCloseModal();
+                    $scope.clearForm();
+
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                    console.log(response.data);
+
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+                });
+            }
+
+            // console.log(JSON.stringify($scope.form));
         });
     }
 
