@@ -30,137 +30,137 @@ mainApp.controller("dashboardCtrl", function ($route, $scope, $uibModal, $routeP
 
         // $http.get(url).then(function (response) {
         $scope.dataLocation = [{
-            "Latitude": -7.683431,
-            "Longitude": 109.137462,
+            "Latitude": "-7.683431",
+            "Longitude": "109.137462",
             "Id": "a136a5ee-81af-4b46-b073-529213ea2f63",
             "KodeUnit": "ADP",
-            "NamaUnit": "PLTU ADIPALA",
+            "NamaMember": "PLTU ADIPALA",
             tipeMember: "Stokis"
         }, {
-            "Latitude": -6.391752,
-            "Longitude": 105.828620,
+            "Latitude": "-6.391752",
+            "Longitude": "105.828620",
             "Id": "7ec4ad3a-ca5c-4952-8075-198969e5c6ff",
             "KodeUnit": "BLB",
-            "NamaUnit": "PLTU LABUAN",
+            "NamaMember": "PLTU LABUAN",
             tipeMember: "Stokis"
         }, {
-            "Latitude": -8.717559,
-            "Longitude": 115.211746,
+            "Latitude": "-8.717559",
+            "Longitude": "115.211746",
             "Id": "b887d5c7-f617-46ce-ae63-fe548d3e9157",
             "KodeUnit": "BLI",
-            "NamaUnit": "PLTGDG BALI",
+            "NamaMember": "PLTGDG BALI",
             tipeMember: "Stokis"
         }, {
-            "Latitude": -6.059042,
-            "Longitude": 106.461855,
+            "Latitude": "-6.059042",
+            "Longitude": "106.461855",
             "Id": "070842d5-50bc-47dd-a501-edf7ad611f25",
             "KodeUnit": "BLT",
-            "NamaUnit": "PLTU LONTAR",
+            "NamaMember": "PLTU LONTAR",
             tipeMember: "Stokis"
         }, {
-            "Latitude": -4.291609,
-            "Longitude": 119.631653,
+            "Latitude": "-4.291609",
+            "Longitude": "119.631653",
             "Id": "bae4b6df-f372-4085-b3bd-2bb095166977",
             "KodeUnit": "BRU",
-            "NamaUnit": "PLTU BARRU",
+            "NamaMember": "PLTU BARRU",
             tipeMember: "Agen"
         }, {
-            "Latitude": -5.886484,
-            "Longitude": 106.037350,
+            "Latitude": "-5.886484",
+            "Longitude": "106.037350",
             "Id": "9672e996-5dc7-42ce-b8c1-a6204c652ae2",
             "KodeUnit": "BSLA",
-            "NamaUnit": "PLTU SURALAYA 8",
+            "NamaMember": "PLTU SURALAYA 8",
             tipeMember: "Agen"
         }, {
-            "Latitude": -5.994542,
-            "Longitude": 106.093128,
+            "Latitude": "-5.994542",
+            "Longitude": "106.093128",
             "Id": "b09d0f5c-8826-4600-9e08-163671cbf828",
             "KodeUnit": "CLG",
-            "NamaUnit": "PLTU CILEGON",
+            "NamaMember": "PLTU CILEGON",
             tipeMember: "Reseller"
         }, {
-            "Latitude": -2.614364,
-            "Longitude": 140.790419,
+            "Latitude": "-2.614364",
+            "Longitude": "140.790419",
             "Id": "bc2dedec-699c-437d-ad8b-f7865e7e7427",
             "KodeUnit": "HTC",
-            "NamaUnit": "PLTU HOLTEKAMP",
+            "NamaMember": "PLTU HOLTEKAMP",
             tipeMember: "Reseller"
         }, {
-            "Latitude": -7.023670,
-            "Longitude": 106.546527,
+            "Latitude": "-7.023670",
+            "Longitude": "106.546527",
             "Id": "a58facca-8f53-410d-86b9-94363aac70a5",
             "KodeUnit": "JPR",
-            "NamaUnit": "PLTU PALABUHAN RATU",
+            "NamaMember": "PLTU PALABUHAN RATU",
             tipeMember: "Reseller"
         }, {
-            "Latitude": -8.659225,
-            "Longitude": 116.072969,
+            "Latitude": "-8.659225",
+            "Longitude": "116.072969",
             "Id": "48264112-78f0-44f5-b4a7-d28b7c12070d",
             "KodeUnit": "JRJ",
-            "NamaUnit": "PLTU JERANJANG",
+            "NamaMember": "PLTU JERANJANG",
             tipeMember: "Reseller"
         }, {
-            "Latitude": -7.141194,
-            "Longitude": 107.788064,
+            "Latitude": "-7.141194",
+            "Longitude": "107.788064",
             "Id": "f70ac114-02a7-486a-a674-4b210ca4ae39",
             "KodeUnit": "KMJ",
-            "NamaUnit": "PLTP KAMOJANG",
+            "NamaMember": "PLTP KAMOJANG",
             tipeMember: "Reseller"
         }, {
-            "Latitude": -7.394907,
-            "Longitude": 109.605351,
+            "Latitude": "-7.394907",
+            "Longitude": "109.605351",
             "Id": "2d58aaf5-b09d-49c4-923d-378e6bbb5499",
             "KodeUnit": "MRC",
-            "NamaUnit": "PLTA MRICA",
+            "NamaMember": "PLTA MRICA",
             tipeMember: "Distributor"
         }, {
-            "Latitude": -7.650702,
-            "Longitude": 113.026923,
+            "Latitude": "-7.650702",
+            "Longitude": "113.026923",
             "Id": "a2f41475-d344-4bc0-8543-a8419bcc07a5",
             "KodeUnit": "PGT",
-            "NamaUnit": "PLTGU GRATI",
+            "NamaMember": "PLTGU GRATI",
             tipeMember: "Distributor"
         }, {
-            "Latitude": 4.118865,
-            "Longitude": 98.257488,
+            "Latitude": "4.118865",
+            "Longitude": "98.257488",
             "Id": "e289d80e-8b50-4972-86a2-88de66b0c439",
             "KodeUnit": "PNS",
-            "NamaUnit": "PLTU PANGKALAN SUSU",
+            "NamaMember": "PLTU PANGKALAN SUSU",
             tipeMember: "Distributor"
         }, {
-            "Latitude": -6.863384,
-            "Longitude": 107.349739,
+            "Latitude": "-6.863384",
+            "Longitude": "107.349739",
             "Id": "996f5706-a8b1-4b6b-8dbc-74db3515535a",
             "KodeUnit": "SGL",
-            "NamaUnit": "PLTA SAGULING",
+            "NamaMember": "PLTA SAGULING",
             tipeMember: "Distributor"
         }, {
-            "Latitude": 0.030667,
-            "Longitude": 110.555477,
+            "Latitude": "0.030667",
+            "Longitude": "110.555477",
             "Id": "c2e7dc65-fd8d-41d5-a8f6-8473992d54fc",
             "KodeUnit": "SGU",
-            "NamaUnit": "PLTU SANGGAU",
+            "NamaMember": "PLTU SANGGAU",
             tipeMember: "End User"
         }, {
-            "Latitude": -5.892175,
-            "Longitude": 106.029746,
+            "Latitude": "-5.892175",
+            "Longitude": "106.029746",
             "Id": "a8b9eef7-aaa8-43f1-b413-675b710ef755",
             "KodeUnit": "SLA",
-            "NamaUnit": "PLTU SURALAYA",
+            "NamaMember": "PLTU SURALAYA",
             tipeMember: "End User"
         }, {
-            "Latitude": -6.952038,
-            "Longitude": 110.430394,
+            "Latitude": "-6.952038",
+            "Longitude": "110.430394",
             "Id": "12c8c9a8-a6e6-4c15-83c2-c8dfdb9a020a",
-            "KodeUnit": "SMG",
-            "NamaUnit": "PLTGU SEMARANG",
+
+            "NamaMember": "PLTGU SEMARANG",
             tipeMember: "End User"
         }, {
-            "Latitude": -6.109906,
-            "Longitude": 106.867223,
+            "Latitude": "-6.109906",
+            "Longitude": "106.867223",
             "Id": "900ca1e6-d69b-4339-b56c-ed0336dde11b",
-            "KodeUnit": "TGP",
-            "NamaUnit": "PLTGU PRIOK",
+
+            "NamaMember": "PLTGU PRIOK",
             tipeMember: "End User"
         }];
         // console.log($scope.dataLocation);
@@ -215,7 +215,7 @@ mainApp.controller("dashboardCtrl", function ($route, $scope, $uibModal, $routeP
             var customIcon = L.icon(iconOptions);
             marker = new L.marker([element.Latitude, element.Longitude], {
                 icon: customIcon
-            }).bindPopup(element.NamaUnit).addTo(map);
+            }).bindPopup(element.NamaMember).addTo(map);
         });
     }
     //Start of Application ===============================================================

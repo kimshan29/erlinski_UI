@@ -37,6 +37,7 @@
                                 <th>Nama Barang</th>
                                 <th>Image</th>
                                 <th>Harga</th>
+                                <th>Poin</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,6 +51,7 @@
                                     <img style="max-width: 100px;" ng-src="{{item.url}}">
                                 </td>
                                 <td>{{item.harga}}</td>
+                                <td>{{item.poin}}</td>
 
                                 <td>
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaBarang)">
@@ -119,9 +121,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-md-4 control-label">Poin</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.poin" onkeypress="return validate(event)" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Keterangan</label>
+                                        <div class="col-md-8">
+                                            <textarea type="text" class="form-control" ng-model="form.keterangan"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-md-4 control-label">File Image</label>
                                         <div class="col-md-8">
-                                            <input type="file" ngf-select ng-model="form.file" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                            <input type="file" ngf-select ng-model="form.file" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
                                             <i ng-show="myForm.file.$error.maxSize">File too large
                                                 {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
 
@@ -134,8 +148,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.file)">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button>
                     </div>
                 </div>
             </div>

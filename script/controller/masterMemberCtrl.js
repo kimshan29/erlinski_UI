@@ -7,6 +7,8 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
 
     $scope.pageSize = 10;
     $scope.currentPage = 1;
+
+    $scope.master = {};
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -17,7 +19,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderShift();
+        $scope.renderListData();
 
 
     }
@@ -32,7 +34,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
 
         // reader.readAsDataURL(e.target.files[0]);
     };
-    $scope.renderShift = function () {
+    $scope.renderListData = function () {
         $('.Loading').show();
         $('.page-form').hide();
 
@@ -86,9 +88,23 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
         //     $('.page-form').show();
 
         // });
+        $scope.getProvinsi();
+    }
+    $scope.getProvinsi = () => {
+        $scope.master.provinsi = [];
+    }
+    $scope.getKabupaten = (idProvinsi) => {
+        console.log("Get Kabupaten kota");
 
     }
 
+    $scope.getKecamatan = (idKabupaten) => {
+        console.log("Get kecamatan");
+    }
+
+    $scope.getKelurahan = (idKecamatan) => {
+        console.log("Get Desa");
+    }
     $scope.eventClickSave = function () {
 
         var dataForm = $scope.form;
@@ -119,7 +135,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
             $('.Loading').hide();
             $('.page-form').show();
             console.log(JSON.stringify($scope.form));
-            $scope.renderShift();
+            $scope.renderListData();
             $scope.eventClickCloseModal();
             swal("Data Berhasil Diupdate", {
                 icon: "success",
@@ -174,7 +190,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
                         swal("Data Berhasil Dihapus!", {
                             icon: "success",
                         });
-                        $scope.renderShift();
+                        $scope.renderListData();
                     })
 
                 } else {
@@ -195,7 +211,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
     $scope.eventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
-        $scope.renderShift();
+        $scope.renderListData();
     }
 
 

@@ -1,4 +1,4 @@
-mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -37,24 +37,26 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
 
     }
 
-    $scope.eventClickSave = function () {
+    $scope.eventClickSave = function (file) {
 
         $('.Loading').show();
         $('.page-form').hide();
-        $scope.form.username = $scope.currentUser.email;
+        // $scope.form.email = $scope.currentUser.email;
+        $scope.form.createdBy = $scope.currentUser.email;
+
         var dataForm = $scope.form;
         var apiUrl = "/barang/create";
 
-        console.log(JSON.stringify(dataForm));
+        console.log(JSON.stringify($scope.form));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
             $scope.idBarang = response.data.id;
-            console.log(response.data.id);
+            // console.log(response.data.id);
 
 
             if (file == undefined) {
-                $scope.eventClickeventClickCloseModal();
+                $scope.eventClickCloseModal();
                 console.log("1");
-                $scope.renderList();
+                $scope.renderListData();
             } else {
                 file.upload = Upload.upload({
                     url: 'https://api.myerlinski.com/barang/uploadBarang',
@@ -77,8 +79,8 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                         icon: "success",
                     });
                     console.log(response.data);
-                    $scope.renderList();
-                    $scope.eventClickeventClickCloseModal();
+                    $scope.renderListData();
+                    $scope.eventClickCloseModal();
                     $scope.clearForm();
 
                 }, function (response) {
@@ -93,34 +95,35 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                 });
             }
 
-            console.log(JSON.stringify($scope.form));
+            // console.log(JSON.stringify($scope.form));
         });
     }
 
-    $scope.eventClickUpdate = function () {
+    $scope.eventClickUpdate = function (file) {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/barang/updateBarang";
-        $scope.form.createdBy = $scope.currentUser.username;
+        var apiUrl = "/barang/" + $scope.form.id;
+        $scope.form.updateBy = $scope.currentUser.username;
+        // console.log(JSON.stringify($scope.form));
 
-        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+        console.log(file);
+
+        HttpRequest.put(apiUrl, $scope.form).success(function (response) {
 
             console.log(JSON.stringify($scope.form));
-            var idMakanan = $scope.form.id;
-            console.log("idMakanan:" + idMakanan);
+            var idBarang = $scope.form.id;
+            console.log("idBarang:" + idBarang);
 
-            $scope.renderList();
-            $scope.eventClickCloseModal();
-            if (file == undefined) {
+            if (file == undefined || file == "") {
                 $scope.eventClickCloseModal();
-                console.log("1");
-                $scope.renderList();
+                // console.log("1");
+                $scope.renderListData();
             } else {
                 file.upload = Upload.upload({
                     url: 'https://api.myerlinski.com/barang/uploadBarang',
                     // url: '',
                     data: {
-                        id: idMakanan,
+                        id: idBarang,
                         file: file
                     },
                 });
@@ -136,7 +139,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                         icon: "success",
                     });
                     console.log(response.data);
-                    $scope.renderList();
+                    $scope.renderListData();
                     $scope.eventClickCloseModal();
                     $scope.clearForm();
 
@@ -165,12 +168,12 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
         $scope.btnSave = false;
         $scope.btnUpdate = true;
         var apiUrl = "/barang/" + id;
-        console.log(apiUrl);
+        // console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.data;
 
-            console.log(JSON.stringify($scope.form));
+            // console.log(JSON.stringify($scope.form));
 
         })
 
@@ -189,12 +192,12 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
                 $('.Loading').show();
                 $('.page-form').hide();
                 if (willDelete) {
-                    $scope.dataForm = {
-                        id: id,
-                        updateBy: $scope.currentUser.email
-                    }
-                    var apiUrl = "/barang/deleteBarang";
-                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+                    // $scope.dataForm = {
+                    //     id: id,
+                    //     updateBy: $scope.currentUser.email
+                    // }
+                    var apiUrl = "/barang/" + id;
+                    HttpRequest.del(apiUrl).success(function () {
                         $('.Loading').hide();
                         $('.page-form').show();
                         swal("Data Berhasil Dihapus!", {
@@ -213,9 +216,11 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $uibModal, $rou
     $scope.clearForm = function () {
         $scope.form = {};
 
+        console.log("clear data");
+
     }
 
-    $scope.eventClickeventClickeventClickCloseModal = function () {
+    $scope.eventClickCloseModal = function () {
         $scope.clearForm();
         $('#myModal').modal('hide');
         $scope.renderListData();

@@ -110,28 +110,28 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Provinsi</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.provinsi" ng-options="item as item.name for item in lapGratifikasi.master.provinsi track by item.code" ng-change="getKabupatenRumah(formLapGratifikasi.identitasPelapor.provinsiRumah.code);">
+                                                <select class="form-control text-back" ng-model="form.provinsi" ng-options="item as item.name for item in master.provinsi track by item.code" ng-change="getKabupaten(formLapGratifikasi.identitasPelapor.provinsiRumah.code);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kab/Kota</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.kota" ng-options="item as item.name for item in lapGratifikasi.master.kotaRumah track by item.code" ng-change="getKecamatanRumah(formLapGratifikasi.identitasPelapor.kotaRumah.code);">
+                                                <select class="form-control text-back" ng-model="form.kota" ng-options="item as item.name for item in master.kota track by item.code" ng-change="getKecamatan(formLapGratifikasi.identitasPelapor.kotaRumah.code);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kecamatan</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.kecamatan" ng-options="item as item.name for item in lapGratifikasi.master.kecamatanRumah track by item.code" ng-change="getKelurahanRumah(formLapGratifikasi.identitasPelapor.kecamatanRumah.code);">
+                                                <select class="form-control text-back" ng-model="form.kecamatan" ng-options="item as item.name for item in master.kecamatan track by item.code" ng-change="getKelurahan(formLapGratifikasi.identitasPelapor.kecamatanRumah.code);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kel/Desa</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.desa" ng-options="item as item.name for item in lapGratifikasi.master.desaRumah track by item.code" ng-change="getKodePosRumah(formLapGratifikasi.identitasPelapor.desaRumah.code);">
+                                                <select class="form-control text-back" ng-model="form.desa" ng-options="item as item.name for item in master.desa track by item.code">
                                                 </select>
                                             </div>
                                         </div>

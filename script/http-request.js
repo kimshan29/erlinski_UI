@@ -11,6 +11,9 @@ mainApp.factory("HttpRequest", function ($http, $q) {
     var post = function (query, data) {
         return $http.post(webServiceBaseUrl + query, data);
     };
+    var put = function (query, data) {
+        return $http.put(webServiceBaseUrl + query, data);
+    }
     var del = function (query) {
         return $http.delete(webServiceBaseUrl + query);
     };
@@ -18,6 +21,7 @@ mainApp.factory("HttpRequest", function ($http, $q) {
     return {
         get: get,
         post: post,
-        del: del
+        del: del,
+        put: put
     };
 });
