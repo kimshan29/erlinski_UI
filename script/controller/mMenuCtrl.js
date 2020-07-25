@@ -41,8 +41,16 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         },
         {
             icon: "fa fa-th"
+        },
+        {
+            icon: "fa fa-shopping-cart"
+        },
+        {
+            icon: "fa fa-users"
         }
     ];
+
+
     $scope.menu.master.level = ["1", "2", "3"];
 
     $scope.isAdd = false;
@@ -61,10 +69,12 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     }
 
     $scope.getMenuParent = function () {
-        var apiUrl = "/api/akses/getParentMenu";
+        var apiUrl = "/akses/getParentMenu";
+        console.log(apiUrl);
+
         HttpRequest.get(apiUrl).success(function (response) {
 
-            $scope.menu.master.menuParent = response.items;
+            $scope.menu.master.menuParent = response.data;
             console.log(JSON.stringify($scope.menu.master.menuParent));
 
         });
@@ -74,12 +84,12 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         // NProgress.start();
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/akses";
+        var apiUrl = "/akses";
         HttpRequest.get(apiUrl).success(function (response) {
 
-            $scope.listMenu = response.items;
+            $scope.listMenu = response.data;
             $scope.getMenuParent();
-            console.log(JSON.stringify($scope.listMenu));
+            // console.log(JSON.stringify($scope.listMenu));
 
             $('.Loading').hide();
             $('.page-form').show();
@@ -100,19 +110,22 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.eventClickSave = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/akses/addAkses";
+        var apiUrl = "/akses/create";
         $scope.form.createdBy = $scope.currentUser.email;
+        // $scope.form.createdBy = "";
+
 
         HttpRequest.post(apiUrl, $scope.form).success(function (response) {
-            console.log(JSON.stringify($scope.form));
-            $('.Loading').hide();
-            $('.page-form').show();
+            console.log(response);
+
+
             $scope.renderList();
             $scope.closeModal();
             swal("Data Berhasil Disimpan", {
                 icon: "success",
             });
-
+            $('.Loading').hide();
+            $('.page-form').show();
         })
 
 
@@ -121,13 +134,15 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
     $scope.eventClickUpdate = function () {
         $('.Loading').show();
         $('.page-form').hide();
-        var apiUrl = "/api/akses/updateAkses";
-        $scope.form.createdBy = $scope.currentUser.email;
 
-        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+        $scope.form.updatedBy = $scope.currentUser.email;
+        // $scope.form.updatedBy = "";
+        console.log(JSON.stringify($scope.form));
+        var apiUrl = "/akses/" + $scope.form.id;
+        HttpRequest.put(apiUrl, $scope.form).success(function (response) {
             $('.Loading').hide();
             $('.page-form').show();
-            console.log(JSON.stringify($scope.form));
+
             $scope.renderList();
             $scope.closeModal();
             swal("Data Berhasil Diupdate", {
@@ -140,43 +155,14 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
         $scope.btnSave = false;
         $scope.btnUpdate = true;
 
-        var apiUrl = "/api/akses?id=" + id;
+        var apiUrl = "/akses/" + id;
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.form = response.items;
+            $scope.form = response.data;
             console.log(JSON.stringify($scope.form));
 
         })
-    }
-
-    $scope.eventClickHapus = function (id, name) {
-
-        var apiUrl = "/api/MasterMenu?idMenu=" + id + "&userEmail=" + $scope.currentUser.email;
-        var hapus = confirm("Hapus " + name + "?");
-
-        if (hapus) {
-            NProgress.start();
-
-            HttpRequest.del(apiUrl).success(function (response) {
-                    $scope.renderMenu();
-                    $scope.menu.isEditMode = false;
-                    NProgress.done();
-                })
-                .error(function (response, code) {
-                    NProgress.done();
-
-                    var data = {
-                        title: "MENU",
-                        exception: response,
-                        exceptionCode: code,
-                        operation: "DELETE",
-                        apiUrl: apiUrl
-                    };
-
-                    Helper.notifErrorHttp(data);
-                });
-        }
     }
 
     $scope.eventClickDelete = function (id) {
@@ -191,12 +177,9 @@ mainApp.controller("mMenuCtrl", function ($scope, $routeParams, $q, $cookies, Co
                 $('.Loading').show();
                 $('.page-form').hide();
                 if (willDelete) {
-                    $scope.dataForm = {
-                        id: id,
-                        updateBy: $scope.currentUser.email
-                    }
-                    var apiUrl = "/api/akses/deleteAkses";
-                    HttpRequest.post(apiUrl, $scope.dataForm).success(function () {
+
+                    var apiUrl = "/akses/" + id;
+                    HttpRequest.del(apiUrl).success(function () {
                         $('.Loading').hide();
                         $('.page-form').show();
                         swal("Data Berhasil Dihapus!", {

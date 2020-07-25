@@ -10,12 +10,12 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
 
         try {
             currentUser = JSON.parse($cookies.get('currentUser'));
-            console.log(currentUser);
+            // console.log(currentUser);
 
         } catch (err) {}
 
-        // if (currentUser == null)
-        //     document.location.href = 'login.html';
+        if (currentUser == null)
+            document.location.href = 'login.html';
 
         $('.Loading').hide();
 
@@ -32,7 +32,9 @@ mainApp.run(function ($rootScope, $location, $routeParams, $cookies, HttpRequest
 
         $cookies.put('currentRoute', $location.path());
 
+        console.log($routeParams);
 
+        // var path = $location.path()
         // if (path != "/404" && path != "/error") {
         //     var url = "/index.html#" + path;
         //     var encodedUrl = encodeURIComponent(url);

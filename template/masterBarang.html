@@ -43,7 +43,7 @@
                         </thead>
                         <tbody>
                             <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
-                                <td>{{$index + 1}}</td>
+                                <td>{{pageSize * (currentPage-1)+$index+1}}</td>
                                 <td>{{item.barcode}}</td>
                                 <!-- <td>{{item.namaJenis}}</td> -->
                                 <td>{{item.namaBarang}}</td>

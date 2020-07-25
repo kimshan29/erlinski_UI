@@ -20,11 +20,11 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
     $scope.pilihAkses = function (id) {
         $scope.idPeran = id;
-        var apiUrl = "/akses/getAksesByIdRole?id=" + $scope.idPeran;
+        var apiUrl = "/akses/" + id + "/getAksesByIdRole";
         console.log(apiUrl);
 
         HttpRequest.get(apiUrl).success(function (response) {
-            $scope.listMenu = response.items;
+            $scope.listMenu = response.data;
             console.log(JSON.stringify($scope.listRole));
 
 
@@ -51,8 +51,8 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
         $('.Loading').show();
         $('.page-form').hide();
         var apiUrl = "/role/create";
-        // $scope.form.createdBy = $scope.currentUser.email;
-        $scope.form.createdBy = "admin@gmail.com";
+        $scope.form.createdBy = $scope.currentUser.email;
+        // $scope.form.createdBy = "admin@gmail.com";
 
         console.log(JSON.stringify($scope.form));
 
@@ -148,8 +148,8 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
         $('.Loading').show();
         $('.page-form').hide();
 
-        $scope.currentUser.email = "Admin";
-        var apiUrl = "/aksesRole/addAksesRole";
+        // $scope.currentUser.email = "Admin";
+        var apiUrl = "/aksesRole/create";
         $scope.formAkses = {
             idRole: $scope.idPeran,
             listMenu: $scope.listMenu,
@@ -160,6 +160,9 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
         // $scope.peranPopup.data.diubahOleh = $scope.currentUser.email;
         HttpRequest.post(apiUrl, $scope.formAkses).success(function (response) {
                 $('#myModalAkses').modal('hide');
+                swal("Data Berhasil Disimpan", {
+                    icon: "success",
+                });
                 $scope.renderList();
 
                 // $('.Loading').hide();

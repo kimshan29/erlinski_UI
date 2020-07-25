@@ -32,15 +32,17 @@
                                 <th>No</th>
                                 <th>Nama Role</th>
                                 <th>Keterangan</th>
+                                <!-- <th>Icon</th> -->
                                 <th>Akses</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr dir-paginate="item in listRole |filter:search|itemsPerPage:pageSize" current-page="currentPage"">
-                                <td>{{$index + 1}}</td>
+                                <td>{{pageSize * (currentPage-1)+$index+1}}</td>
                                 <td>{{item.namaRole}}</td>
                                 <td>{{item.keterangan}}</td>
+                                <!-- <td><span class=" fa {{item.icon}}"></span></td> -->
                                 <td>
                                     <button type=" button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="pilihAkses(item.id)" ng-hide="akses" data-target="#myModalAkses" data-backdrop="static" data-keyboard="false">Pilih Akses</button>
                                 </td>

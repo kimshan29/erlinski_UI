@@ -118,43 +118,38 @@
 			$scope.loginClick = function () {
 
 				// var apiUrl = "http://localhost/api-canteen/index.php/api/user/login";
-				// var apiUrl = "http://api.canteencounting.com/api/user/login";
-				// var data = {
-				// 	username: $scope.username,
-				// 	password: $scope.password
+				var apiUrl = "https://api.myerlinski.com/member/login";
+				var data = {
+					username: $scope.username,
+					password: $scope.password
 
-				// };
+				};
+				console.log(JSON.stringify(data));
+				$http.post(apiUrl, data).success(function (response) {
+						console.log(JSON.stringify(response.data));
 
-				document.location.href = "index.html#/updatePassword";
+						if (response.status == "not_found") {
+							$scope.isValidLogin = false;
+							swal("Username & Password Anda Salah !!!", {
+								icon: "warning",
+							});
+							console.log("1");
 
-				// $scope.currentUser = JSON.parse($cookies.get('currentUser'));
-				// document.location.href = "index.html#/home";
-				// console.log(JSON.stringify(data));
-				// $http.post(apiUrl, data).success(function (response) {
-				// 		console.log(JSON.stringify(response.items));
-
-				// 		if (response.status == "not_found") {
-				// 			$scope.isValidLogin = false;
-				// 			swal("Username & Password Anda Salah !!!", {
-				// 				icon: "warning",
-				// 			});
-				// 			console.log("1");
-
-				// 			NProgress.done();
-				// 		} else {
-				// 			console.log("2");
-				// 			$cookies.put('currentUser', JSON.stringify(response.items));
-				// 			$scope.currentUser = JSON.parse($cookies.get('currentUser'));
-				// 			NProgress.done();
-				// 			document.location.href = "index.html#/home";
-				// 			console.log(currentUser);
-				// 		}
-				// 	})
-				// 	.error(function (response, code) {
-				// 		NProgress.done();
-				// 		alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
-				// 		console.log("error : " + JSON.stringify(response));
-				// 	});
+							// NProgress.done();
+						} else {
+							console.log("2");
+							$cookies.put('currentUser', JSON.stringify(response.data));
+							$scope.currentUser = JSON.parse($cookies.get('currentUser'));
+							NProgress.done();
+							document.location.href = "index.html#/home";
+							console.log(currentUser);
+						}
+					})
+					.error(function (response, code) {
+						NProgress.done();
+						alert('Terjadi kesalahan saat proses Sign In. ' + response.ExceptionMessage);
+						console.log("error : " + JSON.stringify(response));
+					});
 			};
 		});
 	</script>

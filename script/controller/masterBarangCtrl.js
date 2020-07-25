@@ -47,7 +47,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
         var dataForm = $scope.form;
         var apiUrl = "/barang/create";
 
-        console.log(JSON.stringify($scope.form));
+        console.log(JSON.stringify(dataForm));
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
             $scope.idBarang = response.data.id;
             // console.log(response.data.id);
@@ -103,7 +103,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
         $('.Loading').show();
         $('.page-form').hide();
         var apiUrl = "/barang/" + $scope.form.id;
-        $scope.form.updateBy = $scope.currentUser.username;
+        $scope.form.updateBy = $scope.currentUser.email;
         // console.log(JSON.stringify($scope.form));
 
         console.log(file);

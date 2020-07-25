@@ -35,17 +35,19 @@
                                 <th class="text-center">No Urut</th>
                                 <th class="text-center">Level Menu</th>
                                 <th class="text-center">Tipe Menu</th>
+                                <th class="text-center">Icon</th>
                                 <th class="text-center judul-action" style="width:30% !important;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr dir-paginate="item in listMenu |filter:search|itemsPerPage:pageSize" current-page="currentPage">
-                                <td>{{$index + 1}}</td>
+                                <td>{{pageSize * (currentPage-1)+$index+1}}</td>
                                 <td>{{item.namaMenu}}</td>
                                 <td>{{item.menuParent}}</td>
                                 <td>{{item.noUrut}}</td>
                                 <td>{{item.levelMenu}}</td>
                                 <td>{{item.tipeMenu}}</td>
+                                <td><span class="{{item.icon}}"></td>
                                 <td class="text-center">
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
@@ -63,9 +65,9 @@
                 <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
-           <div class="box-footer clearfix">
-               <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
-           </div>
+            <div class="box-footer clearfix">
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+            </div>
             <!-- /.box-footer -->
         </div>
 
@@ -91,7 +93,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-4">Nama Menu</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.namaMenu" />
+                                                <input type="text" class="form-control" ng-model="form.namaMenu" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -110,20 +112,20 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-4">No Urut</label>
                                             <div class="col-md-8">
-                                                <input type="number" class="form-control" ng-model="form.noUrut" />
+                                                <input type="number" class="form-control" ng-model="form.noUrut" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-4">Level Menu</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" ng-model="form.levelMenu" ng-options="item as item for item in menu.master.level">
+                                                <select class="form-control" ng-model="form.levelMenu" required ng-options="item as item for item in menu.master.level">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-4">Tipe Menu</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" ng-model="form.tipeMenu">
+                                                <select class="form-control" ng-model="form.tipeMenu" required>
                                                     <option value="">-</option>
                                                     <option value="Header">Header</option>
                                                     <option value="Item">Item</option>
@@ -133,13 +135,15 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-4">Icon Menu</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" ng-model="form.icon">
+                                                <select class="form-control" ng-model="form.icon" required>
                                                     <option value="">-</option>
                                                     <option value="fa fa-home">fa fa-home</option>
                                                     <option value="fa fa-square-o">fa fa-square-o </option>
                                                     <option value="fa fa-bar-chart">fa fa-bar-chart </option>
                                                     <option value="fa fa-th">fa fa-th </option>
                                                     <option value="fa fa-circle-o">fa fa-circle-o </option>
+                                                    <option value="fa fa-users">fa fa-users </option>
+                                                    <option value="fa fa-shopping-cart">fa fa-shopping-cart </option>
                                                 </select>
 
                                             </div>
@@ -147,7 +151,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-4">Target</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" ng-model="form.target">
+                                                <select class="form-control" ng-model="form.target" required>
                                                     <option value="">-</option>
                                                     <option value="_self">_self</option>
                                                     <option value="_blank">_blank</option>
