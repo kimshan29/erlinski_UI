@@ -1,4 +1,4 @@
-mainApp.controller("updatePasswordCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("updatePasswordCtrl", function ($route, $scope, $uibModal, $location, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -18,12 +18,70 @@ mainApp.controller("updatePasswordCtrl", function ($route, $scope, $uibModal, $r
         } catch (err) {
             $scope.currentUser = {};
         }
+
+        // console.log(JSON.stringify($scope.currentUser));
+
         // alert("testing");
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
-        $scope.renderData();
+        $scope.form.username = $scope.currentUser.email;
+        $("#myModal").modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false,
+
+        })
+
+        // $scope.renderData();
     }
 
+    $scope.submit = () => {
+        $('.Loading').show();
+        $('.page-form').hide();
+        var apiUrl = "/member/updateInfo";
+
+        console.log(JSON.stringify($scope.form));
+
+        HttpRequest.post(apiUrl, $scope.form).success(function (response) {
+            console.log(response.data.message);
+
+            if (response.data.message == "Password & Confirm Password is not match") {
+                swal("Password & Confirm Password Tidak Sama", {
+                    icon: "info",
+                });
+
+                $scope.form.username = $scope.currentUser.email;
+                $("#myModal").modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false,
+
+                })
+                $('.Loading').hide();
+                $('.page-form').show();
+                console.log("1");
+            } else {
+                swal("Data Berhasil DiUpdate", {
+                    icon: "success",
+                });
+
+                $("#myModal").hide()
+                $('.modal-backdrop').remove();
+                $location.path("/home");
+                $('.Loading').hide();
+                $('.page-form').show();
+
+                console.log("2");
+            }
+            // } else if (response.data.message = "Update New Password successfully") {
+            //     
+
+            // }
+
+
+
+        });
+    }
     $scope.renderData = function () {
         $('.Loading').show();
         $('.page-form').hide();

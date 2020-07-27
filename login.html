@@ -140,9 +140,14 @@
 							console.log("2");
 							$cookies.put('currentUser', JSON.stringify(response.data));
 							$scope.currentUser = JSON.parse($cookies.get('currentUser'));
-							NProgress.done();
-							document.location.href = "index.html#/home";
-							console.log(currentUser);
+
+							if ($scope.currentUser.userIsNew == "0") {
+								document.location.href = "index.html#/home";
+							} else {
+								document.location.href = "index.html#/updatePassword";
+							}
+
+							console.log($scope.currentUser);
 						}
 					})
 					.error(function (response, code) {

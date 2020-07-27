@@ -7,18 +7,18 @@ mainApp.controller("logoutCtrl", function ($scope, $routeParams, $location, $coo
     }
 
     $scope.logout = function () {
-        var apiUrl = "/api/user/logout";
-        console.log($scope.currentUser.username);
-        HttpRequest.post(apiUrl, $scope.currentUser.username).success(function (response) {
-            try {
-                $cookies.remove('currentUser');
-            } catch (err) {}
+        // var apiUrl = "/api/user/logout";
+        // console.log($scope.currentUser.username);
+        // HttpRequest.post(apiUrl, $scope.currentUser.username).success(function (response) {
+        try {
+            $cookies.remove('currentUser');
+        } catch (err) {}
 
-            try {
-                $cookies.remove('currentRoute');
-            } catch (err) {}
+        try {
+            $cookies.remove('currentRoute');
+        } catch (err) {}
 
-            document.location.href = '/login.html';
-        });
+        document.location.href = '/login.html';
+        // });
     }
 });
