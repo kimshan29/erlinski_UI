@@ -32,32 +32,32 @@
                         <thead class="bg-default">
                             <tr>
                                 <th>No</th>
-                                <th>Tanggal</th>
-                                <th>No Invoice</th>
-                                <th>ID Member</th>
+                                <th>Tanggal Pembelian</th>
+                                <th>No Stokin</th>
+                                <!-- <th>ID Member</th>
                                 <th>Nama Pembeli</th>
-                                <th>Jumlah Barang</th>
+                                <th>Jumlah Barang</th> -->
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
-                                <td>{{item.tanggal}}</td>
-                                <td>{{item.noInvoice}}</td>
-                                <td>{{item.idMember}}</td>
+                                <td>{{item.tanggal | date:"dd-MM-yyyy"}}</td>
+                                <td>{{item.noStokIn}}</td>
+                                <!-- <td>{{item.idMember}}</td>
                                 <td>{{item.namaPembeli}}</td>
-                                <td>{{item.jumlahBarang}}</td>
+                                <td>{{item.jumlahBarang}}</td> -->
                                 <td>
-                                    <button type='button' class='btn btn-success btn-sm' style="border-radius:50%;" uib-tooltip="View Detail" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickViewDetail(item.id)">
+                                    <button type='button' class='btn btn-success btn-sm' style="border-radius:50%;" uib-tooltip="View Detail" data-toggle="modal" data-target="#myModalPreview" data-backdrop="static" data-keyboard="false" ng-click="eventClickViewDetail(item.id)">
                                         <span class='fa fa-search'></span>
                                     </button>
-                                    <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                    <!-- <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
                                     <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
                                         <span class='fa fa-trash'></span>
-                                    </button>
+                                    </button> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -86,64 +86,216 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <div class="box box-info">
+                        <div ng-show="formTransaksi">
+                            <div class="box box-info">
 
-                            <div class="box-header">
-                                <h3 class="box-title">Input Pembelian & Jumlah Barang</h3>
-                            </div>
-                            <div class="box-body">
-                                <form class="form-horizontal" name="myForm">
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="col-md-3">
-                                                <label class="control-label">Tanggal</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglBergabung" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
-                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                        </button>
-                                                    </span>
+                                <div class="box-header">
+                                    <h3 class="box-title">Input Pembelian & Jumlah Barang</h3>
+                                </div>
+                                <div class="box-body">
+                                    <form class="form-horizontal" name="myForm">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <label class="control-label">Tanggal Pembelian</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglPembelian" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                                                <i class="glyphicon glyphicon-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="control-label">No Stock In</label>
-                                                <input type="text" class="form-control" ng-model="form.namaJenis" disabled>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">No Stock In</label>
+                                                    <input type="text" class="form-control" ng-model="form.noStockIn" placeholder="SXXXXXXXXX" disabled>
+                                                </div>
+
                                             </div>
 
                                         </div>
+                                    </form>
+                                </div>
+                            </div>
 
-                                    </div>
-                                </form>
+                            <div class="box box-primary">
+
+                                <div class="box-header">
+                                    <h3 class="box-title">Detail Barang</h3>
+                                </div>
+                                <div class="box-body">
+                                    <!-- <label class="control-label">Scan Barcode</label>
+                                    <input type="text" class="form-control" ng-model="form.barcode"> -->
+                                    <label class="control-label">Pilih Barang</label>
+                                    <select class="form-control text-back" ng-model="form.barcode" ng-options="item as item.namaBarang for item in master.barang" ng-change="getDetailBarang(form.barcode);">
+                                    </select>
+
+                                    <table class="table tabel-bordered" style="margin-top: 10px;">
+                                        <thead class="bg-default">
+                                            <tr>
+                                                <th>ID Barang</th>
+                                                <th>Nama Barang</th>
+                                                <th style="width: 10%;">Jumlah</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="detail in master.detailBarang track by $index">
+                                                <td>{{detail.id}}</td>
+                                                <td>{{detail.namaBarang}}</td>
+                                                <td><input type="number" ng-model="detail.jumlah" class="form-control"></td>
+                                                <td class="text-center">
+                                                    <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="hapusDetailBarang($index)">
+                                                        <span class='fa fa-trash'></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                        <div ng-show="viewTransaksi">
+                            <div class="box box-info">
+
+                                <div class="box-header">
+                                    <h3 class="box-title">Input Pembelian & Jumlah Barang</h3>
+                                </div>
+                                <div class="box-body">
+                                    <form class="form-horizontal" name="myFormView">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <label class="control-label">Tanggal Pembelian</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" disabled required="required" ng-required="true" ng-model="view.tglPembelian" ng-init="user.input.tglPembelian = user.input.tglPembelian.toDate()" is-open="user.input.tglPembelian.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="user.input.tglPembelian.$$periodeAwalOpened = true">
+                                                                <i class="glyphicon glyphicon-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">No Stock In</label>
+                                                    <input type="text" class="form-control" ng-model="view.noStockIn" disabled>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="box box-primary">
+
+                                <div class="box-header">
+                                    <h3 class="box-title">Detail Barang</h3>
+                                </div>
+                                <div class="box-body">
+                                    <!-- <label class="control-label">Scan Barcode</label>
+                                    <input type="text" class="form-control" ng-model="form.barcode"> -->
+                                    <!-- <label class="control-label">Pilih Barang</label>
+                                    <select class="form-control text-back" ng-model="view.barcode" ng-options="item as item.namaBarang for item in master.barang" ng-change="getDetailBarang(form.barcode);">
+                                    </select> -->
+
+                                    <table class="table tabel-bordered" style="margin-top: 10px;">
+                                        <thead class="bg-default">
+                                            <tr>
+                                                <th>ID Barang</th>
+                                                <th>Nama Barang</th>
+                                                <th style="width: 10%;">Jumlah</th>
+                                                <th class="text-center" ng-hide="true">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="detail in master.detailBarang">
+                                                <td>{{detail.id}}</td>
+                                                <td>{{detail.namaBarang}}</td>
+                                                <td><input type="number" ng-model="detail.jumlah" disabled class="form-control"></td>
+                                                <td class="text-center" ng-hide="true">
+                                                    <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="hapusDetailBarang($index)">
+                                                        <span class='fa fa-trash'></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                        <button type="button" class="btn btn-delete" ng-show="btnCancel" ng-click="eventClickCancel()">Cancel</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickSubmit()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Review -->
+        <div class="modal fade" id="myModalPreview" role="dialog">
+            <div class="modal-dialog" style="width: 70%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">
+                            <b>Preview Transaksi</b>
+                        </h3>
+                    </div>
+                    <div class="modal-body">
 
                         <div class="box box-primary">
 
                             <div class="box-header">
-                                <h3 class="box-title">Detail Barang</h3>
+                                <!-- <h3 class="box-title">Detail Barang</h3> -->
                             </div>
                             <div class="box-body">
-                                <label class="control-label">Scan Barcode</label>
-                                <input type="text" class="form-control" ng-model="form.namaJenis">
+                                <form class="form-horizontal" name="myFormView">
+                                    <div class="form-group">
+                                        <!-- <div class="col-md-12"> -->
+                                        <div class="col-md-3">
+                                            <label class="control-label">Tanggal Pembelian</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" disabled required="required" ng-required="true" ng-model="view.tanggal" ng-init="user.input.tglPembelian = user.input.tglPembelian.toDate()" is-open="user.input.tglPembelian.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="user.input.tglPembelian.$$periodeAwalOpened = true">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label">No Stock In</label>
+                                            <input type="text" class="form-control" ng-model="view.noStokIn" disabled>
+                                        </div>
+
+                                        <!-- </div> -->
+
+                                    </div>
+                                </form>
+
                                 <table class="table tabel-bordered" style="margin-top: 10px;">
                                     <thead class="bg-default">
                                         <tr>
                                             <th>ID Barang</th>
-                                            <th>Jenis Barang</th>
                                             <th>Nama Barang</th>
                                             <th style="width: 10%;">Jumlah</th>
-                                            <th class="text-center">Action</th>
+                                            <th class="text-center" ng-hide="true">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>123</td>
-                                            <td>Skin Care</td>
-                                            <td>Night Cream</td>
-                                            <td><input type="number" class="form-control"></td>
-                                            <td class="text-center">
-                                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                        <tr ng-repeat="detail in view.detailBarang">
+                                            <td>{{detail.id}}</td>
+                                            <td>{{detail.namaBarang}}</td>
+                                            <td><input type="number" ng-model="detail.jumlah" disabled class="form-control"></td>
+                                            <td class="text-center" ng-hide="true">
+                                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="hapusDetailBarang($index)">
                                                     <span class='fa fa-trash'></span>
                                                 </button>
                                             </td>
@@ -151,13 +303,14 @@
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
+                        <!-- <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.file)">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button> -->
                     </div>
                 </div>
             </div>

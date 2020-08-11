@@ -25,7 +25,7 @@ mainApp.controller("mPeranCtrl", function ($scope, $sce, $routeParams, $q, $cook
 
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.listMenu = response.data;
-            console.log(JSON.stringify($scope.listRole));
+            console.log(JSON.stringify($scope.listMenu));
 
 
         })

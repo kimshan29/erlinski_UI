@@ -1,0 +1,58 @@
+<section class="content-header">
+    <h1>
+        Report Barang Member
+        <!-- <small>advanced tables</small> -->
+    </h1>
+</section>
+<section class="content">
+    <div class="box box-info">
+
+        <!-- /.box-header -->
+        <div class="box-header">
+            <!-- <h3 class="box-title">Table</h3> -->
+            <form class="form-inline">
+                <div class="form-group" style="float: right;">
+                    <label>Search</label>
+                    <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    <button class="btn btn-success" uib-tooltip="Export Excel" ng-click="exportToExcel('#tableToExport')"><span class="fa fa-file-excel-o"></span></button>
+                </div>
+            </form>
+        </div>
+        <div class="box-body" id="tableToExport">
+
+            <!-- <div class="col-md-12"> -->
+            <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                        <tr class="bg-default">
+                            <th>No</th>
+                            <th>ID Member</th>
+                            <th>Nama Member</th>
+                            <th>Nama Barang</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in listData">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.idMember}}</td>
+                            <td>{{item.namaMember}}</td>
+                            <td>
+                                {{item.namaBarang}}
+                            </td>
+                            <td>
+                                {{item.stok}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                </dir-pagination-controls>
+            </div>
+            <!-- /.table-responsive -->
+            <!-- </div> -->
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+</section>

@@ -13,6 +13,8 @@ mainApp.controller("mainNavigationCtrl", function ($scope, $routeParams, $cookie
             $scope.currentUser = {};
         }
 
+        // console.log($scope.currentUser);
+
         $scope.renderMenu();
     };
 

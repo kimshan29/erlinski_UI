@@ -44,12 +44,18 @@
 
                 <!-- Profile Image -->
                 <div class="box box-primary">
-                    <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="./../images/avatar-01.jpg" alt="User profile picture">
+                    <div class="box-body box-profile text-center">
+                        <img class="profile-user-img img-responsive img-circle" src="./../images/profile_icon.png" alt="User profile picture">
 
-                        <h3 class="profile-username text-center">Joni Andreas</h3>
-
-                        <p class="text-muted text-center">Agen</p>
+                        <h3 class="profile-username ">{{data.namaLengkap}}</h3>
+                        <!--  -->
+                        <span class="btn btn-erlinski btn-file">
+                            Edit Foto Profile <input type="file" ngf-select ng-model="data.file" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                            <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
+                            <i ng-show="myForm.file.$error.maxSize">File too large
+                                {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
+                        </span>
+                        <p class="text-muted text-center">&nbsp;</p>
 
                         <div class="w3-card-4">
                             <!-- <header class="w3-container w3-light-grey">
@@ -59,8 +65,8 @@
                                 <p class="text-center"><b>Member Card Erlinski</b></p>
                                 <hr>
                                 <!-- <img src="./../images/avatar-01.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> -->
-                                <p>Joni Andreas</p>
-                                <p>01 Januari 2020</p>
+                                <p>{{data.namaLengkap}}</p>
+                                <p>{{data.idMember}}-{{form.namaRole}}</p>
                             </div>
                             <!-- <button class="w3-button w3-block w3-dark-grey">+ Connect</button> -->
                         </div>
@@ -79,112 +85,197 @@
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="tab1" ng-show="!profile.tab2">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" name="myForm">
                                 <div class="form-group">
                                     <label for="inputName" class="col-sm-2 control-label">Nama Lengkap</label>
-
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" disabled>
+                                        <input type="text" class="form-control" ng-model="form.namaLengkap">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">NIK</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control text-back" required onkeypress="return isNumber(event)" ng-model="form.nik" ng-change="getNik(form.nik)">
+                                        <div class="alert alert-danger1 ng-hide" ng-show="showValidasiNIK">
+                                            <strong>NIP Sudah Terdaftar, Ganti dengan yang lain</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Upload Scan KTP</label>
+                                    <div class="col-md-10">
+                                        <input type="file" ngf-select ng-model="form.fileKtp" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                        <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
+                                        <i ng-show="myForm.file.$error.maxSize">File too large
+                                            {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Jenis Kelamin</label>
+                                    <div class="col-md-10">
+                                        <!-- <select class="form-control text-back" ng-model="form.jenisKelamin" ng-options="item.id as item.nama for item in master.jenisKelamin track by item.id">
+                                        </select> -->
+                                        <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Laki-laki"> Laki-Laki
+                                        <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Perempuan"> Perempuan
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Tanggal Lahir</label>
+                                    <div class="col-md-10">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" ng-model="form.tglLahir" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail" disabled>
+                                        <input type="email" class="form-control" ng-model="form.email" id="inputEmail" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName" class="col-sm-2 control-label">Alamat</label>
-
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputName" disabled>
+                                        <input type="text" class="form-control" ng-model="form.alamat">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Provinsi</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control text-back" ng-model="form.provinsi" disabled ng-options="item as item.name for item in lapGratifikasi.master.provinsi track by item.code" ng-change="getKabupatenRumah(formLapGratifikasi.identitasPelapor.provinsiRumah.code);">
+                                        <select class="form-control" ng-model="form.idProvinsi" ng-options="item.id_prov as item.nama for item in master.provinsi" ng-change="getKabupaten(form.idProvinsi);">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Kab/Kota</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control text-back" ng-model="form.kota" disabled ng-options="item as item.name for item in lapGratifikasi.master.kotaRumah track by item.code" ng-change="getKecamatanRumah(formLapGratifikasi.identitasPelapor.kotaRumah.code);">
+                                        <select class="form-control text-back" ng-model="form.idKabupaten" ng-options="item.id_kab as item.nama for item in master.kota" ng-change="getKecamatan(form.idKabupaten);">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Kecamatan</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control text-back" ng-model="form.kecamatan" disabled ng-options="item as item.name for item in lapGratifikasi.master.kecamatanRumah track by item.code" ng-change="getKelurahanRumah(formLapGratifikasi.identitasPelapor.kecamatanRumah.code);">
+                                        <select class="form-control text-back" ng-model="form.idKecamatan" ng-options="item.id_kec as item.nama for item in master.kecamatan" ng-change="getKelurahan(form.idKecamatan);">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Kel/Desa</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control text-back" ng-model="form.desa" disabled ng-options="item as item.name for item in lapGratifikasi.master.desaRumah track by item.code" ng-change="getKodePosRumah(formLapGratifikasi.identitasPelapor.desaRumah.code);">
+                                        <select class="form-control text-back" ng-model="form.idKelurahan" ng-options="item.id_kel as item.nama for item in master.desa">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Kode Pos</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control text-back" disabled onkeypress="return isNumber(event)" ng-model="form.kodePos">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">No Rekening</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control text-back" disabled onkeypress="return isNumber(event)" ng-model="form.noRekening" name="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Bank</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control text-back" ng-model="form.namaBank" disabled ng-options="item as item.name for item in lapGratifikasi.master.desaRumah track by item.code" ng-change="getKodePosRumah(formLapGratifikasi.identitasPelapor.desaRumah.code);">
-                                        </select>
+                                        <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.kodePos">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">No Telepon</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control text-back" disabled onkeypress="return isNumber(event)" ng-model="form.noTelepon" name="">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane" id="tab2" ng-show="!profile.tab2">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Old Password</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" placeholder="Masukkan Password Lama Anda">
+                                        <input type="text" class="form-control text-back" required onkeypress="return isNumber(event)" ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
+                                        <div class="alert alert-danger1 ng-hide" ng-show="showValidasiHP">
+                                            <strong>No Handphone Sudah Terdaftar, Ganti dengan yang lain</strong>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail" class="col-sm-2 control-label">New Password</label>
-
+                                    <label class="col-sm-2 control-label">No Rekening</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail" placeholder="Masukkan Password Baru Anda">
+                                        <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noRekening" name="">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Confirm Password</label>
-
+                                    <label class="col-sm-2 control-label">Bank</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputName" placeholder="Ketik Ulang Password Baru Anda">
+                                        <select class="form-control text-back" ng-model="form.bank" ng-options="item.code as item.nama for item in master.bank">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Akun Instagram</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" ng-model="form.instagram">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Akun Facebook</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" ng-model="form.facebook">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Akun Twitter</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" ng-model="form.twitter">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Latitude</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" ng-model="form.latitude">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Longitude</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" ng-model="form.longitude">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName" class="col-sm-2 control-label">&nbsp;</label>
 
                                     <div class="col-sm-10">
-                                        <button class="btn btn-erlinski">Submit</button>
-                                        <button class="btn btn-danger">Cancel</button>
+                                        <button type="button" class="btn btn-erlinski" ng-click="eventClickUpdate(form.fileKtp)">Update</button>
+                                        <button class="btn btn-danger" ng-click="backMaps()">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                        <div class="tab-pane" id="tab2" ng-show="!profile.tab2">
+                            <form class="form-horizontal" name="myUpdatePassword">
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Old Password</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" ng-model="pass.oldPassword" placeholder="Masukkan Password Lama Anda">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-sm-2 control-label">New Password</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" ng-model="pass.newPassword" minlength="8" id="inputEmail" placeholder="Masukkan Password Baru Anda">
+                                        <i style="color: red;">*Input Password Minimal 8 karakter</i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Confirm Password</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" ng-model="pass.confirmPassword" minlength="8" placeholder="Ketik Ulang Password Baru Anda">
+                                        <i style="color: red;">*Input Password Minimal 8 karakter</i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">&nbsp;</label>
+
+                                    <div class="col-sm-10">
+                                        <button class="btn btn-erlinski" ng-disabled="!myUpdatePassword.$valid" ng-click="updatePassword()">Submit</button>
+                                        <button class="btn btn-danger" ng-click="backMaps()">Cancel</button>
                                     </div>
                                 </div>
                             </form>

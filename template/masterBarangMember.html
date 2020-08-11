@@ -1,0 +1,158 @@
+<div class="content Loading">
+    <div>
+        <p class="text-center">
+            <img class="blink-image loading-position" src="./../images/loading.gif">
+        </p>
+    </div>
+</div>
+
+<div class="page-form">
+    <section class="content-header">
+        <h1>
+            Barang Member
+            <!-- <small>advanced tables</small> -->
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box box-info">
+
+            <!-- /.box-header -->
+            <div class="box-header">
+                <!-- <h3 class="box-title">Table</h3> -->
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead class="bg-default">
+                            <tr>
+                                <th>No</th>
+                                <th>Barcode</th>
+                                <!-- <th>Jenis Barang</th> -->
+                                <th>Nama Barang</th>
+                                <th>Image</th>
+                                <th>Jumlah/Stok</th>
+                                <!-- <th>Action</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                                <td>{{pageSize * (currentPage-1)+$index+1}}</td>
+                                <td>{{item.barcode}}</td>
+                                <!-- <td>{{item.namaJenis}}</td> -->
+                                <td>{{item.namaBarang}}</td>
+                                <td>
+                                    <img style="max-width: 90px;" ng-src="{{item.url}}">
+                                </td>
+                                <td>{{item.stok}}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix" ng-hide="true">
+                <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+            </div>
+            <!-- /.box-footer -->
+        </div>
+
+        <!-- Modal Form -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 50%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <!-- <b>Tambah Master Menu</b> -->
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h3 class="box-title">Reward Member</h3>
+                            </div>
+                            <div class="box-body">
+                                <form class="form-horizontal" name="myForm">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Tanggal</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglBergabung" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Poin</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                            <input type=" text" class="form-control" onkeypress="return isNumber(event)" ng-model="form.poin">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Keterangan</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" ng-model="form.keterangan"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                                <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave()">Save</button>
+                                <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            alert("Input Menggunakan Angka ");
+            return false;
+        }
+        return true;
+    }
+</script>

@@ -25,43 +25,21 @@ mainApp.controller("rewardMemberCtrl", function ($route, $scope, $uibModal, $rou
         $('.page-form').hide();
 
 
-        // var apiUrl = "/api/shift";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listMasterShift = response.items;
-        //     console.log(JSON.stringify($scope.listMasterShift));
+        var apiUrl = "/member/" + $scope.currentUser.email + "/getRewardMember";
+        console.log(apiUrl);
 
-        //     $('.Loading').hide();
-        //     $('.page-form').show();
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listData = response.data;
+            $scope.poinSatuanSaya = response.totalPoinSatuanAkhir;
+            $scope.poinPaketSaya = response.totalPoinPaketAkhir;
+            console.log(JSON.stringify($scope.listData));
 
-        // });
+            $('.Loading').hide();
+            $('.page-form').show();
 
-        $scope.listData = [{
-                id: 1,
-                tanggal: "10-10-2019",
-                keterangan: "Transaksi dengan agen",
-                poin: 10
-            },
-            {
-                id: 1,
-                tanggal: "10-10-2019",
-                keterangan: "Transaksi dengan agen",
-                poin: 10
-            },
-            {
-                id: 1,
-                tanggal: "10-10-2019",
-                keterangan: "Transaksi dengan agen",
-                poin: 10
-            },
-            {
-                id: 1,
-                tanggal: "10-10-2019",
-                keterangan: "Transaksi dengan agen",
-                poin: 10
-            }
-        ]
-        $('.Loading').hide();
-        $('.page-form').show();
+        });
+
+
 
     }
 

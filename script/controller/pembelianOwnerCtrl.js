@@ -7,6 +7,11 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
 
     $scope.pageSize = 10;
     $scope.currentPage = 1;
+
+    $scope.master = {};
+
+    $scope.formTransaksi = false;
+    $scope.viewTransaksi = false;
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -18,6 +23,7 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
         $scope.renderListData();
+        $scope.dataBarang();
     }
 
     $scope.renderListData = function () {
@@ -25,59 +31,98 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
         $('.page-form').hide();
 
 
-        $scope.listData = [{
-                id: 1,
-                namaJenis: "Sabun Wajah",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 2,
-                namaJenis: "Cream Malam",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 3,
-                namaJenis: "Day Cream",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            },
-            {
-                id: 1,
-                namaJenis: "Toner",
-                merk: "Erlinski",
-                stok: 1000,
-                url: ""
-            }
-        ];
-        console.log(JSON.stringify($scope.listData));
 
-        $('.Loading').hide();
-        $('.page-form').show();
-        // var apiUrl = "/api/shift";
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.listData = response.items;
-        //     console.log(JSON.stringify($scope.listData));
+        // console.log(JSON.stringify($scope.listData));
 
-        //     $('.Loading').hide();
-        //     $('.page-form').show();
 
-        // });
+        var apiUrl = "/stokIn";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.listData = response.data;
+            console.log(JSON.stringify($scope.listData));
 
+            $('.Loading').hide();
+            $('.page-form').show();
+
+        });
+
+    }
+
+    $scope.dataBarang = () => {
+        var apiUrl = "/barang";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.master.barang = response;
+            // console.log(JSON.stringify($scope.master.barang));
+
+        });
+    }
+
+    $scope.master.detailBarang = [];
+    $scope.getDetailBarang = (barang) => {
+        console.log(barang);
+
+        $scope.master.detailBarang.push(barang);
+        $scope.form.barcode = "";
+
+    }
+
+    $scope.hapusDetailBarang = (index) => {
+        $scope.master.detailBarang.splice(index, 1);
+    }
+
+
+    $scope.eventClickViewDetail = (id) => {
+        var apiUrl = "/stokIn/" + id;
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.view = response.data;
+            console.log(JSON.stringify($scope.view));
+
+        })
     }
 
     $scope.eventClickSave = function () {
 
-        var dataForm = $scope.form;
-        $('.Loading').show();
-        $('.page-form').hide();
-        var apiUrl = "/api/Shift/addShift";
+        $scope.view = {
+            tglPembelian: $scope.form.tglPembelian,
+            noStockIn: $scope.form.noStockIn,
+            detailBarang: $scope.master.detailBarang
+        };
+        // $('.Loading').show();
+        // $('.page-form').hide();
+        var apiUrl = "/stokIn/create";
+
+        console.log(JSON.stringify($scope.view));
+        $scope.formTransaksi = false;
+        $scope.viewTransaksi = true;
+
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+        $scope.btnCancel = true;
+        // HttpRequest.post(apiUrl, dataForm).success(function (response) {
+        //     $scope.eventClickCloseModal();
+        //     swal('', 'Data Berhasil Disimpan', 'success')
+        //     $('.Loading').hide();
+        //     $('.page-form').show();
+        // });
+    }
+
+    $scope.eventClickSubmit = function () {
+
+        var dataForm = {
+            tglPembelian: $scope.view.tglPembelian,
+            noStockIn: $scope.view.noStockIn,
+            detailBarang: $scope.master.detailBarang
+        };
+        // $('.Loading').show();
+        // $('.page-form').hide();
+        var apiUrl = "/stokIn/create";
 
         console.log(JSON.stringify(dataForm));
+        $scope.formTransaksi = false;
+        $scope.viewTransaksi = true;
+
+        $scope.btnSave = false;
+        $scope.btnUpdate = true;
+        $scope.btnCancel = true;
         HttpRequest.post(apiUrl, dataForm).success(function (response) {
             $scope.eventClickCloseModal();
             swal('', 'Data Berhasil Disimpan', 'success')
@@ -111,6 +156,20 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
     $scope.eventClickAdd = function () {
         $scope.btnSave = true;
         $scope.btnUpdate = false;
+        $scope.btnCancel = false;
+
+        $scope.formTransaksi = true;
+        $scope.viewTransaksi = false;
+
+    }
+
+    $scope.eventClickCancel = () => {
+        $scope.formTransaksi = true;
+        $scope.viewTransaksi = false;
+
+        $scope.btnSave = true;
+        $scope.btnUpdate = false;
+        $scope.btnCancel = false;
     }
 
     $scope.eventClickEdit = function (id) {
@@ -164,10 +223,7 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
 
 
     $scope.clearForm = function () {
-        $scope.form.id = '';
-        $scope.form.namaShift = '';
-        $scope.form.jamMulai = '';
-        $scope.form.jamSelesai = '';
+        $scope.form = {};
 
     }
 

@@ -41,49 +41,86 @@
 
 		}
 	</style>
-	<div class="limiter">
-		<div class="container-login100 background-login">
-			<div class="wrap-login100 p-t-190 p-b-30" ng-app="loginApp" ng-controller="loginCtrl">
-				<form class="login100-form validate-form" style="margin-top: -155px;">
-					<!-- <div class="wrap-input100 img-responsive">
-						<img src="./images/Unilever.png" alt="" class="text-center" style="display: block;
-						margin-left: auto;
-						margin-right: auto;
-						width: 50%;">
-					</div> -->
+	<section ng-app="loginApp" ng-controller="loginCtrl">
+		<div class="limiter">
+			<div class="container-login100 background-login">
+				<div class="wrap-login100 p-t-190 p-b-30">
+					<form class="login100-form validate-form" style="margin-top: -155px;">
+						<!-- <div class="wrap-input100 img-responsive">
+							<img src="./images/Unilever.png" alt="" class="text-center" style="display: block;
+							margin-left: auto;
+							margin-right: auto;
+							width: 50%;">
+						</div> -->
 
-					<span class="login100-form-title p-t-20 p-b-45">
-						Selamat Datang Di Erlinski Member Area
-					</span>
-
-					<div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
-						<input class="input100" ng-model="username" type="text" name="username" placeholder="Username">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-user"></i>
+						<span class="login100-form-title p-t-20 p-b-45">
+							Selamat Datang Di Erlinski Member Area
 						</span>
-					</div>
 
-					<div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
-						<input class="input100" ng-model="password" type="password" name="pass" placeholder="Password">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-lock"></i>
-						</span>
-					</div>
+						<div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
+							<input class="input100" ng-model="username" type="text" name="username" placeholder="Username">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-user"></i>
+							</span>
+						</div>
 
-					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" ng-click="loginClick()">
-							Login
-						</button>
-					</div>
+						<div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
+							<input class="input100" ng-model="password" type="password" name="pass" placeholder="Password">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-lock"></i>
+							</span>
+						</div>
 
-				</form>
+						<div class="container-login100-form-btn p-t-10">
+							<button class="login100-form-btn" ng-click="loginClick()">
+								Login
+							</button>
+							<a href="" style="color: black;
+							font-size: 16px;
+							font-weight: bold;" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">Forgot Password?</a>
+						</div>
+
+					</form>
+
+				</div>
 			</div>
 		</div>
-	</div>
 
 
+
+		<div class=" modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog" style="width: 90%">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<!-- <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b>Resgiter Menu</b>
+						</h4>
+					</div> -->
+					<div class="modal-body" style="color: #ed4534;">
+						<form class="form-horizontal" name="myFormEmail">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="inputName" class="col-md-12 control-label">Masukan Email Anda</label>
+
+									<div class="col-md-12">
+										<input type="email" required class="form-control" ng-model="send.email">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" ng-click="cancelReset()">Cancel</button>
+						<button type="button" class="btn btn-warning" ng-disabled="!myFormEmail.$valid" ng-click="getResetPass()">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
 	<!--===============================================================================================-->
@@ -128,14 +165,19 @@
 				$http.post(apiUrl, data).success(function (response) {
 						console.log(JSON.stringify(response.data));
 
-						if (response.status == "not_found") {
+						if (response.data.message == "Not Found") {
 							$scope.isValidLogin = false;
-							swal("Username & Password Anda Salah !!!", {
+							swal("Member Belum Terdaftar !!!", {
 								icon: "warning",
 							});
 							console.log("1");
 
 							// NProgress.done();
+						} else if (response.data.message == "Login Failed") {
+							$scope.isValidLogin = false;
+							swal("Username & Password Anda Salah !!!", {
+								icon: "warning",
+							});
 						} else {
 							console.log("2");
 							$cookies.put('currentUser', JSON.stringify(response.data));
@@ -156,6 +198,31 @@
 						console.log("error : " + JSON.stringify(response));
 					});
 			};
+
+			$scope.getResetPass = () => {
+				// $scope.send = email;
+				console.log($scope.send.email);
+				var apiUrl = "https://api.myerlinski.com/member/resetPassword";
+				$scope.data = {
+					username: $scope.send.email
+				}
+
+				$http.post(apiUrl, $scope.data).then(function (response) {
+					console.log(response);
+
+					swal("Silahkan Cek Email Anda", {
+						icon: "success",
+					});
+
+					$('#myModal').modal('hide');
+					$scope.send.email = "";
+				})
+			}
+
+			$scope.cancelReset = () => {
+				$('#myModal').modal('hide');
+				$scope.send.email = "";
+			}
 		});
 	</script>
 </body>

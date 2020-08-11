@@ -65,75 +65,85 @@
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-primary">
         <div class="inner">
-          <h3>150</h3>
+          <h3>{{totalMember}}</h3>
 
           <p>Total Member</p>
         </div>
         <div class="icon">
           <i class="fa fa-shopping-cart"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <!-- <a href="#" class="small-box-footer">
           More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
+        </a> -->
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-primary">
         <div class="inner">
-          <h3>150</h3>
+          <h3>{{totalPembelian}}</h3>
 
           <p>Total Jumlah Pembelian</p>
         </div>
         <div class="icon">
           <i class="fa fa-shopping-cart"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <!-- <a href="#" class="small-box-footer">
           More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
+        </a> -->
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-primary">
         <div class="inner">
-          <h3>150</h3>
+          <h3>{{totalPenjualan}}</h3>
 
           <p>Total Jumlah Pengeluaran</p>
         </div>
         <div class="icon">
           <i class="fa fa-shopping-cart"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <!-- <a href="#" class="small-box-footer">
           More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
+        </a> -->
       </div>
     </div>
 
   </div>
-  <div class="box"><br>
-    <div class="box-body">
-      <div class="col-lg-6">
-        <p>
-          <b>Icon Status :</b>
-        </p>
-        <table class="table table-borderless">
-          <tr>
-            <td>
-              <button type="button" class="btn btn-circle " style="background-color: #E74C3C;"></button> Stokis</td>
-            <td>
-              <button type="button" class="btn btn-circle" style="background-color: #9B59B6;"></button> Agen</td>
-            <td>
-              <button type="button" class="btn btn-circle" style="background-color: #E67E22;"></button> Distributor</td>
-            <td>
-              <button type="button" class="btn btn-circle" style="background-color: #3498DB;"></button> Reseller</td>
-            <td>
-              <button type="button" class="btn btn-circle" style="background-color: #2ECC71;"></button> Pembeli</td>
-          </tr>
-        </table>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="box"><br>
+        <div class="box-body">
+          <div>
+            <p>
+              <b>Icon Status :</b>
+            </p>
+            <table class="table table-bordered">
+              <tr>
+                <td style="width: 10%;" class="text-center" ng-repeat="role in listRole">
+                  <button type="button" class="btn btn-circle " style="background-color: {{role.warnaRole}};"></button><br>{{role.namaRole}}</td>
+              </tr>
+            </table>
 
+          </div>
+          <div id="map"></div>
+        </div>
       </div>
-      <div id="map"></div>
+    </div>
+    <div class="col-lg-4">
+      <div class="box"><br>
+        <div class="box-header">
+          <h3 class="box-title">Media Promosi</h3>
+        </div>
+        <div class="box-body">
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="item in dataPromosi">{{item.keterangan}} <span style="background-color: #ed4534;cursor: pointer;" class="badge" ng-click="downloadPromosi(item.url)"><i class="fa fa-download" uib-tooltip="Download"></i></span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
+
+
 
 
 

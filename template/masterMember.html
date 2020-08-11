@@ -9,7 +9,7 @@
 <div class="page-form">
     <section class="content-header">
         <h1>
-            Data Member
+            Tambah Data Member
             <!-- <small>advanced tables</small> -->
         </h1>
     </section>
@@ -99,6 +99,34 @@
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
                                                 <input type="text" class="form-control" ng-model="form.namaLengkap" required>
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Email</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" ng-model="form.email" required ng-change="getCekEmail(form.email)">
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <div class="alert alert-danger1 ng-hide" ng-show="showValidasiEmail">
+                                                    <strong>Email Sudah Terdaftar, Ganti dengan yang lain</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">No HP/Whatsapp</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <div class="alert alert-danger1 ng-hide" ng-show="showValidasiHP">
+                                                    <strong>No Handphone Sudah Terdaftar, Ganti dengan yang lain</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Alamat Pengiriman</label>
+                                            <div class="col-md-8">
+                                                <textarea type="text" class="form-control" ng-model="form.alamatPengiriman" placeholder=""></textarea>
+                                                <span style="color: red;"><i>*) wajib diisi: Contoh:"Jl. Kedung Halang Bogor No.23 Rt-01/11 Desa Babakan Madang Kecamatan Cibinong Kab.Bogor Jawa Barat 16320"</i></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -114,7 +142,7 @@
                                             <label class="col-md-4 control-label">Tanggal Lahir</label>
                                             <div class="col-md-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" required="required" ng-required="true" ng-model="form.tglLahir" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" ng-model="form.tglLahir" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
                                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -125,7 +153,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 control-label">Alamat</label>
+                                            <label class="col-md-4 control-label">Alamat Sesuai KTP</label>
                                             <div class="col-md-8">
                                                 <textarea type="text" class="form-control" ng-model="form.alamat"></textarea>
                                             </div>
@@ -166,15 +194,8 @@
                                                 <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.kodePos">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label">No Telepon</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
-                                                <div class="alert alert-danger1 ng-hide" ng-show="showValidasiHP">
-                                                    <strong>No Handphone Sudah Terdaftar, Ganti dengan yang lain</strong>
-                                                </div>
-                                            </div>
-                                        </div>
+
+
                                         <!-- <div class="form-group">
                                             <label class="col-md-4 control-label">Photo Profile</label>
                                             <div class="col-md-8">
@@ -197,7 +218,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Upload Scan KTP</label>
                                             <div class="col-md-8">
-                                                <input type="file" ngf-select ng-model="form.fileKtp" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                                <input type="file" ngf-select ng-model="form.fileKtp" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
                                                 <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
                                                 <i ng-show="myForm.file.$error.maxSize">File too large
                                                     {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
@@ -230,6 +252,7 @@
                                             <label class="col-md-4 control-label">Status</label>
                                             <div class="col-md-8">
                                                 <select class="form-control" ng-model="form.roleMember" required ng-options="item.id as item.namaRole for item in master.role"></select>
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
                                             </div>
                                         </div>
 
@@ -243,15 +266,7 @@
                                     </div>
                                     <div class="box-body">
 
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label">Email</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.email" ng-change="getCekEmail(form.email)">
-                                                <div class="alert alert-danger1 ng-hide" ng-show="showValidasiEmail">
-                                                    <strong>Email Sudah Terdaftar, Ganti dengan yang lain</strong>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Akun Instagram</label>
                                             <div class="col-md-8">

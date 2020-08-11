@@ -14,6 +14,38 @@
         </h1>
     </section>
     <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-lg-3 col-xs-6" style="float: right;">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>{{poinPaketSaya}}</h3>
+
+                            <p>Jumlah Poin Paket Saya</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6" style="float: right;">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{poinSatuanSaya}}</h3>
+
+                            <p>Jumlah Poin Satuan Saya</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="box box-info">
 
             <!-- /.box-header -->
@@ -34,16 +66,20 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Keterangan</th>
+                                <th>Jenis Poin</th>
                                 <th>Poin</th>
+                                <th>Poin Akhir</th>
                                 <th ng-hide="true">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{$index + 1}}</td>
-                                <td>{{item.tanggal}}</td>
+                                <td>{{item.tanggal | date:"dd-MM-yyyy"}}</td>
                                 <td>{{item.keterangan}}</td>
-                                <td>{{item.poin}}</td>
+                                <td>{{item.jenis}}</td>
+                                <td>{{item.totalPoin}}</td>
+                                <td>{{item.totalPoinAkhir}}</td>
                                 <td ng-hide="true">
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
@@ -67,6 +103,8 @@
                 <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
             </div>
             <!-- /.box-footer -->
+
+
         </div>
 
         <!-- Modal Form -->

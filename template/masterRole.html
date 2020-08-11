@@ -31,8 +31,9 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Role</th>
+                                <th>Level</th>
+                                <th>Kode Warna</th>
                                 <th>Keterangan</th>
-                                <!-- <th>Icon</th> -->
                                 <th>Akses</th>
                                 <th>Action</th>
                             </tr>
@@ -41,6 +42,8 @@
                             <tr dir-paginate="item in listRole |filter:search|itemsPerPage:pageSize" current-page="currentPage"">
                                 <td>{{pageSize * (currentPage-1)+$index+1}}</td>
                                 <td>{{item.namaRole}}</td>
+                                <td>{{item.level}}</td>
+                                <td class=" text-center"> <button type=" button" class="btn btn-circle " style="background-color: {{item.warnaRole}};"></button></td>
                                 <td>{{item.keterangan}}</td>
                                 <!-- <td><span class=" fa {{item.icon}}"></span></td> -->
                                 <td>
@@ -106,6 +109,12 @@
                                         <label class="col-md-4 control-label">Keterangan</label>
                                         <div class="col-md-8">
                                             <textarea class="form-control" ng-model="form.keterangan" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Kode Warna Role</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="form.warnaRole" required>
                                         </div>
                                     </div>
                                 </form>

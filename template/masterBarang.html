@@ -33,11 +33,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Barcode</th>
-                                <!-- <th>Jenis Barang</th> -->
+                                <th>Jenis Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Image</th>
                                 <th>Harga</th>
                                 <th>Poin</th>
+                                <th>Stok</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -45,13 +46,18 @@
                             <tr dir-paginate="item in listData |filter:search|itemsPerPage:pageSize" current-page="currentPage">
                                 <td>{{pageSize * (currentPage-1)+$index+1}}</td>
                                 <td>{{item.barcode}}</td>
-                                <!-- <td>{{item.namaJenis}}</td> -->
+                                <td>{{item.jenis}}</td>
                                 <td>{{item.namaBarang}}</td>
                                 <td>
                                     <img style="max-width: 100px;" ng-src="{{item.url}}">
                                 </td>
-                                <td>{{item.harga}}</td>
+                                <td>
+                                    <button type='button' class='btn btn-success btn-sm' uib-tooltip="Add Harga Barang" data-toggle="modal" data-target="#myModalHargaBarang" data-backdrop="static" data-keyboard="false" ng-click="eventClickAddHargaBarang(item.id)">
+                                        <span class='fa fa-pencil'></span>
+                                    </button>
+                                </td>
                                 <td>{{item.poin}}</td>
+                                <td>{{item.stok}}</td>
 
                                 <td>
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaBarang)">
@@ -108,18 +114,23 @@
                                             <input type="text" class="form-control" ng-model="form.namaBarang" required>
                                         </div>
                                     </div>
-                                    <!-- <div class="form-group">
+                                    <div class="form-group">
                                         <label class="col-md-4 control-label">Jenis Barang</label>
                                         <div class="col-md-8">
-                                            <select class="form-control" ng-model="form.satuan" ng-options="item.id as item.nama for item in master.satuan"></select>
+                                            <select class="form-control" ng-model="form.jenis">
+                                                <option value="">-</option>
+                                                <option value="Paket">Paket</option>
+                                                <option value="Satuan">Satuan</option>
+                                            </select>
+                                            <!-- <select class="form-control" ng-model="form.jenisBarang" ng-options="item.id as item.nama for item in master.jenisBarang track by item.id"></select> -->
                                         </div>
-                                    </div> -->
-                                    <div class="form-group">
+                                    </div>
+                                    <!-- <div class="form-group">
                                         <label class="col-md-4 control-label">Harga</label>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" ng-model="form.harga" onkeypress="return validate(event)" required>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Poin</label>
                                         <div class="col-md-8">
@@ -150,6 +161,60 @@
                         <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
                         <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.file)">Save</button>
                         <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Add Harga -->
+        <div class="modal fade" id="myModalHargaBarang" role="dialog">
+            <div class="modal-dialog" style="width: 50%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <!-- <b>Tambah Master Menu</b> -->
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title">Tambah Harga Barang</h3>
+                            </div>
+                            <div class="box-body">
+                                <label ng-hide="true">{{idBarang}}</label>
+                                <table class="table tabel-bordered" style="margin-top: 10px;">
+                                    <thead class="bg-default">
+                                        <tr>
+                                            <th>Status Member</th>
+                                            <th>Harga</th>
+                                            <!-- <th style="width: 10%;">Jumlah</th> -->
+                                            <!-- <th class="text-center" ng-hide="true">Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="detail in master.member">
+                                            <td>{{detail.namaRole}}</td>
+                                            <!-- <td>{{detail.namaBarang}}</td> -->
+                                            <td><input type="number" ng-model="detail.harga" class="form-control"></td>
+                                            <!-- <td class="text-center" ng-hide="true">
+                                                <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="hapusDetailBarang($index)">
+                                                    <span class='fa fa-trash'></span>
+                                                </button>
+                                            </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-click="eventClickSaveHarga()">Save</button>
+                        <!-- <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button> -->
                     </div>
                 </div>
             </div>

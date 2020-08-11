@@ -109,6 +109,11 @@ mainApp.config(function ($routeProvider) {
             controller: 'masterPaketCtrl',
             cache: false
         })
+        .when('/mediaPromosi', {
+            templateUrl: 'template/masterMediaPromosi.html',
+            controller: 'masterMediaPromosiCtrl',
+            cache: false
+        })
         .when('/masterJenisBarang', {
             templateUrl: 'template/masterJenis.html',
             controller: 'masterJenisCtrl',
@@ -144,10 +149,30 @@ mainApp.config(function ($routeProvider) {
             cache: false,
             controller: 'pembelianOwnerCtrl'
         })
-        .when('/penjualanKasir', {
-            templateUrl: 'template/reportKasir.html',
+        .when('/riwayatPenjualan', {
+            templateUrl: 'template/reportRiwayatPenjualan.html',
             cache: false,
-            controller: 'reportKasirCtrl'
+            controller: 'reportRiwayatPenjualanCtrl'
+        })
+        .when('/riwayatPembelian', {
+            templateUrl: 'template/reportRiwayatPembelian.html',
+            cache: false,
+            controller: 'reportRiwayatPembelianCtrl'
+        })
+        .when('/riwayatKlaim', {
+            templateUrl: 'template/reportRiwayatKlaim.html',
+            cache: false,
+            controller: 'reportRiwayatKlaimCtrl'
+        })
+        .when('/reportRewardMember', {
+            templateUrl: 'template/reportRewardMember.html',
+            cache: false,
+            controller: 'reportRewardMemberCtrl'
+        })
+        .when('/reportBarangMember', {
+            templateUrl: 'template/reportBarangMember.html',
+            cache: false,
+            controller: 'reportBarangMemberCtrl'
         })
         .when('/penjualanHarian', {
             templateUrl: 'template/reportHarian.html',
@@ -169,29 +194,33 @@ mainApp.config(function ($routeProvider) {
             cache: false,
             controller: 'profileCtrl'
         })
-        .when('/masterKategori', {
-            templateUrl: 'template/masterKategori.html',
+        .when('/masterReward', {
+            templateUrl: 'template/masterReward.html',
             cache: false,
-            controller: 'masterKategoriCtrl'
+            controller: 'masterRewardCtrl'
         })
         .when('/masterBarang', {
             templateUrl: 'template/masterBarang.html',
             cache: false,
             controller: 'masterBarangCtrl'
         })
+        .when('/masterBarangMember', {
+            templateUrl: 'template/masterBarangMember.html',
+            cache: false,
+            controller: 'masterBarangMemberCtrl'
+        })
         .when('/updatePassword', {
             templateUrl: 'template/updatePassword.html',
             cache: false,
             controller: 'updatePasswordCtrl'
         })
+        .when('/klaimReward', {
+            templateUrl: 'template/klaimReward.html',
+            cache: false,
+            controller: 'klaimRewardCtrl'
+        })
         .when('/login', {
             templateUrl: 'login.html'
-        })
-        .when('/multipleUpload', {
-            templateUrl: 'multipleUpload.html'
-        })
-        .when('/singleUpload', {
-            templateUrl: 'singleUpload.html'
         })
 
         //Form Project

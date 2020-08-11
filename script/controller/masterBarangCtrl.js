@@ -7,6 +7,8 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
 
     $scope.pageSize = 10;
     $scope.currentPage = 1;
+
+    $scope.master = {};
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -18,6 +20,7 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
         // $('#komitmenkepatuhan').attr('disabled', 'disabled').off('click');
 
         $scope.renderListData();
+        // $scope.renderMasterMember();
     }
 
     $scope.renderListData = function () {
@@ -37,6 +40,56 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
 
     }
 
+
+
+    $scope.renderMasterMember = () => {
+        var apiUrl = "/role";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.master.member = response;
+            console.log(JSON.stringify($scope.master.member));
+
+        });
+
+    }
+
+    $scope.eventClickSaveHarga = () => {
+        $('.Loading').show();
+        $('.page-form').hide();
+        $scope.dataHarga = {
+            idBarang: $scope.idBarang,
+            listRole: $scope.master.member,
+            createdBy: $scope.currentUser.email
+        }
+        console.log(JSON.stringify($scope.dataHarga));
+
+        var apiUrl = "/hargaBarang/create";
+        HttpRequest.post(apiUrl, $scope.dataHarga).success(function (response) {
+            $scope.master.member = response;
+            console.log(JSON.stringify($scope.master.member));
+
+            $('.Loading').hide();
+            $('.page-form').show();
+            // Get List Upload File
+            swal("Data Berhasil Disimpan", {
+                icon: "success",
+            });
+            console.log(response.data);
+            $scope.renderListData();
+            $('#myModalHargaBarang').modal('hide');
+        });
+    }
+
+    $scope.eventClickAddHargaBarang = (id) => {
+        $scope.idBarang = id;
+
+        var apiUrl = "/hargaBarang/" + $scope.idBarang + "/getHargaByIdBarang";
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.master.member = response.data;
+            console.log(JSON.stringify($scope.master.member));
+
+        });
+
+    }
     $scope.eventClickSave = function (file) {
 
         $('.Loading').show();
@@ -103,8 +156,8 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
         $('.Loading').show();
         $('.page-form').hide();
         var apiUrl = "/barang/" + $scope.form.id;
-        $scope.form.updateBy = $scope.currentUser.email;
-        // console.log(JSON.stringify($scope.form));
+        $scope.form.updatedBy = $scope.currentUser.email;
+        console.log(JSON.stringify($scope.form));
 
         console.log(file);
 
@@ -173,9 +226,24 @@ mainApp.controller("masterBarangCtrl", function ($route, $scope, $http, $uibModa
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.data;
 
-            // console.log(JSON.stringify($scope.form));
+            console.log(JSON.stringify($scope.form));
 
         })
+
+        // $scope.form = {
+        //     "id": 3,
+        //     "namaBarang": "Facial Wash",
+        //     "jenis": "Paket",
+        //     "barcode": "333333333",
+        //     "poin": 1,
+        //     "file": "",
+        //     "keterangan": "",
+        //     "stok": "10",
+        //     "createdBy": null,
+        //     "createdDate": "2020-07-24 12:32:35",
+        //     "updatedBy": "erlinskiofficial@gmail.com",
+        //     "updatedDate": "2020-08-07 12:25:24"
+        // }
 
 
     }

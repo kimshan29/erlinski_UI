@@ -148,7 +148,7 @@
       </nav>
     </header>
     <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
+    <aside class="main-sidebar" ng-controller="mainNavigationCtrl">
       <!-- sidebar: style can be found in sidebar.less -->
       <section class="sidebar">
         <div class="user-panel">
@@ -156,11 +156,14 @@
             <img src="images/profile_icon.png" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
-            <p>Super Admin</p>
+            <!-- <p ng-bind="currentUser.namaLengkap"></p> -->
+            <p ng-bind="currentUser.namaLengkap">
+
+            </p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>
         </div>
-        <ul class="sidebar-menu" data-widget="tree" ng-controller="mainNavigationCtrl">
+        <ul class="sidebar-menu" data-widget="tree">
           <li class="treeview" ng-repeat="header in dataMenu | orderBy:'noUrut'">
             <a href="#">
               <i class="{{header.icon}}"></i>
@@ -319,11 +322,17 @@
   <script src="./script/controller/penjualanMemberCtrl.js"></script>
   <script src="./script/controller/pembelianOwnerCtrl.js"></script>
   <script src="./script/controller/updatePasswordCtrl.js"></script>
+  <script src="./script/controller/masterBarangMemberCtrl.js"></script>
+  <script src="./script/controller/masterRewardCtrl.js"></script>
+  <script src="./script/controller/masterMediaPromosiCtrl.js"></script>
+  <script src="./script/controller/klaimRewardCtrl.js"></script>
 
   <!-- Report -->
-  <script src="./script/controller/reportHarianCtrl.js"></script>
-  <script src="./script/controller/reportKasirCtrl.js"></script>
-  <script src="./script/controller/reportProdukCtrl.js"></script>
+  <script src="./script/controller/reportRiwayatPenjualanCtrl.js"></script>
+  <script src="./script/controller/reportRiwayatPembelianCtrl.js"></script>
+  <script src="./script/controller/reportRiwayatKlaimCtrl.js"></script>
+  <script src="./script/controller/reportRewardMemberCtrl.js"></script>
+  <script src="./script/controller/reportBarangMemberCtrl.js"></script>
   <script src="./script/controller/reportInvoiceCtrl.js"></script>
 
 
@@ -344,7 +353,9 @@
   <script src="plugins/angular-highcharts/src/highcharts-ng.js"></script>
   <!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
-
+  <script src="./node_modules/pdfmake/build/pdfmake.js"></script>
+  <script src="./node_modules/pdfmake/build/pdfmake.min.js"></script>
+  <script src="plugins/summernote/html2canvas.min.js"></script>
   <!-- <script src="dist/js/jspdf.min.js"></script> -->
   <script>
     // var myVar;

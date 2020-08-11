@@ -97,7 +97,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
     }
 
     $scope.getMasterRole = () => {
-        var apiUrl = "/role/" + $scope.currentUser.roleMember + "/getRoleByRoleMember";
+        var apiUrl = "/role/" + $scope.currentUser.roleMember + "/getRoleByRoleMemberAddMember";
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.master.role = response.data;
 

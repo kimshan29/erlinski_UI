@@ -1,0 +1,146 @@
+<div class="content Loading">
+    <div>
+        <p class="text-center">
+            <img class="blink-image loading-position" src="./../images/loading.gif">
+        </p>
+    </div>
+</div>
+<div class="page-form">
+    <section class="content-header">
+        <h1>
+            Master Reward
+            <!-- <small>advanced tables</small> -->
+        </h1>
+        <!-- <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i> Home</li>
+            <li class="active">Master Running Text</li>
+        </ol> -->
+    </section>
+    <section class="content">
+        <div class="row" ng-show="!lapGratifikasi.isEditMode">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <!-- <h3 class="box-title">Table</h3> -->
+                        <form class="form-inline pull-right">
+                            <div class="form-group">
+                                <label>Search</label>
+                                <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table no-margin">
+                            <thead class="bg-default">
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th class="text-center">Jenis Reward</th>
+                                    <th class="text-center">Nama Reward</th>
+                                    <th class="text-center">Jumlah Poin</th>
+                                    <th class="text-center">File</th>
+                                    <th class="text-center judul-action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="item in listImage |filter:search|itemsPerPage:pageSize" current-page="currentPage">
+                                    <td class="text-center">{{pageSize * (currentPage-1)+$index+1}}</td>
+                                    <td>{{item.jenisReward }}</td>
+                                    <td>{{item.namaReward }}</td>
+                                    <td>{{item.jumlahPoin }}</td>
+                                    <td class="text-center"><img style="max-width: 100px;" ng-src="{{item.url}}"></td>
+                                    <td class="text-center">
+
+                                        <button type='button' class='btn btn-info btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
+                                            <span class='fa fa-pencil'></span>
+                                        </button>
+                                        <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id)">
+                                            <span class='fa fa-trash'></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                        </dir-pagination-controls>
+                        <br>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" ng-hide="akses" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 50%">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                        <h4 class="modal-title">
+                            <b>Form Input Master Reward</b>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" name="myForm">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Jenis Reward</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
+                                    <select class="form-control" ng-model="form.jenisReward">
+                                        <option value="">-</option>
+                                        <option value="Paket">Paket</option>
+                                        <option value="Satuan">Satuan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Nama Reward</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="form.namaReward">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Jumlah Poin</label>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" ng-model="form.jumlahPoin">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">File</label>
+                                <div class="col-md-8">
+                                    <input type="file" ngf-select ng-model="form.file" ng-disabled="activeUpload" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                    <i ng-show="myForm.file.$error.maxSize">File too large
+                                        {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.file)">Save</button>
+                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    $('#tanggalDokumen').datepicker({
+        autoclose: true
+    })
+
+    $("#tahun").datepicker({
+        format: " yyyy", // Notice the Extra space at the beginning
+        viewMode: "years",
+        minViewMode: "years",
+        autoclose: true
+    });
+</script>
