@@ -482,16 +482,16 @@ mainApp.controller("penjualanMemberCtrl", function ($route, $scope, $uibModal, $
     }
 
     $scope.generatePDF = () => {
-        html2canvas(document.getElementById('exportthis'), {
+        html2canvas(document.getElementById('exportPDF'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
                 var docDefinition = {
                     content: [{
                         image: data,
-                        width: 500,
+                        width: 500
                     }]
                 };
-                pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+                pdfMake.createPdf(docDefinition).download("Invoice.pdf");
             }
         });
     }

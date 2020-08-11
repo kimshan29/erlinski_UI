@@ -575,147 +575,121 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <section class="invoice" id="exportthis">
-                            <!-- title row -->
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h2 class="page-header">
-                                        <i class="fa fa-globe"></i> Erlinski Skincare
-                                        <small class="pull-right">Tanggal: {{viewForm.tanggal | date:"dd-MM-yyyy"}}</small>
-                                    </h2>
+                        <section class="invoice">
+                            <div id="exportPDF">
+                                <!-- title row -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h2 class="page-header">
+                                            <i class="fa fa-globe"></i> Erlinski Skincare
+                                            <small class="pull-right">Tanggal: {{viewForm.tanggal | date:"dd-MM-yyyy"}}</small>
+                                        </h2>
+                                    </div>
+                                    <!-- /.col -->
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- info row -->
-                            <div class="row invoice-info">
-                                <div class="col-sm-4 invoice-col">
-                                    Penjual
-                                    <address>
-                                        <strong>{{currentUser.namaLengkap}}</strong><br>
-                                        {{currentUser.alamat}} <br>
-                                        <!-- Babakan, Kec. Dramaga, Bogor, Jawa Barat 16680<br> -->
-                                        Telepon: {{currentUser.noHandphone}}<br>
-                                        Email: {{currentUser.email}}
-                                    </address>
+                                <!-- info row -->
+                                <div class="row invoice-info">
+                                    <div class="col-sm-4 invoice-col">
+                                        Penjual
+                                        <address>
+                                            <strong>{{currentUser.namaLengkap}}</strong><br>
+                                            {{currentUser.alamat}} <br>
+                                            <!-- Babakan, Kec. Dramaga, Bogor, Jawa Barat 16680<br> -->
+                                            Telepon: {{currentUser.noHandphone}}<br>
+                                            Email: {{currentUser.email}}
+                                        </address>
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-sm-4 invoice-col">
+                                        Customer
+                                        <address>
+                                            <strong>{{viewForm.idPembeli.namaLengkap}}</strong><br>
+                                            {{viewForm.idPembeli.alamatPengiriman}}<br>
+                                            Email: {{viewForm.idPembeli.email}}
+                                        </address>
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-sm-4 invoice-col">
+                                        <b>Invoice : {{viewForm.noInvoice}} </b><br>
+                                        <br>
+                                        <b>Status Pembayaran:</b> {{viewForm.jenis}}<br>
+                                        <b>Tanggal Pembayaran:</b> {{viewForm.tanggalBayar == null ?'': viewForm.tanggalBayar | date:'dd-MM-yyyy'}}<br>
+                                        <b>Bank Transfer:</b>{{viewForm.namaBank}}
+                                    </div>
+                                    <!-- /.col -->
                                 </div>
-                                <!-- /.col -->
-                                <div class="col-sm-4 invoice-col">
-                                    Customer
-                                    <address>
-                                        <strong>{{viewForm.idPembeli.namaLengkap}}</strong><br>
-                                        {{viewForm.idPembeli.alamatPengiriman}}<br>
-                                        Email: {{viewForm.idPembeli.email}}
-                                    </address>
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-4 invoice-col">
-                                    <b>Invoice : {{viewForm.noInvoice}} </b><br>
-                                    <br>
-                                    <b>Status Pembayaran:</b> {{viewForm.jenis}}<br>
-                                    <b>Tanggal Pembayaran:</b> {{viewForm.tanggalBayar == null ?'': viewForm.tanggalBayar | date:'dd-MM-yyyy'}}<br>
-                                    <b>Bank Transfer:</b>{{viewForm.namaBank}}
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
+                                <!-- /.row -->
 
-                            <!-- Table row -->
-                            <div class="row">
-                                <div class="col-xs-12 table-responsive">
-                                    <table class="table tabel-bordered" style="margin-top: 10px;">
-                                        <thead class="bg-default">
-                                            <tr>
-                                                <th>ID Barang</th>
-                                                <th>Nama Barang</th>
-                                                <th>Harga</th>
-                                                <th style="width: 10%;">Jumlah</th>
-                                                <th style="width: 10%;">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody ng-init="total = 0">
-                                            <tr ng-repeat="detail in viewForm.detailTransaksi track by $index">
-                                                <td>{{detail.id}}</td>
-                                                <td>{{detail.namaBarang}}</td>
-                                                <td>{{detail.harga | number:"0"}}</td>
-                                                <td>{{detail.jumlah}}</td>
-                                                <td>{{detail.jumlah == undefined ? 0 : detail.harga * detail.jumlah | number:"0"}}</td>
-
-                                            </tr>
-                                            <!-- <tr>
-                                                <td><b>Total</b></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><b>{{total | number:"0"}}</b></td>
-
-                                            </tr> -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-
-                            <div class="row">
-                                <!-- accepted payments column -->
-                                <div class="col-xs-6">
-                                    <!-- <p class="lead">Payment Methods:</p>
-                                    <img src="../../dist/img/credit/visa.png" alt="Visa">
-                                    <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                                    <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                                    <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-                                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-                                        dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                                    </p> -->
-                                    &nbsp;
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-xs-6">
-                                    <p class="lead">Rincian Tagihan:</p>
-
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <tbody>
+                                <!-- Table row -->
+                                <div class="row">
+                                    <div class="col-xs-12 table-responsive">
+                                        <table class="table tabel-bordered" style="margin-top: 10px;">
+                                            <thead class="bg-default">
                                                 <tr>
-                                                    <th style="width:50%">Ongkos Kirim:</th>
-                                                    <td>Rp. {{viewForm.ongkosKirim | number:"0"}}</td>
+                                                    <th>ID Barang</th>
+                                                    <th>Nama Barang</th>
+                                                    <th>Harga</th>
+                                                    <th style="width: 10%;">Jumlah</th>
+                                                    <th style="width: 10%;">Total</th>
                                                 </tr>
-                                                <tr>
-                                                    <th>Diskon</th>
-                                                    <td>Rp. {{viewForm.diskon | number:"0"}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total Tagihan</th>
-                                                    <td>Rp. {{viewForm.totalTagihan | number:"0"}}</td>
-                                                </tr>
+                                            </thead>
+                                            <tbody ng-init="total = 0">
+                                                <tr ng-repeat="detail in viewForm.detailTransaksi track by $index">
+                                                    <td>{{detail.id}}</td>
+                                                    <td>{{detail.namaBarang}}</td>
+                                                    <td>{{detail.harga | number:"0"}}</td>
+                                                    <td>{{detail.jumlah}}</td>
+                                                    <td>{{detail.jumlah == undefined ? 0 : detail.harga * detail.jumlah | number:"0"}}</td>
 
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!-- /.col -->
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
+                                <!-- /.row -->
 
-                            <!-- this row will not appear when printing -->
-                            <!-- <div class="row no-print">
-                                <div class="col-xs-12">
-                                    <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-                                    <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
-                                    </button>
-                                    <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                                        <i class="fa fa-download"></i> Generate PDF
-                                    </button>
+                                <div class="row">
+                                    <!-- accepted payments column -->
+                                    <div class="col-xs-6">
+
+                                        &nbsp;
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-xs-6">
+                                        <p class="lead">Rincian Tagihan:</p>
+
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th style="width:50%">Ongkos Kirim:</th>
+                                                        <td>Rp. {{viewForm.ongkosKirim | number:"0"}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Diskon</th>
+                                                        <td>Rp. {{viewForm.diskon | number:"0"}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Total Tagihan</th>
+                                                        <td>Rp. {{viewForm.totalTagihan | number:"0"}}</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
                                 </div>
-                            </div> -->
+                                <!-- /.row -->
+
+                            </div>
                         </section>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
-                        <button type="button" class="btn btn-save" ng-click="generatePDF()" disabled><i class="fa fa-download"></i> Generate PDF</button>
+                        <button type="button" class="btn btn-save" ng-click="generatePDF()"><i class="fa fa-download"></i> Export PDF</button>
                         <!-- <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.file)">Update</button> -->
                     </div>
                 </div>
@@ -745,28 +719,28 @@
     }
 
 
-    var rupiah = document.getElementById("rupiah");
-    rupiah.addEventListener("keyup", function (e) {
-        // tambahkan 'Rp.' pada saat form di ketik
-        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-        rupiah.value = formatRupiah(this.value, "");
-    });
+    // var rupiah = document.getElementById("rupiah");
+    // rupiah.addEventListener("keyup", function (e) {
+    //     // tambahkan 'Rp.' pada saat form di ketik
+    //     // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+    //     rupiah.value = formatRupiah(this.value, "");
+    // });
 
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, "").toString(),
-            split = number_string.split(","),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    // /* Fungsi formatRupiah */
+    // function formatRupiah(angka, prefix) {
+    //     var number_string = angka.replace(/[^,\d]/g, "").toString(),
+    //         split = number_string.split(","),
+    //         sisa = split[0].length % 3,
+    //         rupiah = split[0].substr(0, sisa),
+    //         ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? "." : "";
-            rupiah += separator + ribuan.join(".");
-        }
+    //     // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    //     if (ribuan) {
+    //         separator = sisa ? "." : "";
+    //         rupiah += separator + ribuan.join(".");
+    //     }
 
-        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-        return prefix == undefined ? rupiah : rupiah ? "" + rupiah : "";
-    }
+    //     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    //     return prefix == undefined ? rupiah : rupiah ? "" + rupiah : "";
+    // }
 </script>
