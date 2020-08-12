@@ -35,8 +35,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in listData">
-                            <td>{{$index + 1}}</td>
+                        <tr ng-repeat="item in listData  |filter:search">
+                            <td>{{$index+1}}</td>
                             <td>{{item.idMember}}</td>
                             <td>{{item.namaLengkap}}</td>
                             <td>
@@ -48,8 +48,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
-                </dir-pagination-controls>
+                <!-- <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                </dir-pagination-controls> -->
             </div>
             <!-- /.table-responsive -->
             <!-- </div> -->

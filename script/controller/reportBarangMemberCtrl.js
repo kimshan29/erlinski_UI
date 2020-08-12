@@ -27,7 +27,7 @@ mainApp.controller("reportBarangMemberCtrl", function ($scope, $routeParams, $q,
 
         $scope.tglAkhir = dateAkhir + "-" + dAkhir.getMonth() + 1 + "-" + dAkhir.getFullYear();
         // console.log(JSON.stringify($scope.tglAwal));
-        console.log(dAwal.getMonth());
+        // console.log(dAwal.getMonth());
         // var apiUrl = "/api/report/getReportAll?startDate=" + $scope.tglAwal + "&endDate=" + $scope.tglAkhir;
         // var apiUrl = "/report/" + $scope.currentUser.email + "/" + $scope.tglAwal + "/" + $scope.tglAkhir + "/getPembelianByTanggal";
         // console.log(apiUrl);
@@ -51,7 +51,7 @@ mainApp.controller("reportBarangMemberCtrl", function ($scope, $routeParams, $q,
             $scope.totalPembelian = response.jumlahPembelian;
             $scope.totalProduk = response.jumlahProduk;
             $scope.listData = response.data;
-            console.log(JSON.stringify(response));
+            // console.log(JSON.stringify(response));
 
         })
 
@@ -61,7 +61,7 @@ mainApp.controller("reportBarangMemberCtrl", function ($scope, $routeParams, $q,
 
 
     $scope.exportToExcel = function (tableId) { // ex: '#my-table'
-        var exportHref = Excel.tableToExcel(tableId, 'Report Riwayat Pembelian');
+        var exportHref = Excel.tableToExcel(tableId, 'Report Barang Member');
         $timeout(function () {
             location.href = exportHref;
         }, 100); // trigger download

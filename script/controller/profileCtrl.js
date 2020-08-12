@@ -39,9 +39,11 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
         var apiUrl = "/member/" + $scope.currentUser.email + "/getMemberByUsername";
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.data;
+            // console.log(JSON.stringify($scope.form));
+
 
             console.log(JSON.stringify($scope.form));
-            $scope.form.tglLahir = $scope.form.tglLahir.toDate();
+            // $scope.form.tglLahir = $scope.form.tglLahir.toDate();
             // $scope.getProvinsi();
             $scope.getKabupaten(response.data.idProvinsi);
             $scope.getKecamatan(response.data.idKabupaten);

@@ -208,14 +208,26 @@
 				}
 
 				$http.post(apiUrl, $scope.data).then(function (response) {
-					console.log(response);
+					// console.log(JSON.stringify(response));
+					$scope.statusEmail = response.data.data.message;
+					// console.log(JSON.stringify($scope.statusEmail));
 
-					swal("Silahkan Cek Email Anda", {
-						icon: "success",
-					});
+					if ($scope.statusEmail == "Not Found") {
+						swal("Email Tidak Terdaftar !!!", {
+							icon: "info",
+						});
 
-					$('#myModal').modal('hide');
-					$scope.send.email = "";
+						$('#myModal').modal('hide');
+						$scope.send.email = "";
+					} else {
+						swal("Silahkan Cek Email Anda", {
+							icon: "success",
+						});
+
+						$('#myModal').modal('hide');
+						$scope.send.email = "";
+					}
+
 				})
 			}
 

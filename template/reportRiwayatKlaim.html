@@ -47,7 +47,7 @@
 
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table no-margin">
+                    <table class="table no-margin" id="tableToExport">
                         <thead>
                             <tr class="bg-default">
                                 <th>No</th>
@@ -58,7 +58,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in listData">
+                            <tr ng-repeat="item in listData  |filter:search">
                                 <td>{{$index + 1}}</td>
                                 <td>{{item.tanggal}}</td>
                                 <td>{{item.namaMember}}</td>
@@ -69,8 +69,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
-                    </dir-pagination-controls>
+                    <!-- <dir-pagination-controls class="pull-right" boundary-links="true" direction-links="true">
+                    </dir-pagination-controls> -->
                 </div>
                 <!-- /.table-responsive -->
             </div>

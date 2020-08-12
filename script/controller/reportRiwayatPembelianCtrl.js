@@ -17,28 +17,30 @@ mainApp.controller("reportRiwayatPembelianCtrl", function ($scope, $routeParams,
 
     $scope.searchByDate = function (startDate, endDate) {
 
-
         var dAwal = new Date(Date.parse(startDate));
         var date = String(dAwal.getDate()).padStart(2, '0');
-        $scope.tglAwal = date + "-" + dAwal.getMonth() + 1 + "-" + dAwal.getFullYear();
+        $scope.tglAwal = dAwal.getFullYear() + "-" + ("0" + (dAwal.getMonth() + 1)).slice(-2) + "-" + date;
 
         var dAkhir = new Date(Date.parse(endDate));
         var dateAkhir = String(dAkhir.getDate()).padStart(2, '0');
 
-        $scope.tglAkhir = dateAkhir + "-" + dAkhir.getMonth() + 1 + "-" + dAkhir.getFullYear();
-        // console.log(JSON.stringify($scope.tglAwal));
-        console.log(dAwal.getMonth());
+        // console.log(dateAkhir);
+
+        $scope.tglAkhir = dAkhir.getFullYear() + "-" + ("0" + (dAkhir.getMonth() + 1)).slice(-2) + "-" + dateAkhir;
+        // console.log(JSON.stringify($scope.tglAkhir));
+        // // console.log(endDate);
+        var apiUrl = "/report/" + $scope.currentUser.email + "/" + $scope.tglAwal + "/" + $scope.tglAkhir + "/getPembelianByTanggal";
         // var apiUrl = "/api/report/getReportAll?startDate=" + $scope.tglAwal + "&endDate=" + $scope.tglAkhir;
         // var apiUrl = "/report/" + $scope.currentUser.email + "/" + $scope.tglAwal + "/" + $scope.tglAkhir + "/getPembelianByTanggal";
-        // console.log(apiUrl);
+        console.log(apiUrl);
 
-        // HttpRequest.get(apiUrl).success(function (response) {
-        //     $scope.totalPembelian = response.jumlahPembelian;
-        //     $scope.totalProduk = response.jumlahProduk;
-        //     $scope.listData = response.data;
-        //     console.log(JSON.stringify($scope.listData));
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.totalPembelian = response.jumlahPembelian;
+            $scope.totalProduk = response.jumlahProduk;
+            $scope.listData = response.data;
+            console.log(JSON.stringify(response));
 
-        // })
+        })
 
     }
 
@@ -51,7 +53,7 @@ mainApp.controller("reportRiwayatPembelianCtrl", function ($scope, $routeParams,
             $scope.totalPembelian = response.jumlahPembelian;
             $scope.totalProduk = response.jumlahProduk;
             $scope.listData = response.data;
-            console.log(JSON.stringify(response.data));
+            // console.log(JSON.stringify(response.data));
 
         })
 

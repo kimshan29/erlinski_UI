@@ -51,7 +51,7 @@ mainApp.controller("reportRewardMemberCtrl", function ($scope, $routeParams, $q,
             $scope.totalPoinSatuan = response.totalPoinSatuanAkhir;
             $scope.totalPoinPaket = response.totalPoinPaketAkhir;
             $scope.listData = response.data;
-            console.log(JSON.stringify(response));
+            // console.log(JSON.stringify(response));
 
         })
 
@@ -61,7 +61,7 @@ mainApp.controller("reportRewardMemberCtrl", function ($scope, $routeParams, $q,
 
 
     $scope.exportToExcel = function (tableId) { // ex: '#my-table'
-        var exportHref = Excel.tableToExcel(tableId, 'Report Riwayat Pembelian');
+        var exportHref = Excel.tableToExcel(tableId, 'Report List Reward Member');
         $timeout(function () {
             location.href = exportHref;
         }, 100); // trigger download
