@@ -323,7 +323,8 @@ mainApp.controller("ubahStatusDownlineCtrl", function ($route, $scope, $uibModal
                 icon: "success",
             });
 
-            $scope.renderListData();
+            $scope.eventClickCloseModal();
+            // $scope.renderListData();
         })
     }
 
