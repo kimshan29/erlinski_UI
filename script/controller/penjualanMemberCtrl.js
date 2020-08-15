@@ -457,6 +457,7 @@ mainApp.controller("penjualanMemberCtrl", function ($route, $scope, $uibModal, $
         console.log(jenisTransaksi);
         if (jenisTransaksi == "Sudah Bayar") {
             $scope.showField = true;
+            $scope.form.tanggalBayar = $scope.dateNow;
         } else {
             $scope.showField = false;
             $scope.form.tglPembayaran = "";

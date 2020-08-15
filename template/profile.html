@@ -45,16 +45,18 @@
                 <!-- Profile Image -->
                 <div class="box box-primary">
                     <div class="box-body box-profile text-center">
-                        <img class="profile-user-img img-responsive img-circle" src="./../images/profile_icon.png" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="{{data.urlAvatar == ''? './../images/profile_icon.png': data.urlAvatar}}" alt="User profile picture">
 
                         <h3 class="profile-username ">{{data.namaLengkap}}</h3>
                         <!--  -->
-                        <span class="btn btn-erlinski btn-file">
+                        <!-- <span class="btn btn-erlinski btn-file">
                             Edit Foto Profile <input type="file" ngf-select ng-model="data.file" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
                             <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
                             <i ng-show="myForm.file.$error.maxSize">File too large
                                 {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
-                        </span>
+                        </span> -->
+                        <button class="btn btn-erlinski btn-file" type="file" ngf-select="uploadFiles($file, $invalidFiles, data.id)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+                            Edit Foto Profile</button>
                         <p class="text-muted text-center">&nbsp;</p>
 
                         <div class="w3-card-4">
@@ -85,32 +87,34 @@
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="tab1" ng-show="!profile.tab2">
-                            <form class="form-horizontal" name="myForm">
+                            <form class="form-horizontal" name="myFormUpdate">
                                 <div class="form-group">
                                     <label for="inputName" class="col-sm-2 control-label">Nama Lengkap</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" ng-model="form.namaLengkap">
+                                        <input type="text" class="form-control" required ng-model="form.namaLengkap">
+                                        <span style="color: red;"><i>*) wajib diisi</i></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">NIK</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control text-back" required onkeypress="return isNumber(event)" ng-model="form.nik" ng-change="getNik(form.nik)">
+                                        <input type="text" class="form-control text-back" ng-disabled="true" onkeypress="return isNumber(event)" ng-model="form.nik" ng-change="getNik(form.nik)">
                                         <div class="alert alert-danger1 ng-hide" ng-show="showValidasiNIK">
                                             <strong>NIP Sudah Terdaftar, Ganti dengan yang lain</strong>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label class="col-md-2 control-label">Upload Scan KTP</label>
                                     <div class="col-md-10">
-                                        <input type="file" ngf-select ng-model="form.fileKtp" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                        <input type="file" ngf-select ng-model="form.fileKtp" required name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                        <span style="color: red;"><i>*) wajib diisi</i></span>
                                         <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
                                         <i ng-show="myForm.file.$error.maxSize">File too large
                                             {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
 
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Jenis Kelamin</label>
                                     <div class="col-md-10">
@@ -184,6 +188,7 @@
                                     <label class="col-sm-2 control-label">No Telepon</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control text-back" required onkeypress="return isNumber(event)" ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
+                                        <span style="color: red;"><i>*) wajib diisi</i></span>
                                         <div class="alert alert-danger1 ng-hide" ng-show="showValidasiHP">
                                             <strong>No Handphone Sudah Terdaftar, Ganti dengan yang lain</strong>
                                         </div>
@@ -237,13 +242,11 @@
                                     <label for="inputName" class="col-sm-2 control-label">&nbsp;</label>
 
                                     <div class="col-sm-10">
-                                        <button type="button" class="btn btn-erlinski" ng-click="eventClickUpdate(form.fileKtp)">Update</button>
+                                        <button type="button" class="btn btn-erlinski" ng-disabled="!myFormUpdate.$valid" ng-click="eventClickUpdate(form.fileKtp)">Update</button>
                                         <button class="btn btn-danger" ng-click="backMaps()">Cancel</button>
                                     </div>
                                 </div>
                             </form>
-
-
                         </div>
                         <div class="tab-pane" id="tab2" ng-show="!profile.tab2">
                             <form class="form-horizontal" name="myUpdatePassword">
@@ -258,7 +261,7 @@
                                     <label for="inputEmail" class="col-sm-2 control-label">New Password</label>
 
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" ng-model="pass.newPassword" minlength="8" id="inputEmail" placeholder="Masukkan Password Baru Anda">
+                                        <input type="password" class="form-control" required ng-model="pass.newPassword" minlength="8" id="inputEmail" placeholder="Masukkan Password Baru Anda">
                                         <i style="color: red;">*Input Password Minimal 8 karakter</i>
                                     </div>
                                 </div>
@@ -266,7 +269,7 @@
                                     <label for="inputName" class="col-sm-2 control-label">Confirm Password</label>
 
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" ng-model="pass.confirmPassword" minlength="8" placeholder="Ketik Ulang Password Baru Anda">
+                                        <input type="password" class="form-control" required ng-model="pass.confirmPassword" minlength="8" placeholder="Ketik Ulang Password Baru Anda">
                                         <i style="color: red;">*Input Password Minimal 8 karakter</i>
                                     </div>
                                 </div>

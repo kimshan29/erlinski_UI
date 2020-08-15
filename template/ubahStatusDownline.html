@@ -9,7 +9,7 @@
 <div class="page-form">
     <section class="content-header">
         <h1>
-            Tambah Data Member
+            Ubah Status Downline
             <!-- <small>advanced tables</small> -->
         </h1>
     </section>
@@ -51,14 +51,14 @@
                                 <td>{{item.email}}</td>
                                 <td>{{item.noHandphone}}</td>
                                 <td>{{item.kotaMember}}</td>
-                                <td class="text-center">{{item.statusMember}}</td>
+                                <td>{{item.statusMember}}</td>
                                 <td>
                                     <button type='button' class='btn btn-primary btn-sm' style="border-radius:50%;" uib-tooltip="Edit" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" ng-click="eventClickEdit(item.id, item.namaLaporan)">
                                         <span class='fa fa-pencil'></span>
                                     </button>
-                                    <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
+                                    <!-- <button type='button' class='btn btn-danger btn-sm' style="border-radius:50%;" uib-tooltip="Hapus" ng-click="eventClickDelete(item.id, item.namaLaporan)">
                                         <span class='fa fa-trash'></span>
-                                    </button>
+                                    </button> -->
                                 </td>
                             </tr>
 
@@ -71,9 +71,9 @@
                 <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer clearfix">
+            <!-- <div class="box-footer clearfix">
                 <a href="" class="btn btn-sm btn-erlinski btn-flat pull-left" data-toggle="modal" ng-click="eventClickAdd()" data-target="#myModal" data-backdrop="static" data-keyboard="false">Tambah Data Member</a>
-            </div>
+            </div> -->
             <!-- /.box-footer -->
         </div>
 
@@ -85,7 +85,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">
-                            <b>Resgiter Menu</b>
+                            <b>Ubah Status Downline</b>
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -97,18 +97,33 @@
                                     </div>
                                     <div class="box-body">
                                         <div class="form-group">
+                                            <label class="col-md-4 control-label">Ubah Upline</label>
+                                            <div class="col-md-8">
+                                                <!-- <div class="input-group"> -->
+                                                <input type="text" ng-model="form.registeredBy" aria-describedby="basic-addon1" placeholder="" uib-typeahead="item as item.namaLengkap + ' - ' + item.idMember for item in renderMember($viewValue)" typeahead-loading="loadingPicManager" typeahead-no-results="noResultsPicManager" class="form-control" typeahead-min-length="3" typeahead-editable="true" typeahead-show-hint="true" typeahead-wait-ms="0" typeahead-input-formatter="$model.namaLengkap" />
+
+                                                <!-- </div> -->
+
+                                                <div ng-show="noResultsPicManager">
+                                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                                                </div>
+                                                <!-- <select class="form-control" ng-model="form.upline" required ng-options="item.id as item.namaLengkap for item in master.upline"></select> -->
+                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-4 control-label">Nama Lengkap</label>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" ng-model="form.id" ng-hide="true">
-                                                <input type="text" class="form-control" ng-model="form.namaLengkap" required>
-                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <input type="text" class="form-control" ng-model="form.namaLengkap" disabled required>
+                                                <!-- <span style="color: red;"><i>*) wajib diisi</i></span> -->
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Email</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.email" required ng-change="getCekEmail(form.email)">
-                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <input type="text" class="form-control" ng-model="form.email" disabled required ng-change="getCekEmail(form.email)">
+                                                <!-- <span style="color: red;"><i>*) wajib diisi</i></span> -->
                                                 <div class="alert alert-danger1 ng-hide" ng-show="showValidasiEmail">
                                                     <strong>Email Sudah Terdaftar, Ganti dengan yang lain</strong>
                                                 </div>
@@ -117,8 +132,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">No HP/Whatsapp</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
-                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" disabled ng-model="form.noHandphone" ng-change="geHpCek(form.noHandphone)">
+                                                <!-- <span style="color: red;"><i>*) wajib diisi</i></span> -->
                                                 <div class="alert alert-danger1 ng-hide" ng-show="showValidasiHP">
                                                     <strong>No Handphone Sudah Terdaftar, Ganti dengan yang lain</strong>
                                                 </div>
@@ -127,8 +142,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Alamat Pengiriman</label>
                                             <div class="col-md-8">
-                                                <textarea type="text" class="form-control" ng-model="form.alamatPengiriman" placeholder=""></textarea>
-                                                <span style="color: red;"><i>*) wajib diisi: Contoh:"Jl. Kedung Halang Bogor No.23 Rt-01/11 Desa Babakan Madang Kecamatan Cibinong Kab.Bogor Jawa Barat 16320"</i></span>
+                                                <textarea type="text" class="form-control" ng-model="form.alamatPengiriman" disabled placeholder=""></textarea>
+                                                <!-- <span style="color: red;"><i>*) wajib diisi: Contoh:"Jl. Kedung Halang Bogor No.23 Rt-01/11 Desa Babakan Madang Kecamatan Cibinong Kab.Bogor Jawa Barat 16320"</i></span> -->
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -136,15 +151,15 @@
                                             <div class="col-md-8">
                                                 <!-- <select class="form-control text-back" ng-model="form.jenisKelamin" ng-options="item.id as item.nama for item in master.jenisKelamin track by item.id">
                                                 </select> -->
-                                                <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Laki-laki"> Laki-Laki
-                                                <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Perempuan"> Perempuan
+                                                <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Laki-laki" disabled> Laki-Laki
+                                                <input type="radio" name="jenisKelamin" ng-model="form.jenisKelamin" value="Perempuan" disabled> Perempuan
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Tanggal Lahir</label>
                                             <div class="col-md-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" ng-model="form.tglLahir" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
+                                                    <input type="text" class="form-control" datepicker-localdate uib-datepicker-popup="dd/MM/yyyy" disabled ng-model="form.tglLahir" ng-init="user.input.tglAwalAktif = user.input.tglAwalAktif.toDate()" is-open="user.input.tglAwalAktif.$$periodeAwalOpened" close-text="Close" alt-input-formats="['dd/MM//yyyy']" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="user.input.tglAwalAktif.$$periodeAwalOpened = true">
                                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -157,7 +172,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Alamat Sesuai KTP</label>
                                             <div class="col-md-8">
-                                                <textarea type="text" class="form-control" ng-model="form.alamat"></textarea>
+                                                <textarea type="text" class="form-control" ng-model="form.alamat" disabled></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -165,35 +180,35 @@
                                             <div class="col-md-8">
                                                 <!-- <select class="form-control text-back" ng-model="form.idProvinsi" ng-options="item.id_prov as item.nama for item in master.provinsi" ng-change="getKabupaten(form.idProvinsi);">
                                                 </select> -->
-                                                <select class="form-control" ng-model="form.idProvinsi" ng-options="item.id_prov as item.nama for item in master.provinsi" ng-change="getKabupaten(form.idProvinsi);">
+                                                <select class="form-control" ng-model="form.idProvinsi" disabled ng-options="item.id_prov as item.nama for item in master.provinsi" ng-change="getKabupaten(form.idProvinsi);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kab/Kota</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.idKabupaten" ng-options="item.id_kab as item.nama for item in master.kota" ng-change="getKecamatan(form.idKabupaten);">
+                                                <select class="form-control text-back" ng-model="form.idKabupaten" disabled ng-options="item.id_kab as item.nama for item in master.kota" ng-change="getKecamatan(form.idKabupaten);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kecamatan</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.idKecamatan" ng-options="item.id_kec as item.nama for item in master.kecamatan" ng-change="getKelurahan(form.idKecamatan);">
+                                                <select class="form-control text-back" ng-model="form.idKecamatan" disabled ng-options="item.id_kec as item.nama for item in master.kecamatan" ng-change="getKelurahan(form.idKecamatan);">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kel/Desa</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.idKelurahan" ng-options="item.id_kel as item.nama for item in master.desa">
+                                                <select class="form-control text-back" ng-model="form.idKelurahan" disabled ng-options="item.id_kel as item.nama for item in master.desa">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Kode Pos</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.kodePos">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" disabled ng-model="form.kodePos">
                                             </div>
                                         </div>
 
@@ -211,7 +226,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">NIK</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.nik" ng-change="getNik(form.nik)">
+                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.nik" disabled ng-change="getNik(form.nik)">
                                                 <div class="alert alert-danger1 ng-hide" ng-show="showValidasiNIK">
                                                     <strong>NIP Sudah Terdaftar, Ganti dengan yang lain</strong>
                                                 </div>
@@ -220,8 +235,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Upload Scan KTP</label>
                                             <div class="col-md-8">
-                                                <input type="file" ngf-select ng-model="form.fileKtp" ng-required="statusScanUpload" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile">
-                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <input type="file" ngf-select ng-model="form.fileKtp" required name="file" style="margin-top:9px;" disabled ngf-max-size="50MB" ngf-model-invalid="errorFile">
+                                                <!-- <span style="color: red;"><i>*) wajib diisi</i></span> -->
                                                 <img ng-src="{{PreviewImage}}" ng-show="PreviewImage != null" alt="" style="height:200px;width:200px" />
                                                 <i ng-show="myForm.file.$error.maxSize">File too large
                                                     {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
@@ -231,20 +246,20 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Bank</label>
                                             <div class="col-md-8">
-                                                <select class="form-control text-back" ng-model="form.bank" ng-options="item.code as item.nama for item in master.bank">
+                                                <select class="form-control text-back" ng-model="form.bank" disabled ng-options="item.code as item.nama for item in master.bank">
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">No Rekening</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control text-back" onkeypress="return isNumber(event)" ng-model="form.noRekening" name="">
+                                                <input type="text" class="form-control text-back" disabled onkeypress="return isNumber(event)" ng-model="form.noRekening" name="">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Upload Bukti Transfer</label>
                                             <div class="col-md-8">
-                                                <input type="file" ngf-select ng-model="form.fileBuktiTransfer" name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile" ng-change="SelectFile(event)">
+                                                <input type="file" ngf-select ng-model="form.fileBuktiTransfer" disabled name="file" style="margin-top:9px;" ngf-max-size="50MB" ngf-model-invalid="errorFile" ng-change="SelectFile(event)">
                                                 <i ng-show="myForm.file.$error.maxSize">File too large
                                                     {{errorFiles[0].size / 1000000|number:1}}MB: max 50MB</i>
 
@@ -253,8 +268,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Status</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" ng-model="form.roleMember" required ng-options="item.id as item.namaRole for item in master.role"></select>
-                                                <span style="color: red;"><i>*) wajib diisi</i></span>
+                                                <select class="form-control" ng-model="form.roleMember" required disabled ng-options="item.id as item.namaRole for item in master.role"></select>
+                                                <!-- <span style="color: red;"><i>*) wajib diisi</i></span> -->
                                             </div>
                                         </div>
 
@@ -272,19 +287,19 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Akun Instagram</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.instagram">
+                                                <input type="text" class="form-control" disabled ng-model="form.instagram">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Akun Facebook</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.facebook">
+                                                <input type="text" class="form-control" disabled ng-model="form.facebook">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Akun Twitter</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.twitter">
+                                                <input type="text" class="form-control" disabled ng-model="form.twitter">
                                             </div>
                                         </div>
                                     </div>
@@ -298,15 +313,17 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Latitude</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.latitude">
+                                                <input type="text" class="form-control" disabled ng-model="form.latitude">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Longitude</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" ng-model="form.longitude">
+                                                <input type="text" class="form-control" disabled ng-model="form.longitude">
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -316,7 +333,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-delete" data-dismiss="modal" ng-click="eventClickCloseModal()">Close</button>
                         <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnSave" ng-click="eventClickSave(form.fileKtp, form.fileBuktiTransfer)">Save</button>
-                        <button type="button" class="btn btn-save" ng-disabled="!myForm.$valid" ng-show="btnUpdate" ng-click="eventClickUpdate(form.fileKtp, form.fileBuktiTransfer)">Update</button>
+                        <button type="button" class="btn btn-save" ng-show="btnUpdate" ng-click="eventClickUpdate(form.fileKtp, form.fileBuktiTransfer)">Update</button>
                     </div>
                 </div>
             </div>

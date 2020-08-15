@@ -42,13 +42,13 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
             // console.log(JSON.stringify($scope.form));
 
 
-            console.log(JSON.stringify($scope.form));
-            // $scope.form.tglLahir = $scope.form.tglLahir.toDate();
+            // console.log(JSON.stringify($scope.form));
+            $scope.form.tglLahir = $scope.form.tglLahir.toDate();
             // $scope.getProvinsi();
             $scope.getKabupaten(response.data.idProvinsi);
             $scope.getKecamatan(response.data.idKabupaten);
             $scope.getKelurahan(response.data.idKecamatan);
-            console.log(JSON.stringify($scope.form));
+            // console.log(JSON.stringify($scope.form));
 
             $('.Loading').hide();
             $('.page-form').show();
@@ -63,15 +63,47 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
             $scope.data = response.data;
 
 
-            // $scope.dat.tglLahir = $scope.form.tglLahir.toDate();
+            $scope.data.tglLahir = $scope.form.tglLahir.toDate();
             // // $scope.getProvinsi();
             // $scope.getKabupaten(response.data.idProvinsi);
             // $scope.getKecamatan(response.data.idKabupaten);
             // $scope.getKelurahan(response.data.idKecamatan);
-            // console.log(JSON.stringify($scope.form));
+            // console.log(JSON.stringify($scope.data));
 
 
         });
+    }
+
+    $scope.uploadFiles = function (file, errFiles, idMember) {
+
+        console.log(idMember);
+
+        $scope.f = file;
+        $scope.errFile = errFiles && errFiles[0];
+        if (file) {
+            file.upload = Upload.upload({
+                url: 'https://api.myerlinski.com/member/uploadAvatarMember',
+                data: {
+                    id: idMember,
+                    file: file
+                },
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                });
+                $scope.getIdentitas();
+                $scope.renderData();
+
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 *
+                    evt.loaded / evt.total));
+            });
+        }
     }
 
     $scope.getMasterRole = () => {
@@ -107,7 +139,7 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
 
 
     $scope.getKabupaten = (idProvinsi) => {
-        console.log(idProvinsi);
+        // console.log(idProvinsi);
 
         var apiUrl = "/address/" + idProvinsi + "/getKabupatenByIdProvinsi";
         HttpRequest.get(apiUrl).success(function (response) {
@@ -194,7 +226,7 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
         $scope.form.updatedBy = $scope.currentUser.email;
 
 
-        console.log(JSON.stringify($scope.form));
+        // console.log(JSON.stringify($scope.form));
 
 
 
@@ -271,7 +303,7 @@ mainApp.controller("profileCtrl", function ($route, $scope, $uibModal, $routePar
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.form = response.items;
 
-            console.log(JSON.stringify($scope.form));
+            // console.log(JSON.stringify($scope.form));
 
         })
 

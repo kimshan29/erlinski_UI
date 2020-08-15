@@ -214,6 +214,11 @@ mainApp.config(function ($routeProvider) {
             cache: false,
             controller: 'updatePasswordCtrl'
         })
+        .when('/ubahStatusDownline', {
+            templateUrl: 'template/ubahStatusDownline.html',
+            cache: false,
+            controller: 'ubahStatusDownlineCtrl'
+        })
         .when('/klaimReward', {
             templateUrl: 'template/klaimReward.html',
             cache: false,

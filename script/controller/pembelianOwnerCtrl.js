@@ -12,6 +12,9 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
 
     $scope.formTransaksi = false;
     $scope.viewTransaksi = false;
+
+    $scope.dateNow = new Date();
+    $scope.form.tglPembelian = $scope.dateNow;
     //Form Load ======================================================================
     $scope.formLoad = function () {
         try {
@@ -110,7 +113,8 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
         var dataForm = {
             tglPembelian: $scope.view.tglPembelian,
             noStockIn: $scope.view.noStockIn,
-            detailBarang: $scope.master.detailBarang
+            detailBarang: $scope.master.detailBarang,
+            createdBy: $scope.currentUser.email
         };
         // $('.Loading').show();
         // $('.page-form').hide();

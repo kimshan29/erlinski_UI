@@ -1,4 +1,4 @@
-mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
+mainApp.controller("ubahStatusDownlineCtrl", function ($route, $scope, $uibModal, $routeParams, $q, $cookies, Constant, HttpRequest, Model, Helper, DTOptionsBuilder, DTColumnBuilder, markers, Upload, $timeout) {
     //Variable
 
 
@@ -35,9 +35,31 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
         $scope.getProvinsi();
         $scope.getMasterRole();
         $scope.getBank();
-
+        $scope.getRoleUpline();
     }
 
+    $scope.getRoleUpline = () => {
+        var apiUrl = "/member/" + $scope.currentUser.email + "/getListMember";
+        // console.log(apiUrl);
+
+        HttpRequest.get(apiUrl).success(function (response) {
+            $scope.master.upline = response.data;
+            // console.log(JSON.stringify($scope.master.upline));
+
+        })
+    }
+
+    $scope.renderMember = function (keyword) {
+        var apiUrl = "/member/" + $scope.form.roleMember + "/" + keyword + "/searchMember";
+        // console.log(apiUrl);
+
+        return HttpRequest.get(apiUrl).then(function (response) {
+            // console.log(JSON.stringify(response));
+            // $scope.user.input.email = response.data.email;
+            // console.log(JSON.stringify($scope.user.input.email));
+            return response.data.data;
+        });
+    }
     $scope.renderListData = function () {
         $('.Loading').show();
         $('.page-form').hide();
@@ -46,7 +68,7 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
 
         HttpRequest.get(apiUrl).success(function (response) {
             $scope.listData = response.data;
-            console.log(JSON.stringify($scope.listData));
+            // console.log(JSON.stringify($scope.listData));
 
             $('.Loading').hide();
             $('.page-form').show();
@@ -54,8 +76,6 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
         });
 
     }
-
-
 
     $scope.showValidasiNIK = false;
 
@@ -291,130 +311,26 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
 
         $scope.form.updatedBy = $scope.currentUser.email;
 
+        var dataForm = {
+            idMember: $scope.form.id,
+            registeredBy: $scope.form.registeredBy
+        }
+        // console.log(JSON.stringify(dataForm));
 
-        // console.log(JSON.stringify($scope.form));
-
-        // console.log(fileKtp);
-        // console.log(fileBuktiTransfer);
-
-
-        var apiUrl = "/member/" + $scope.form.id;
-        HttpRequest.put(apiUrl, $scope.form).success(function (response) {
-            $scope.idMember = $scope.form.id;
-            // console.log(response.data.id);
-
-
-            if (fileKtp == undefined || fileBuktiTransfer == undefined || "") {
-                $scope.eventClickCloseModal();
-                console.log("1");
-                $scope.renderListData();
-            } else {
-                // Upload Avatar
-                // file.upload = Upload.upload({
-                //     url: 'https://api.myerlinski.com/member/uploadAvatarMember',
-                //     // url: '',
-                //     data: {
-                //         id: $scope.idMember,
-                //         file: file
-                //     },
-                // });
-
-                // file.upload.then(function (response) {
-                //     $timeout(function () {
-                //         file.result = response.data;
-                //         console.log(JSON.stringify(response.data));
-                //     });
-
-
-                // }, function (response) {
-                //     if (response.status > 0)
-                //         $scope.errorMsg = response.status + ': ' + response.data;
-                //     console.log(response.data);
-
-                // }, function (evt) {
-                //     // Math.min is to fix IE which reports 200% sometimes
-                //     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-
-                // });
-
-                // Upload KTP
-                fileKtp.upload = Upload.upload({
-                    url: 'https://api.myerlinski.com/member/uploadMemberKtp',
-                    // url: '',
-                    data: {
-                        id: $scope.idMember,
-                        fileKtp: fileKtp
-                    },
-                });
-
-                fileKtp.upload.then(function (response) {
-                    $timeout(function () {
-                        file.result = response.data;
-                        console.log(JSON.stringify(response.data));
-                    });
-
-
-                }, function (response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
-                    console.log(response.data);
-
-                }, function (evt) {
-                    // Math.min is to fix IE which reports 200% sometimes
-                    fileKtp.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-
-                });
-
-                // Upload Bukti Transfer
-                fileBuktiTransfer.upload = Upload.upload({
-                    url: 'https://api.myerlinski.com/member/uploadMemberBuktiTransfer',
-                    // url: '',
-                    data: {
-                        id: $scope.idMember,
-                        fileBuktiTransfer: fileBuktiTransfer
-                    },
-                });
-
-                fileBuktiTransfer.upload.then(function (response) {
-                    $timeout(function () {
-                        file.result = response.data;
-                        console.log(JSON.stringify(response.data));
-                    });
-
-
-                }, function (response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
-                    console.log(response.data);
-
-                }, function (evt) {
-                    // Math.min is to fix IE which reports 200% sometimes
-                    fileBuktiTransfer.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-
-                });
-            }
-
-
-            // Get List Upload File
+        var apiUrl = "/member/updateUpline";
+        HttpRequest.post(apiUrl, dataForm).success(function (response) {
             swal("Data Berhasil Diupdate", {
                 icon: "success",
             });
-            console.log(response.data);
+
             $scope.renderListData();
-            $scope.eventClickCloseModal();
-            $scope.clearForm();
-
-
-            $('.Loading').hide();
-            $('.page-form').show();
-            // console.log(JSON.stringify($scope.form));
-        });
+        })
     }
 
     $scope.eventClickAdd = function () {
         $scope.btnSave = true;
         $scope.btnUpdate = false;
-        $scope.statusScanUpload = true;
+
         // alert("test")
     }
 
@@ -422,7 +338,6 @@ mainApp.controller("masterMemberCtrl", function ($route, $scope, $uibModal, $rou
 
         $scope.btnSave = false;
         $scope.btnUpdate = true;
-        $scope.statusScanUpload = false;
         var apiUrl = "/member/" + id;
         console.log(apiUrl);
 
