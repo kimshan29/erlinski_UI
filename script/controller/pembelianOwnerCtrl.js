@@ -228,6 +228,7 @@ mainApp.controller("pembelianOwnerCtrl", function ($route, $scope, $uibModal, $r
 
     $scope.clearForm = function () {
         $scope.form = {};
+        $scope.master.detailBarang = [];
 
     }
 
